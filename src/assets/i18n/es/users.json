@@ -1,0 +1,111 @@
+{
+  "page": {
+    "kicker": "Administración",
+    "title": "Gestión de usuarios",
+    "subtitle": "Alta, edición y control de accesos con dirección, horas semanales y rol asignado.",
+    "newUser": "Nuevo usuario",
+    "statsAriaLabel": "Resumen de usuarios",
+    "stats": {
+      "total": "Total",
+      "active": "Activos",
+      "inactive": "Inactivos",
+      "admins": "Admins"
+    },
+    "filters": {
+      "title": "Filtros",
+      "subtitle": "Busca por nombre, correo, área o dirección.",
+      "search": "Buscar",
+      "searchPlaceholder": "Nombre, correo, área o dirección",
+      "role": "Rol",
+      "status": "Estado",
+      "all": "Todos",
+      "active": "Activos",
+      "inactive": "Inactivos"
+    },
+    "table": {
+      "title": "Listado de usuarios",
+      "subtitle": "Consulta y acciona sobre los registros existentes.",
+      "user": "Usuario",
+      "role": "Rol",
+      "address": "Dirección",
+      "weeklyHours": "Horas/semana",
+      "status": "Estado",
+      "actions": "Acciones",
+      "empty": "No hay usuarios que cumplan con el filtro actual.",
+      "hoursSuffix": "h",
+      "noManager": "Sin responsable",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "tooltipActivate": "Activar usuario",
+      "tooltipDeactivate": "Desactivar usuario",
+      "tooltipEdit": "Editar usuario",
+      "tooltipDelete": "Eliminar usuario"
+    }
+  },
+  "modal": {
+    "kicker": "Usuarios",
+    "createTitle": "Nuevo usuario",
+    "editTitle": "Editar usuario",
+    "subtitle": "Configura el acceso y la información laboral.",
+    "close": "Cerrar",
+    "fields": {
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "email": "Correo",
+      "password": "Contraseña",
+      "role": "Rol",
+      "area": "Área",
+      "address": "Dirección",
+      "community": "Comunidad",
+      "weeklyHours": "Horas a la semana",
+      "manager": "Responsable",
+      "active": "Usuario activo"
+    },
+    "placeholders": {
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "email": "correo@empresa.com",
+      "password": "Mínimo 6 caracteres",
+      "area": "Operaciones, Soporte...",
+      "address": "Calle, número, ciudad"
+    },
+    "noManager": "Sin responsable",
+    "save": "Guardar cambios",
+    "create": "Crear usuario",
+    "cancel": "Cancelar"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "manager": "Manager",
+    "employee": "Empleado"
+  },
+  "communities": {
+    "madrid": "Madrid",
+    "galicia": "Galicia"
+  },
+  "feedback": {
+    "editUser": "Editando a {{name}}",
+    "selfDeactivateBlocked": "No puedes desactivar tu propia cuenta mientras está iniciada.",
+    "selfDeleteBlocked": "No puedes eliminar tu propia cuenta mientras está iniciada.",
+    "userUpdated": "Usuario actualizado correctamente.",
+    "userCreated": "Usuario creado correctamente.",
+    "userActivated": "Usuario activado.",
+    "userDeactivated": "Usuario desactivado.",
+    "userDeleted": "Usuario eliminado correctamente.",
+    "editCancelled": "Edición cancelada."
+  },
+  "confirm": {
+    "defaultTitle": "Confirmar acción",
+    "defaultMessage": "¿Seguro que quieres continuar?",
+    "defaultLabel": "Confirmar",
+    "activateTitle": "Activar usuario",
+    "deactivateTitle": "Desactivar usuario",
+    "activateMessage": "¿Seguro que quieres activar a {{name}}?",
+    "deactivateMessage": "¿Seguro que quieres desactivar a {{name}}?",
+    "activateLabel": "Activar",
+    "deactivateLabel": "Desactivar",
+    "deleteTitle": "Eliminar usuario",
+    "deleteMessage": "¿Seguro que quieres eliminar a {{name}}? Esta acción no se puede deshacer.",
+    "deleteLabel": "Eliminar"
+  }
+}

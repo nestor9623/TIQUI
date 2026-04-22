@@ -1,0 +1,68 @@
+<aside class="sidebar" [class.collapsed]="collapsed()" [class.mobile-open]="mobileOpen()">
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <div class="logo-gt" [attr.aria-label]="collapsed() ? 'GT' : 'GT Tiqui'">
+        <span class="logo-text logo-text--gt">GT</span>
+        @if (!collapsed()) {
+          <span class="logo-slash">∕</span>
+          <span class="logo-text logo-text--tiqui">TIQUI</span>
+        }
+      </div>
+    </div>
+    <button class="toggle-btn" (click)="toggleSidebar()" [title]="collapsed() ? 'Expandir' : 'Contraer'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <!-- Botón cerrar solo visible en mobile -->
+    <button class="close-mobile-btn" (click)="closeMobile.emit()" title="Cerrar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="separator"></div>
+
+  <nav class="sidebar-nav">
+    @for (section of sections(); track section.title) {
+      @if (!collapsed()) {
+        <button
+          class="nav-section-title"
+          type="button"
+          [attr.aria-expanded]="isSectionOpen(section)"
+          (click)="toggleSection(section)">
+          <span>{{ section.title }}</span>
+          <svg class="section-chevron" [class.open]="isSectionOpen(section)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      }
+      @if (isSectionOpen(section)) {
+        <ul class="nav-list">
+          @for (item of getVisibleItems(section.items); track item.label) {
+          <li class="nav-item">
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}"
+              class="nav-link"
+              [class.nav-link--icon-only]="collapsed()"
+              [title]="collapsed() ? item.label : ''"
+              [attr.aria-label]="item.label"
+              (click)="closeMobile.emit()">
+              @if (item.icon) {
+              <span class="item-icon">{{ item.icon }}</span>
+              }
+              <span class="item-label">{{ item.label }}</span>
+            </a>
+          </li>
+          }
+        </ul>
+      }
+    }
+  </nav>
+</aside>
+

@@ -1,0 +1,81 @@
+@import 'abstracts/variables';
+
+.recent-activity-container {
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+  border-radius: 0.95rem;
+  padding: 1rem;
+  box-shadow: var(--elevation-1);
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.recent-activity-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.recent-activity-header p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.64rem 0.72rem;
+  background: color-mix(in srgb, var(--surface-app) 50%, var(--surface-card));
+  border: 1px solid color-mix(in srgb, var(--surface-border) 80%, transparent);
+  border-radius: 0.66rem;
+  transition: transform var(--motion-normal) var(--ease-standard), border-color var(--motion-normal) var(--ease-standard), background var(--motion-normal) var(--ease-standard);
+  cursor: pointer;
+}
+
+.activity-item:hover {
+  background: color-mix(in srgb, var(--surface-card) 88%, var(--nav-active-bg));
+  border-color: color-mix(in srgb, var(--brand-primary) 45%, transparent);
+  transform: translateX(2px);
+}
+
+.activity-number {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  min-width: 20px;
+}
+
+.activity-title {
+  flex: 1;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .recent-activity-container {
+    padding: 0.85rem;
+  }
+
+  .activity-item {
+    padding: 0.58rem 0.65rem;
+  }
+
+  .activity-number {
+    font-size: 0.82rem;
+  }
+
+  .activity-title {
+    font-size: 0.82rem;
+  }
+}

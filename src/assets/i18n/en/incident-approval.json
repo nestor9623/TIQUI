@@ -1,0 +1,18 @@
+{
+  "emptyOpen": "There are no open incidents.",
+  "emptyActive": "There are no active incidents.",
+  "selectAll": "Select all",
+  "selectedCountSingular": "{{count}} selected",
+  "selectedCountPlural": "{{count}} selected",
+  "approveSelected": "Approve selected",
+  "approveOne": "Approve",
+  "confirmCommentLabel": "Comment for the person",
+  "confirmCommentPlaceholder": "Add an optional message to provide context or explain the resolution",
+  "confirmLabel": "Confirm approval",
+  "titleSingle": "Approve request",
+  "titleMultiple": "Approve {{count}} requests",
+  "messageSingle": "Confirm the request and add an optional comment if you want to provide context.",
+  "messageMultiple": "You are about to approve multiple incidents at once. You can add an optional comment for the person.",
+  "typeMissingCheckin": "Employee missing check-in",
+  "typePendingApproval": "Pending approval"
+}

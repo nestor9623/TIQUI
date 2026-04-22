@@ -1,0 +1,146 @@
+<div class="admin-dashboard-container">
+  <header class="dashboard-header">
+    <p class="dashboard-kicker">Panel ejecutivo</p>
+    <div>
+      <h1>Dashboard de operaciones</h1>
+      <p class="subtitle">Estado en tiempo real de equipos, incidencias y presencia global.</p>
+    </div>
+  </header>
+
+  <section class="stats-grid" aria-label="Resumen de plantilla">
+    <div class="stat-card total">
+      <div class="stat-icon" aria-hidden="true">Tot</div>
+      <div class="stat-label">Empleados</div>
+      <div class="stat-value">{{ employeeStats().total }}</div>
+      <div class="stat-breakdown">
+        {{ getTopCitiesLabel() }}
+      </div>
+    </div>
+
+    <div class="stat-card active">
+      <div class="stat-icon" aria-hidden="true">Act</div>
+      <div class="stat-label">En activo</div>
+      <div class="stat-value">{{ employeeStats().active }}</div>
+      <div class="stat-breakdown">{{ getBreakdownText('active') }}</div>
+    </div>
+
+    <div class="stat-card pause">
+      <div class="stat-icon" aria-hidden="true">Pau</div>
+      <div class="stat-label">En pausa</div>
+      <div class="stat-value">{{ employeeStats().onPause }}</div>
+      <div class="stat-breakdown">{{ getBreakdownText('onPause') }}</div>
+    </div>
+
+    <div class="stat-card absent">
+      <div class="stat-icon" aria-hidden="true">Aus</div>
+      <div class="stat-label">Ausente</div>
+      <div class="stat-value">{{ employeeStats().absent }}</div>
+      <div class="stat-breakdown">{{ getBreakdownText('absent') }}</div>
+    </div>
+  </section>
+
+  @if (userRole() === 'manager') {
+    <div class="manager-grid">
+      <section class="manager-card">
+        <div class="manager-card-header">
+          <h2>Incidencias</h2>
+          <span>{{ incidents().length }}</span>
+        </div>
+
+        @if (incidentsFeedback()) {
+          <p class="empty-text">{{ incidentsFeedback() }}</p>
+        }
+
+        <tiqui-incident-approval-list
+          [items]="incidents()"
+          (approved)="onIncidentsApproved($event)">
+        </tiqui-incident-approval-list>
+      </section>
+
+      <section class="manager-card">
+        <div class="manager-card-header">
+          <h2>Horas extra del mes</h2>
+          <span>{{ overtimeByEmployee().length }}</span>
+        </div>
+
+        @if (overtimeByEmployee().length === 0) {
+          <p class="empty-text">No hay horas extra registradas.</p>
+        } @else {
+          <ul class="manager-list">
+            @for (overtime of overtimeByEmployee(); track overtime.userId) {
+              <li>
+                <div>
+                  <strong>{{ overtime.fullName }}</strong>
+                  <p>Acumulado mensual</p>
+                </div>
+                <span>{{ formatExtraMinutes(overtime.extraMinutes) }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    </div>
+  }
+
+  <section class="world-presence-card">
+    <div class="card-header">
+      <div>
+        <h2>Presencia global de hoy</h2>
+        <p class="card-subtitle">Ciudades con actividad registrada en la jornada actual.</p>
+      </div>
+      <button class="menu-btn" type="button" aria-label="Más opciones">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="12" cy="5" r="1"></circle>
+          <circle cx="12" cy="19" r="1"></circle>
+        </svg>
+      </button>
+    </div>
+
+    <div class="world-content">
+      <div class="countries-list">
+        @for (location of locations(); track location.id) {
+        <div class="country-item">
+          <div class="country-info">
+            <span class="country-name">{{ location.city }}</span>
+            <span class="country-country">{{ location.country }}</span>
+          </div>
+          <div class="country-stats">
+            <span class="country-employees">{{ location.total }}</span>
+            <span class="country-percentage">{{ location.percentage }}%</span>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="world-map">
+        <div class="map-placeholder">
+          <svg width="100%" height="300" viewBox="0 0 800 400" class="map-svg">
+            <g fill="#e5e7eb" stroke="#d1d5db" stroke-width="1">
+              <path d="M 100 80 L 150 60 L 200 70 L 220 100 L 200 130 L 150 140 L 120 120 Z" />
+              <path d="M 180 180 L 200 160 L 220 180 L 210 240 L 190 250 L 170 230 Z" />
+              <path d="M 380 80 L 420 70 L 450 90 L 440 120 L 400 130 L 370 110 Z" />
+              <path d="M 400 140 L 440 130 L 460 180 L 450 240 L 410 250 L 390 200 Z" />
+              <path d="M 480 60 L 580 50 L 650 80 L 660 140 L 620 160 L 560 150 L 500 120 Z" />
+              <path d="M 620 220 L 660 210 L 680 240 L 670 260 L 640 250 Z" />
+            </g>
+
+            @for (point of mapPoints(); track point.id) {
+              <g class="map-marker" [attr.transform]="'translate(' + point.displayX + ',' + point.displayY + ')'">
+                <circle class="map-point-pulse" [attr.r]="point.radius + 8"></circle>
+                <circle class="map-point-core" [attr.r]="point.radius"></circle>
+                <circle class="map-point-hit" [attr.r]="point.radius + 10"></circle>
+
+                <g class="map-tooltip">
+                  <rect x="12" y="-54" width="180" height="52" rx="8" ry="8"></rect>
+                  <text x="22" y="-34">{{ point.city }}, {{ point.country }}</text>
+                  <text x="22" y="-18">Total {{ point.total }} | Activos {{ point.active }}</text>
+                </g>
+              </g>
+            }
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

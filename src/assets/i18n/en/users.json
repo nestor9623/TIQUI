@@ -1,0 +1,111 @@
+{
+  "page": {
+    "kicker": "Administration",
+    "title": "User management",
+    "subtitle": "Create, edit and control access with address, weekly hours and assigned role.",
+    "newUser": "New user",
+    "statsAriaLabel": "User summary",
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "inactive": "Inactive",
+      "admins": "Admins"
+    },
+    "filters": {
+      "title": "Filters",
+      "subtitle": "Search by name, email, area or address.",
+      "search": "Search",
+      "searchPlaceholder": "Name, email, area or address",
+      "role": "Role",
+      "status": "Status",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "title": "User list",
+      "subtitle": "Review and act on the existing records.",
+      "user": "User",
+      "role": "Role",
+      "address": "Address",
+      "weeklyHours": "Hours/week",
+      "status": "Status",
+      "actions": "Actions",
+      "empty": "There are no users matching the current filter.",
+      "hoursSuffix": "h",
+      "noManager": "No manager",
+      "active": "Active",
+      "inactive": "Inactive",
+      "tooltipActivate": "Activate user",
+      "tooltipDeactivate": "Deactivate user",
+      "tooltipEdit": "Edit user",
+      "tooltipDelete": "Delete user"
+    }
+  },
+  "modal": {
+    "kicker": "Users",
+    "createTitle": "New user",
+    "editTitle": "Edit user",
+    "subtitle": "Configure access and work information.",
+    "close": "Close",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "area": "Area",
+      "address": "Address",
+      "community": "Region",
+      "weeklyHours": "Weekly hours",
+      "manager": "Manager",
+      "active": "Active user"
+    },
+    "placeholders": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "email@company.com",
+      "password": "At least 6 characters",
+      "area": "Operations, Support...",
+      "address": "Street, number, city"
+    },
+    "noManager": "No manager",
+    "save": "Save changes",
+    "create": "Create user",
+    "cancel": "Cancel"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "manager": "Manager",
+    "employee": "Employee"
+  },
+  "communities": {
+    "madrid": "Madrid",
+    "galicia": "Galicia"
+  },
+  "feedback": {
+    "editUser": "Editing {{name}}",
+    "selfDeactivateBlocked": "You cannot deactivate your own account while it is signed in.",
+    "selfDeleteBlocked": "You cannot delete your own account while it is signed in.",
+    "userUpdated": "User updated successfully.",
+    "userCreated": "User created successfully.",
+    "userActivated": "User activated.",
+    "userDeactivated": "User deactivated.",
+    "userDeleted": "User deleted successfully.",
+    "editCancelled": "Edit cancelled."
+  },
+  "confirm": {
+    "defaultTitle": "Confirm action",
+    "defaultMessage": "Are you sure you want to continue?",
+    "defaultLabel": "Confirm",
+    "activateTitle": "Activate user",
+    "deactivateTitle": "Deactivate user",
+    "activateMessage": "Are you sure you want to activate {{name}}?",
+    "deactivateMessage": "Are you sure you want to deactivate {{name}}?",
+    "activateLabel": "Activate",
+    "deactivateLabel": "Deactivate",
+    "deleteTitle": "Delete user",
+    "deleteMessage": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+    "deleteLabel": "Delete"
+  }
+}

@@ -1,0 +1,111 @@
+@if (open()) {
+  <button
+    type="button"
+    class="assistant-backdrop"
+    [attr.aria-label]="texts().panel.accessibility.closeOverlay"
+    (click)="onClose()"></button>
+}
+
+<aside
+  id="tiqui-assistant-panel"
+  class="assistant-panel"
+  [class.assistant-panel--open]="open()"
+  [attr.aria-hidden]="!open()">
+  <header class="assistant-panel__header">
+    <div>
+      <p class="assistant-panel__eyebrow">{{ texts().eyebrow }}</p>
+      <h2>{{ texts().panel.title }}</h2>
+      <p class="assistant-panel__intro">{{ texts().panel.intro }}</p>
+    </div>
+
+    <button type="button" class="assistant-panel__close" [attr.aria-label]="texts().panel.accessibility.closePanel" (click)="onClose()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </header>
+
+  <section class="assistant-panel__hero">
+    <span class="assistant-panel__status">{{ snapshot().statusLabel }}</span>
+    <h3>{{ snapshot().headline }}</h3>
+    <p>{{ snapshot().summary }}</p>
+
+    @if (snapshot().unreadCount > 0) {
+      <div class="assistant-panel__queue">
+        <span class="assistant-panel__queue-badge">{{ unreadCountLabel() }}</span>
+        <span>{{ texts().panel.queuePending }}</span>
+      </div>
+    }
+  </section>
+
+  <section class="assistant-panel__metrics" aria-label="Balance del asistente">
+    <article class="assistant-metric">
+      <span>{{ texts().panel.metrics.dailyBalance }}</span>
+      <strong>{{ snapshot().dailyBalanceLabel }}</strong>
+    </article>
+    <article class="assistant-metric">
+      <span>{{ texts().panel.metrics.weeklyBalance }}</span>
+      <strong>{{ snapshot().weeklyBalanceLabel }}</strong>
+    </article>
+    <article class="assistant-metric">
+      <span>{{ texts().panel.metrics.incidents }}</span>
+      <strong>{{ snapshot().incidentCount }}</strong>
+    </article>
+  </section>
+
+  <section class="assistant-panel__plan">
+    <div class="assistant-plan-card">
+      <span>{{ texts().panel.plan.suggestedStart }}</span>
+      <strong>{{ snapshot().suggestedStartTime ?? texts().panel.plan.noAdjustment }}</strong>
+    </div>
+    <div class="assistant-plan-card">
+      <span>{{ texts().panel.plan.suggestedEnd }}</span>
+      <strong>{{ snapshot().suggestedEndTime ?? texts().panel.plan.noAdjustment }}</strong>
+    </div>
+  </section>
+
+  <section class="assistant-panel__alerts">
+    <div class="assistant-panel__section-head">
+      <div>
+        <h3>{{ texts().panel.recommendations.title }}</h3>
+        <p>{{ texts().panel.recommendations.subtitle }}</p>
+      </div>
+
+      @if (visibleAlerts().length > 0) {
+        <button type="button" class="assistant-panel__dismiss-all" (click)="dismissAll()">{{ texts().panel.recommendations.clearInbox }}</button>
+      }
+    </div>
+
+    @if (visibleAlerts().length === 0) {
+      <article class="assistant-panel__empty-state">
+        <h4>{{ texts().panel.empty.title }}</h4>
+        <p>{{ texts().panel.empty.description }}</p>
+      </article>
+    } @else {
+      @for (alert of visibleAlerts(); track trackAlert($index, alert)) {
+        <article class="assistant-alert" [class.assistant-alert--warning]="alert.severity === 'warning'" [class.assistant-alert--success]="alert.severity === 'success'">
+          <div>
+            <h4>{{ alert.title }}</h4>
+            <p>{{ alert.message }}</p>
+          </div>
+
+          <div class="assistant-alert__actions">
+            @if (alert.route && alert.actionLabel) {
+              <a class="assistant-alert__action" [routerLink]="alert.route" (click)="onAlertAction(alert)">{{ alert.actionLabel }}</a>
+            }
+
+            <button type="button" class="assistant-alert__utility assistant-alert__utility--review" (click)="onAlertReviewed(alert)">
+              {{ texts().panel.recommendations.markReviewed }}
+            </button>
+            <button type="button" class="assistant-alert__utility assistant-alert__utility--dismiss" (click)="onAlertDismissed(alert)">
+              {{ texts().panel.recommendations.remove }}
+            </button>
+          </div>
+        </article>
+      }
+    }
+  </section>
+
+  <section class="assistant-panel__footer">
+    <a class="assistant-footer-link assistant-footer-link--secondary" routerLink="/home" (click)="onClose()">{{ texts().panel.footer.openDashboard }}</a>
+    <a class="assistant-footer-link assistant-footer-link--primary" routerLink="/fichajes" (click)="onClose()">{{ texts().panel.footer.goToCheckins }}</a>
+  </section>
+</aside>

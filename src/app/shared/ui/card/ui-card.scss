@@ -1,0 +1,33 @@
+@import 'abstracts/variables';
+
+.ui-card {
+  background: var(--surface-card);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 90%, transparent);
+  border-radius: 0.9rem;
+  box-shadow: var(--elevation-1);
+  padding: 1rem;
+}
+
+.ui-card--compact {
+  padding: 0.75rem;
+}
+
+.ui-card__header {
+  margin-bottom: 0.75rem;
+}
+
+.ui-card__title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.ui-card__subtitle {
+  margin: 0.3rem 0 0;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.ui-card__body {
+  min-width: 0;
+}

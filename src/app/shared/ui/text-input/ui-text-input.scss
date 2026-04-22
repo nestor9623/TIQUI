@@ -1,0 +1,37 @@
+@import 'abstracts/variables';
+
+.ui-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ui-input__label {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.ui-input__field {
+  border: 1px solid color-mix(in srgb, var(--surface-border) 90%, transparent);
+  border-radius: 0.625rem;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  padding: 0.65rem 0.8rem;
+  transition: border-color var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.ui-input__field:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 12%, transparent);
+}
+
+.ui-input__field--error {
+  border-color: var(--brand-danger);
+}
+
+.ui-input__error {
+  font-size: 0.75rem;
+  color: var(--brand-danger);
+}

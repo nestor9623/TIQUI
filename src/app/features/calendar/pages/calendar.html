@@ -1,0 +1,204 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <div>
+      <p class="calendar-kicker">Planificación</p>
+      <h1>Calendario de fichajes</h1>
+    </div>
+
+    <div class="calendar-controls">
+      <button class="btn-nav" (click)="changeMonth(-1)" title="Mes anterior">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <h2 class="current-month">{{ getMonthName() }}</h2>
+
+      <button class="btn-nav" (click)="changeMonth(1)" title="Mes siguiente">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <button class="btn-today" (click)="goToToday()">Hoy</button>
+    </div>
+  </div>
+
+  <!-- Leyenda de estados -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-color status-not-clocked"></span>
+      <span>Sin fichar</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color status-clocked-in"></span>
+      <span>Trabajando</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color status-on-pause"></span>
+      <span>En pausa</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color status-clocked-out"></span>
+      <span>Completado</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color status-weekend"></span>
+      <span>Fin de semana</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color status-holiday"></span>
+      <span>Festivo</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color status-vacation"></span>
+      <span>Vacaciones (auto 8h)</span>
+    </div>
+
+    <div class="legend-separator"></div>
+
+    <!-- Total de horas -->
+    <div class="legend-total">
+      <div class="total-info">
+        <span class="total-label">Total del mes:</span>
+        <span class="total-hours">{{ totalMonthHours() }}</span>
+      </div>
+      <div class="total-divider"></div>
+      <div class="total-target">
+        <span class="target-label">Objetivo semanal:</span>
+        <span class="target-hours">{{ targetWeekHours }}h</span>
+      </div>
+      <div
+        class="total-difference"
+        [class.over]="getDifferenceClass() === 'over'"
+        [class.under]="getDifferenceClass() === 'under'"
+        [class.exact]="getDifferenceClass() === 'exact'">
+        <span class="difference-value">{{ getHoursDifference() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-grid">
+    <div class="weekday-header">Lun</div>
+    <div class="weekday-header">Mar</div>
+    <div class="weekday-header">Mié</div>
+    <div class="weekday-header">Jue</div>
+    <div class="weekday-header">Vie</div>
+    <div class="weekday-header">Sáb</div>
+    <div class="weekday-header">Dom</div>
+
+    @for (day of calendarDays(); track day.date) {
+    <div
+      class="calendar-day"
+      [class.other-month]="!day.isCurrentMonth"
+      [class.today]="day.isToday"
+      [class.future]="day.isFuture"
+      [class.day-status-not-clocked]="day.status === 'not-clocked'"
+      [class.day-status-clocked-in]="day.status === 'clocked-in'"
+      [class.day-status-on-pause]="day.status === 'on-pause'"
+      [class.day-status-clocked-out]="day.status === 'clocked-out'"
+      [class.day-status-weekend]="day.status === 'weekend'"
+      [class.day-status-holiday]="day.status === 'holiday'"
+      [class.day-status-vacation]="day.status === 'vacation'"
+      (click)="selectDay(day)">
+      <div class="day-number">{{ day.dayNumber }}</div>
+      @if (day.hoursDifference) {
+      <div class="hours-badge" [class.positive]="day.hoursDifference.startsWith('+')" [class.negative]="day.hoursDifference.startsWith('-')">
+        {{ day.hoursDifference }}
+      </div>
+      }
+      @if (day.hours) {
+      <div class="day-hours">{{ day.hours }}</div>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="days-list">
+    @for (day of getMonthDays(); track day.date) {
+    <div class="day-list-item" (click)="selectDay(day)">
+      <div
+        class="day-list-icon"
+        [class.status-not-clocked]="day.status === 'not-clocked'"
+        [class.status-clocked-in]="day.status === 'clocked-in'"
+        [class.status-on-pause]="day.status === 'on-pause'"
+        [class.status-clocked-out]="day.status === 'clocked-out'"
+        [class.status-weekend]="day.status === 'weekend'"
+        [class.status-holiday]="day.status === 'holiday'"
+        [class.status-vacation]="day.status === 'vacation'">
+        {{ day.dayNumber }}
+      </div>
+      <div class="day-list-content">
+        <div class="day-list-date">{{ day.date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }) }}</div>
+        <div class="day-list-status">{{ getStatusLabel(day.status) }}</div>
+      </div>
+      @if (day.hours) {
+      <div class="day-list-hours">
+        {{ day.hours }}
+        @if (day.hoursDifference) {
+        <span class="day-list-badge" [class.positive]="day.hoursDifference.startsWith('+')" [class.negative]="day.hoursDifference.startsWith('-')">
+          {{ day.hoursDifference }}
+        </span>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  @if (selectedDay()) {
+  <div class="detail-overlay" (click)="closeDetail()">
+    <div class="detail-panel" (click)="$event.stopPropagation()">
+      <div class="detail-header">
+        <h3>{{ selectedDay()!.date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}</h3>
+        <button class="btn-close" (click)="closeDetail()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="detail-content">
+        <div class="detail-summary">
+          <div class="summary-item">
+            <span class="label">Estado:</span>
+            <span class="value">{{ getStatusLabel(selectedDay()!.status) }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Horas trabajadas:</span>
+            <span class="value">{{ selectedDay()!.hours || 'Sin registros' }}</span>
+          </div>
+        </div>
+
+        @if (selectedDay()!.entries.length > 0) {
+        <div class="detail-timeline">
+          <h4>Fichajes del día</h4>
+          <div class="timeline-horizontal">
+            @for (entry of selectedDay()!.entries; track entry.time) {
+            <div
+              class="timeline-entry"
+              [class.entry-in]="entry.type === 'in'"
+              [class.entry-out]="entry.type === 'out'"
+              [class.entry-pause]="entry.type === 'pause'">
+              <span class="entry-time">{{ entry.time }}</span>
+              <span
+                class="entry-dot"
+                [class.dot-in]="entry.type === 'in'"
+                [class.dot-out]="entry.type === 'out'"
+                [class.dot-pause]="entry.type === 'pause'"></span>
+              <span class="entry-label">{{ entry.label }}</span>
+            </div>
+            }
+          </div>
+        </div>
+        } @else {
+        <div class="no-entries">
+          <p>No hay registros de fichaje para este día</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+</div>

@@ -1,0 +1,49 @@
+// Reset básico
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+  font-family: $font-family-primary;
+  color: $secondary-color;
+  background-color: $gray-50;
+}
+
+// Tipografía base
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 $spacing-sm 0;
+  font-weight: $font-weight-semibold;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0 0 $spacing-md 0;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Botones base
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+// Inputs base
+input, select, textarea {
+  font-family: inherit;
+}

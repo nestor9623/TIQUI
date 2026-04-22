@@ -1,0 +1,74 @@
+@import 'abstracts/variables';
+
+.card {
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+  border-radius: 0.88rem;
+  padding: 0.9rem;
+  box-shadow: var(--elevation-1);
+}
+
+.card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.72rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+
+  &:last-of-type {
+    margin-bottom: 0.85rem;
+  }
+}
+
+.input-group input,
+.input-group select {
+  padding: 0.58rem 0.62rem;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 86%, transparent);
+  border-radius: 0.62rem;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-app) 52%, var(--surface-card));
+  outline: none;
+  transition: border-color var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+
+  &:focus {
+    border-color: color-mix(in srgb, var(--brand-primary) 58%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  }
+}
+
+.btn {
+  width: 100%;
+  padding: 0.76rem;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 42%, transparent);
+  border-radius: 0.68rem;
+  background: linear-gradient(120deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  color: $white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--elevation-2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--brand-accent) 72%, white);
+    outline-offset: 2px;
+  }
+}

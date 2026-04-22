@@ -1,0 +1,54 @@
+@import 'abstracts/variables';
+
+.date-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+  border-radius: 0.75rem;
+  box-shadow: var(--elevation-1);
+  padding: 0.34rem;
+}
+
+.nav-btn {
+  border: 1px solid color-mix(in srgb, var(--surface-border) 85%, transparent);
+  background: color-mix(in srgb, var(--surface-app) 48%, var(--surface-card));
+  color: var(--text-primary);
+  border-radius: 0.62rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: background var(--motion-normal) var(--ease-standard), transform var(--motion-normal) var(--ease-standard), color var(--motion-normal) var(--ease-standard);
+
+  &:hover {
+    background: color-mix(in srgb, var(--surface-card) 84%, var(--nav-active-bg));
+    color: var(--brand-primary);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--brand-accent) 72%, white);
+    outline-offset: 2px;
+  }
+}
+
+.date-label {
+  font-weight: 650;
+  color: var(--text-primary);
+  min-width: 240px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .date-label {
+    min-width: 0;
+    font-size: 0.82rem;
+  }
+}

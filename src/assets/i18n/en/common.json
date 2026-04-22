@@ -1,0 +1,24 @@
+{
+  "appName": "TiquiApp",
+  "actions": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "menu": "Menu",
+    "assistant": "Assistant"
+  },
+  "labels": {
+    "userFallback": "User",
+    "appAlerts": "Application alerts",
+    "closeAlert": "Close alert"
+  },
+  "language": {
+    "label": "Language",
+    "spanish": "Spanish",
+    "english": "English"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light mode",
+    "dark": "Dark mode"
+  }
+}

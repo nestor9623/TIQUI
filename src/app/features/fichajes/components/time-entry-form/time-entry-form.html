@@ -1,0 +1,33 @@
+    <div class="card">
+      <h2>Registrar fichaje</h2>
+
+      <label class="input-group">
+        <span>Hora</span>
+        <input
+          type="time"
+          [value]="timeInput()"
+          (input)="onTimeInput($event)"
+        />
+      </label>
+
+      <label class="input-group">
+        <span>Tipo</span>
+        <select [value]="typeInput()" (change)="onTypeChange($event)">
+          <option value="Entrada">Entrada</option>
+          <option value="Salida">Salida</option>
+          <option value="Pausa">Pausa</option>
+        </select>
+      </label>
+
+      <label class="input-group">
+        <span>Descripción</span>
+        <input
+          type="text"
+          placeholder="Opcional"
+          [value]="description()"
+          (input)="onDescriptionInput($event)"
+        />
+      </label>
+
+      <button class="btn" type="button" (click)="addEntry.emit()">Fichar</button>
+    </div>

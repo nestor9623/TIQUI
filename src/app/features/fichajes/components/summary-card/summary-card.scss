@@ -1,0 +1,48 @@
+@import 'abstracts/variables';
+
+.card {
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+  border-radius: 0.88rem;
+  padding: 0.9rem;
+  box-shadow: var(--elevation-1);
+}
+
+.card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.58rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--surface-border) 66%, transparent);
+
+  span:first-child {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.value {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.status {
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 45%, transparent);
+}

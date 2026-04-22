@@ -1,0 +1,104 @@
+{
+  "eyebrow": "Asistente Tiqui",
+  "triggerLabel": "Asistente",
+  "panel": {
+    "title": "Bandeja de recomendaciones",
+    "intro": "Recomendaciones operativas calculadas dentro de la app según tus fichajes e incidencias.",
+    "queuePending": "Tienes recomendaciones pendientes de revisar.",
+    "metrics": {
+      "dailyBalance": "Balance hoy",
+      "weeklyBalance": "Balance semana",
+      "incidents": "Incidencias"
+    },
+    "plan": {
+      "suggestedStart": "Entrada sugerida",
+      "suggestedEnd": "Salida sugerida",
+      "noAdjustment": "Sin ajuste"
+    },
+    "recommendations": {
+      "title": "Recomendaciones",
+      "subtitle": "Quedan pendientes hasta que las revises o las descartes.",
+      "clearInbox": "Limpiar bandeja",
+      "markReviewed": "Marcar revisada",
+      "remove": "Borrar"
+    },
+    "empty": {
+      "title": "Todo revisado",
+      "description": "No tienes recomendaciones pendientes. Cuando aparezca una nueva, volverá a marcarse en rojo."
+    },
+    "footer": {
+      "openDashboard": "Abrir dashboard",
+      "goToCheckins": "Ir a fichajes"
+    },
+    "accessibility": {
+      "closeOverlay": "Cerrar asistente",
+      "closePanel": "Cerrar panel",
+      "unreadCount": "{{count}} recomendaciones pendientes"
+    }
+  },
+  "overview": {
+    "title": "Recomendaciones operativas",
+    "subtitle": "Sugerencias automáticas generadas con reglas internas sobre tus fichajes.",
+    "actions": {
+      "openCheckins": "Abrir fichajes",
+      "viewDashboard": "Ver dashboard"
+    }
+  },
+  "status": {
+    "inactive": "Inactivo",
+    "pending": "Pendiente",
+    "excess": "Exceso",
+    "adjust": "Ajuste",
+    "closed": "Cerrado",
+    "active": "Activo"
+  },
+  "fallback": {
+    "inactiveHeadline": "Inicia sesión para activar el asistente.",
+    "inactiveSummary": "El asistente usa reglas internas para generar recomendaciones de jornada.",
+    "noPendingHeadline": "No tienes recomendaciones pendientes.",
+    "noPendingSummary": "Cuando aparezca una nueva sugerencia útil, quedará marcada aquí como pendiente."
+  },
+  "alerts": {
+    "missingCheckin": {
+      "title": "Aún no hay fichajes hoy.",
+      "message": "Empieza la jornada en fichajes y el asistente calculará tu salida óptima.",
+      "action": "Abrir fichajes"
+    },
+    "suggestedEnd": {
+      "titleExceeded": "Ya vas por encima de tu jornada.",
+      "titleAligned": "Ya tienes una salida recomendada.",
+      "messageExceeded": "Si cierras ahora o reduces mañana, evitas seguir acumulando exceso. Tu referencia de cierre ya era {{time}}.",
+      "messageAligned": "Si mantienes el ritmo actual, salir a las {{time}} te deja alineado con tu objetivo diario.",
+      "action": "Ver fichajes"
+    },
+    "suggestedStart": {
+      "titlePositive": "Mañana puedes compensar entrando más tarde.",
+      "titleNegative": "Conviene ajustar la entrada de mañana.",
+      "messagePositive": "Hoy terminaste con exceso. Si mañana entras a las {{time}}, recuperas parte del balance.",
+      "messageNegative": "Hoy quedaste por debajo del objetivo. Si mañana entras a las {{time}}, reduces el arrastre semanal.",
+      "action": "Abrir dashboard"
+    },
+    "breakReminder": {
+      "title": "Te conviene tomar una pausa corta.",
+      "message": "Llevas {{duration}} seguidas de trabajo activo. Conviene hacer una pausa corta.",
+      "action": "Revisar fichajes"
+    },
+    "weeklyBalance": {
+      "titlePositive": "Tu semana va por encima del objetivo.",
+      "titleNegative": "Tu semana necesita compensación.",
+      "messagePositive": "Has acumulado {{duration}} extra respecto al avance esperado. Puedes descargar entrando mañana a las {{time}}.",
+      "messageNegative": "Vas {{duration}} por debajo del ritmo esperado. Ajusta mañana para no cargar el cierre semanal.",
+      "action": "Ver dashboard"
+    },
+    "incidentsPending": {
+      "title": "Tienes {{count}} incidencias pendientes.",
+      "message": "Este aviso requiere revisión operativa para que no quede pendiente.",
+      "action": "Abrir incidencias"
+    },
+    "balancedDay": {
+      "title": "Tu jornada va equilibrada.",
+      "message": "No hace falta intervenir ahora. El asistente se mantiene silencioso cuando no detecta una acción útil.",
+      "action": "Ver dashboard"
+    }
+  }
+}

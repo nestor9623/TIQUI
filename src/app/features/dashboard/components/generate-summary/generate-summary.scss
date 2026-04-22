@@ -1,0 +1,237 @@
+@import 'abstracts/variables';
+
+.generate-summary-container {
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+  border-radius: 0.95rem;
+  padding: 1rem;
+  box-shadow: var(--elevation-1);
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.generate-summary-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.generate-summary-header p {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.today-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.checkbox-container input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background-color: var(--surface-card);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 90%, transparent);
+  border-radius: 6px;
+  transition: border-color var(--motion-normal) var(--ease-standard), background-color var(--motion-normal) var(--ease-standard);
+  flex-shrink: 0;
+}
+
+.checkbox-container:hover .checkmark {
+  border-color: var(--brand-primary);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.label-text {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.date-range {
+  display: flex;
+  gap: 0.7rem;
+  transition: opacity var(--motion-normal) var(--ease-standard);
+}
+
+.date-range.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.date-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-input label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.date-input input[type="date"] {
+  padding: 0.62rem;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 85%, transparent);
+  border-radius: 0.62rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-app) 52%, var(--surface-card));
+  cursor: pointer;
+  transition: border-color var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.date-input input[type="date"]:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--brand-primary) 55%, transparent);
+}
+
+.date-input input[type="date"]:not(:disabled):focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--brand-primary) 62%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
+}
+
+.date-input input[type="date"]:disabled {
+  background: color-mix(in srgb, var(--surface-app) 65%, var(--surface-card));
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+.summary-buttons {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.btn-summary {
+  flex: 1;
+  background: linear-gradient(120deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 40%, transparent);
+  padding: 0.82rem;
+  border-radius: 0.68rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+}
+
+.btn-summary svg {
+  flex-shrink: 0;
+}
+
+.btn-summary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-2);
+}
+
+.btn-summary:active {
+  transform: translateY(0);
+}
+
+.btn-summary:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand-accent) 72%, white);
+  outline-offset: 2px;
+}
+
+.btn-excel {
+  background: color-mix(in srgb, var(--text-primary) 84%, var(--brand-secondary));
+}
+
+.btn-excel:hover {
+  box-shadow: var(--elevation-2);
+}
+
+@media (max-width: 768px) {
+  .generate-summary-container {
+    padding: 0.9rem;
+  }
+
+  .date-range {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .summary-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-summary {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .generate-summary-container {
+    padding: 0.82rem;
+  }
+
+  .label-text {
+    font-size: 0.82rem;
+  }
+
+  .date-input input[type="date"] {
+    font-size: 0.84rem;
+  }
+
+  .btn-summary {
+    font-size: 0.76rem;
+    padding: 0.72rem;
+  }
+}

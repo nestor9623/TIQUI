@@ -1,0 +1,282 @@
+<section class="users-page">
+  <header class="users-page__header">
+    <div>
+      <p class="users-page__kicker">{{ translations().page.kicker }}</p>
+      <h1>{{ translations().page.title }}</h1>
+      <p class="users-page__subtitle">
+        {{ translations().page.subtitle }}
+      </p>
+    </div>
+
+    <div class="users-page__header-actions">
+      <tiqui-ui-button size="sm" (pressed)="openCreateModal()">
+        <tiqui-ui-icon name="add" [size]="16"></tiqui-ui-icon>
+        <span>{{ translations().page.newUser }}</span>
+      </tiqui-ui-button>
+    </div>
+  </header>
+
+  <section class="users-page__stats" [attr.aria-label]="translations().page.statsAriaLabel">
+    <article class="users-page__stat">
+      <span>{{ translations().page.stats.total }}</span>
+      <strong>{{ totalUsers() }}</strong>
+    </article>
+    <article class="users-page__stat">
+      <span>{{ translations().page.stats.active }}</span>
+      <strong>{{ activeUsers() }}</strong>
+    </article>
+    <article class="users-page__stat">
+      <span>{{ translations().page.stats.inactive }}</span>
+      <strong>{{ inactiveUsers() }}</strong>
+    </article>
+    <article class="users-page__stat">
+      <span>{{ translations().page.stats.admins }}</span>
+      <strong>{{ adminUsers() }}</strong>
+    </article>
+  </section>
+
+  <section class="users-page__panel users-page__panel--filters">
+    <div class="users-page__panel-header">
+      <div>
+        <h2>{{ translations().page.filters.title }}</h2>
+        <p>{{ translations().page.filters.subtitle }}</p>
+      </div>
+    </div>
+
+    <div class="users-page__filters">
+      <label class="users-page__field users-page__field--wide">
+        <span>{{ translations().page.filters.search }}</span>
+        <input
+          type="search"
+          [value]="searchTerm()"
+          (input)="updateSearchTerm($event)"
+          [placeholder]="translations().page.filters.searchPlaceholder"
+        />
+      </label>
+
+      <label class="users-page__field">
+        <span>{{ translations().page.filters.role }}</span>
+        <select [value]="selectedRole()" (change)="updateRoleFilter($event)">
+          <option value="all">{{ translations().page.filters.all }}</option>
+          @for (role of roleOptions(); track role.id) {
+            <option [value]="role.id">{{ role.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="users-page__field">
+        <span>{{ translations().page.filters.status }}</span>
+        <select [value]="selectedStatus()" (change)="updateStatusFilter($event)">
+          <option value="all">{{ translations().page.filters.all }}</option>
+          <option value="active">{{ translations().page.filters.active }}</option>
+          <option value="inactive">{{ translations().page.filters.inactive }}</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  @if (feedbackMessage()) {
+    <p class="users-page__feedback">{{ feedbackMessage() }}</p>
+  }
+
+  <section class="users-page__panel users-page__panel--table">
+    <div class="users-page__panel-header">
+      <div>
+        <h2>{{ translations().page.table.title }}</h2>
+        <p>{{ translations().page.table.subtitle }}</p>
+      </div>
+    </div>
+
+    <div class="users-page__table-wrap">
+      <table class="users-page__table">
+          <thead>
+            <tr>
+              <th>{{ translations().page.table.user }}</th>
+              <th>{{ translations().page.table.role }}</th>
+              <th>{{ translations().page.table.address }}</th>
+              <th>{{ translations().page.table.weeklyHours }}</th>
+              <th>{{ translations().page.table.status }}</th>
+              <th>{{ translations().page.table.actions }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of filteredUsers(); track user.id) {
+              <tr>
+                <td [attr.data-label]="translations().page.table.user">
+                  <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+                  <small>{{ user.email }} · {{ user.area }}</small>
+                </td>
+                <td [attr.data-label]="translations().page.table.role">{{ roleLabel(user.role) }}</td>
+                <td [attr.data-label]="translations().page.table.address">
+                  {{ user.address }}
+                  <small>{{ managerName(user.managerId) }}</small>
+                </td>
+                <td [attr.data-label]="translations().page.table.weeklyHours">{{ user.weeklyHoursTarget ?? 40 }} {{ translations().page.table.hoursSuffix }}</td>
+                <td [attr.data-label]="translations().page.table.status">
+                  <div class="users-page__status-cell">
+                    <span class="users-page__status-text" [class.is-inactive]="!user.active">
+                      {{ user.active ? translations().page.table.active : translations().page.table.inactive }}
+                    </span>
+                    <button
+                      type="button"
+                      class="users-page__state-switch"
+                      [class.is-active]="user.active"
+                      [class.is-inactive]="!user.active"
+                      [tiquiTooltip]="user.active ? translations().page.table.tooltipDeactivate : translations().page.table.tooltipActivate"
+                      (click)="requestToggleUserStatus(user)">
+                      <span class="users-page__state-switch-track">
+                        <span class="users-page__state-switch-thumb">
+                          <tiqui-ui-icon [name]="user.active ? 'check' : 'close'" [size]="14"></tiqui-ui-icon>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </td>
+                <td [attr.data-label]="translations().page.table.actions">
+                  <div class="users-page__actions">
+                    <button
+                      type="button"
+                      class="users-page__icon-action"
+                      [tiquiTooltip]="translations().page.table.tooltipEdit"
+                      (click)="editUser(user)">
+                      <tiqui-ui-icon name="edit" [size]="16"></tiqui-ui-icon>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="users-page__icon-action users-page__icon-action--danger"
+                      [tiquiTooltip]="translations().page.table.tooltipDelete"
+                      (click)="requestDeleteUser(user)">
+                      <tiqui-ui-icon name="delete" [size]="16"></tiqui-ui-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="users-page__empty">{{ translations().page.table.empty }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+  </section>
+
+  @if (modalOpen()) {
+    <div class="users-page__modal-backdrop" (click)="closeModal()"></div>
+
+    <div class="users-page__modal-shell" (click)="closeModal()">
+      <section
+        class="users-page__modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="users-modal-title"
+        (click)="$event.stopPropagation()">
+        <div class="users-page__modal-header">
+          <div>
+            <p class="users-page__kicker">{{ translations().modal.kicker }}</p>
+            <h2 id="users-modal-title">{{ modalTitle() }}</h2>
+            <p class="users-page__subtitle">{{ translations().modal.subtitle }}</p>
+          </div>
+
+          <button
+            type="button"
+            class="users-page__icon-action"
+            [tiquiTooltip]="translations().modal.close"
+            (click)="closeModal()">
+            <tiqui-ui-icon name="close" [size]="16"></tiqui-ui-icon>
+          </button>
+        </div>
+
+        <form class="users-page__form users-page__form--modal" [formGroup]="userForm" (ngSubmit)="submitUser()">
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.firstName }}</span>
+            <input type="text" formControlName="firstName" [placeholder]="translations().modal.placeholders.firstName" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.lastName }}</span>
+            <input type="text" formControlName="lastName" [placeholder]="translations().modal.placeholders.lastName" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.email }}</span>
+            <input type="email" formControlName="email" [placeholder]="translations().modal.placeholders.email" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.password }}</span>
+            <input type="text" formControlName="password" [placeholder]="translations().modal.placeholders.password" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.role }}</span>
+            <select formControlName="role">
+              @for (role of roleOptions(); track role.id) {
+                <option [value]="role.id">{{ role.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.area }}</span>
+            <input type="text" formControlName="area" [placeholder]="translations().modal.placeholders.area" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.address }}</span>
+            <input type="text" formControlName="address" [placeholder]="translations().modal.placeholders.address" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.community }}</span>
+            <select formControlName="community">
+              @for (community of communityOptions(); track community.id) {
+                <option [value]="community.id">{{ community.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.weeklyHours }}</span>
+            <input type="number" min="10" max="60" formControlName="weeklyHoursTarget" />
+          </label>
+
+          <label class="users-page__field">
+            <span>{{ translations().modal.fields.manager }}</span>
+            <select formControlName="managerId">
+              <option value="">{{ translations().modal.noManager }}</option>
+              @for (manager of managerOptions(); track manager.id) {
+                <option [value]="manager.id">{{ manager.firstName }} {{ manager.lastName }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="users-page__check">
+            <input type="checkbox" formControlName="active" />
+            <span>{{ translations().modal.fields.active }}</span>
+          </label>
+
+          <div class="users-page__buttons">
+            <tiqui-ui-button type="submit">
+              {{ isEditing() ? translations().modal.save : translations().modal.create }}
+            </tiqui-ui-button>
+            <tiqui-ui-button variant="ghost" type="button" (pressed)="cancelEdit()">
+              {{ translations().modal.cancel }}
+            </tiqui-ui-button>
+          </div>
+        </form>
+      </section>
+    </div>
+  }
+
+  <tiqui-ui-confirm-dialog
+    [open]="confirmOpen()"
+    [title]="confirmTitle()"
+    [message]="confirmMessage()"
+    [confirmLabel]="confirmLabel()"
+    [tone]="confirmTone()"
+    (cancelled)="closeConfirmDialog()"
+    (confirmed)="confirmPendingAction()">
+  </tiqui-ui-confirm-dialog>
+</section>

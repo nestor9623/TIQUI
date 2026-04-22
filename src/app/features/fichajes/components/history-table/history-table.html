@@ -1,0 +1,33 @@
+    <div class="table-header">
+      <h2>Histórico</h2>
+      <span class="table-subtitle">Registros del día seleccionado</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="fichajes-table">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of entries(); track entry.time) {
+          <tr>
+            <td>{{ entry.time }}</td>
+            <td>
+              <span class="chip chip-{{ entry.type.toLowerCase() }}">{{ entry.type }}</span>
+            </td>
+            <td>{{ entry.label }}</td>
+          </tr>
+          }
+
+          @if (entries().length === 0) {
+          <tr>
+            <td colspan="3" class="empty">No hay fichajes para este día.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>

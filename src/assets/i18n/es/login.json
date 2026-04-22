@@ -1,0 +1,48 @@
+{
+  "hero": {
+    "eyebrow": "Operación en tiempo real",
+    "intro": "Tu jornada, más clara desde el primer segundo",
+    "titleLead": "Fichajes que se sienten",
+    "rotator": ["claros", "rápidos", "en vivo"],
+    "subtitle": "Tiqui organiza entradas, pausas, cierres y revisión diaria en una experiencia limpia, precisa y moderna.",
+    "mapTitle": "Cobertura internacional",
+    "mapCaption": "Validaciones entre sedes, países y zonas horarias en una sola plataforma.",
+    "storyKicker": "Qué hace Tiqui",
+    "storyTitle": "Convierte el control horario en una vista simple y accionable.",
+    "storyBody": "Menos fricción para el empleado. Más contexto para managers. Mejor trazabilidad para negocio.",
+    "features": [
+      {
+        "title": "Fichaje guiado",
+        "description": "Entrada, pausa y salida con estado instantáneo."
+      },
+      {
+        "title": "Visión para managers",
+        "description": "Seguimiento diario, aprobaciones y alertas clave."
+      },
+      {
+        "title": "Listo para auditoría",
+        "description": "Histórico ordenado y reportes preparados para crecer."
+      }
+    ]
+  },
+  "form": {
+    "panelKicker": "Bienvenido de vuelta",
+    "title": "Iniciar sesión",
+    "subtitle": "Entra y continúa con tu jornada de trabajo",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "ejemplo@tiqui.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Mínimo 6 caracteres",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "submit": "Entrar al panel",
+    "submitting": "Iniciando sesión...",
+    "demoTitle": "Accesos de demo",
+    "errors": {
+      "emailRequired": "El correo es requerido",
+      "emailInvalid": "Ingresa un correo válido",
+      "passwordRequired": "La contraseña es requerida",
+      "passwordMin": "Mínimo 6 caracteres",
+      "generic": "Error al iniciar sesión"
+    }
+  }
+}

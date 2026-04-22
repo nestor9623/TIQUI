@@ -1,0 +1,51 @@
+<section class="assistant-overview" aria-label="Asistente Tiqui">
+  <header class="assistant-overview__header">
+    <div>
+      <p class="assistant-overview__eyebrow">{{ texts().eyebrow }}</p>
+      <h2>{{ texts().overview.title }}</h2>
+      <p class="assistant-overview__subtitle">{{ texts().overview.subtitle }}</p>
+    </div>
+
+    <span class="assistant-overview__status">{{ snapshot().statusLabel }}</span>
+  </header>
+
+  <div class="assistant-overview__body">
+    <section class="assistant-overview__hero">
+      <h3>{{ snapshot().headline }}</h3>
+      <p>{{ snapshot().summary }}</p>
+
+      <div class="assistant-overview__actions">
+        <a class="assistant-overview__action" routerLink="/fichajes">{{ texts().overview.actions.openCheckins }}</a>
+        <a class="assistant-overview__action assistant-overview__action--secondary" routerLink="/home">{{ texts().overview.actions.viewDashboard }}</a>
+      </div>
+    </section>
+
+    <section class="assistant-overview__metrics" aria-label="Balance actual">
+      <article class="assistant-pill">
+        <span>Hoy</span>
+        <strong>{{ snapshot().dailyBalanceLabel }}</strong>
+      </article>
+      <article class="assistant-pill">
+        <span>Semana</span>
+        <strong>{{ snapshot().weeklyBalanceLabel }}</strong>
+      </article>
+      <article class="assistant-pill">
+        <span>Entrada sugerida</span>
+        <strong>{{ snapshot().suggestedStartTime ?? 'Sin ajuste' }}</strong>
+      </article>
+      <article class="assistant-pill">
+        <span>Salida sugerida</span>
+        <strong>{{ snapshot().suggestedEndTime ?? 'Sin ajuste' }}</strong>
+      </article>
+    </section>
+  </div>
+
+  <div class="assistant-overview__alerts">
+    @for (alert of topAlerts(); track trackAlert($index, alert)) {
+      <article class="assistant-overview__alert" [class.assistant-overview__alert--warning]="alert.severity === 'warning'" [class.assistant-overview__alert--success]="alert.severity === 'success'">
+        <h4>{{ alert.title }}</h4>
+        <p>{{ alert.message }}</p>
+      </article>
+    }
+  </div>
+</section>
