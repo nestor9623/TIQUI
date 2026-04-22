@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .card {
   background: color-mix(in srgb, var(--surface-card) 96%, transparent);
@@ -6,6 +6,10 @@
   border-radius: 0.88rem;
   padding: 0.9rem;
   box-shadow: var(--elevation-1);
+
+  &--closed {
+    opacity: 0.7;
+  }
 }
 
 .card h2 {
@@ -14,6 +18,124 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
+}
+
+// Day closed state
+.day-closed-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 0.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+
+  p { margin: 0; }
+}
+
+.day-closed-icon {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+// Action buttons row
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.65rem 0.4rem;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--surface-app) 60%, var(--surface-card));
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &__icon {
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  // Active / selected state — per type color
+  &--active {
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  }
+
+  &.action--entry {
+    &.action-btn--active {
+      background: #10b981;
+      border-color: #059669;
+    }
+    &:not(.action-btn--active):hover:not(:disabled) {
+      border-color: #10b981;
+      color: #10b981;
+    }
+  }
+
+  &.action--exit {
+    &.action-btn--active {
+      background: #ef4444;
+      border-color: #dc2626;
+    }
+    &:not(.action-btn--active):hover:not(:disabled) {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+  }
+
+  &.action--pause {
+    &.action-btn--active {
+      background: #f59e0b;
+      border-color: #d97706;
+    }
+    &:not(.action-btn--active):hover:not(:disabled) {
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+  }
+
+  &.action--resume {
+    &.action-btn--active {
+      background: #6366f1;
+      border-color: #4f46e5;
+    }
+    &:not(.action-btn--active):hover:not(:disabled) {
+      border-color: #6366f1;
+      color: #6366f1;
+    }
+  }
 }
 
 .input-group {
@@ -32,8 +154,7 @@
   }
 }
 
-.input-group input,
-.input-group select {
+.input-group input {
   padding: 0.58rem 0.62rem;
   border: 1px solid color-mix(in srgb, var(--surface-border) 86%, transparent);
   border-radius: 0.62rem;
@@ -46,6 +167,11 @@
   &:focus {
     border-color: color-mix(in srgb, var(--brand-primary) 58%, transparent);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
@@ -62,7 +188,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 
-  &:hover {
+  &:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: var(--elevation-2);
   }
@@ -70,5 +196,10 @@
   &:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--brand-accent) 72%, white);
     outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }

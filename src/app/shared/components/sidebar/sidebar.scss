@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 /* Variables */
 $sidebar-width: var(--shell-sidebar-width);

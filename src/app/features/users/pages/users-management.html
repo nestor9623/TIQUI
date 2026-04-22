@@ -75,10 +75,6 @@
     </div>
   </section>
 
-  @if (feedbackMessage()) {
-    <p class="users-page__feedback">{{ feedbackMessage() }}</p>
-  }
-
   <section class="users-page__panel users-page__panel--table">
     <div class="users-page__panel-header">
       <div>
@@ -111,7 +107,7 @@
                   {{ user.address }}
                   <small>{{ managerName(user.managerId) }}</small>
                 </td>
-                <td [attr.data-label]="translations().page.table.weeklyHours">{{ user.weeklyHoursTarget ?? 40 }} {{ translations().page.table.hoursSuffix }}</td>
+                <td [attr.data-label]="translations().page.table.weeklyHours">{{ user.weeklyHoursTarget }} {{ translations().page.table.hoursSuffix }}</td>
                 <td [attr.data-label]="translations().page.table.status">
                   <div class="users-page__status-cell">
                     <span class="users-page__status-text" [class.is-inactive]="!user.active">
@@ -202,11 +198,6 @@
           <label class="users-page__field">
             <span>{{ translations().modal.fields.email }}</span>
             <input type="email" formControlName="email" [placeholder]="translations().modal.placeholders.email" />
-          </label>
-
-          <label class="users-page__field">
-            <span>{{ translations().modal.fields.password }}</span>
-            <input type="text" formControlName="password" [placeholder]="translations().modal.placeholders.password" />
           </label>
 
           <label class="users-page__field">

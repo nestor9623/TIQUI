@@ -5,7 +5,7 @@ import { AuthService } from '../../auth/services/auth.service';
 import { User, UserRole } from '../../auth/models/auth.model';
 import { DailyReport } from '../../domain/entities/report.entity';
 import { I18nStore } from '../../i18n/i18n.store';
-import { MockWorkforceDashboardService } from '../../mock/services/mock-workforce-dashboard.service';
+import { IncidenciasFacade } from './incidencias.facade';
 import { DashboardSummary, WorklogDashboardFacade } from './worklog-dashboard.facade';
 
 const ASSISTANT_INBOX_STORAGE_KEY = 'tiqui.assistant.reviewed-alerts';
@@ -53,7 +53,7 @@ export class WorklogAssistantService {
   private readonly authService = inject(AuthService);
   private readonly i18n = inject(I18nStore);
   private readonly dashboardFacade = inject(WorklogDashboardFacade);
-  private readonly workforceDashboardService = inject(MockWorkforceDashboardService);
+  private readonly incidenciasFacade = inject(IncidenciasFacade);
   private readonly authState$ = toObservable(this.authService.auth);
   private readonly reviewedAlertsState = signal<Record<string, string[]>>(this.readReviewedAlerts());
   private readonly reviewedAlerts$ = toObservable(this.reviewedAlertsState);
@@ -73,12 +73,15 @@ export class WorklogAssistantService {
         }
 
         const summary$ = this.dashboardFacade.getDashboardSummary(user.id, baseDate);
-        const incidentData$ = user.role === UserRole.EMPLOYEE
-          ? of(null)
-          : this.workforceDashboardService.getDashboardData(user.role === UserRole.MANAGER ? user.id : undefined);
+        const incidentCount$ = user.role === UserRole.EMPLOYEE
+          ? of(0)
+          : (user.role === UserRole.MANAGER
+            ? this.incidenciasFacade.getByManager(user.id)
+            : this.incidenciasFacade.getAll()
+          ).pipe(map(items => items.length));
 
-        return combineLatest([summary$, incidentData$]).pipe(
-          map(([summary, dashboardData]) => this.buildSnapshot(user, summary, dashboardData?.incidents.length ?? 0, baseDate)),
+        return combineLatest([summary$, incidentCount$]).pipe(
+          map(([summary, incidentCount]) => this.buildSnapshot(user, summary, incidentCount, baseDate)),
         );
       }),
     );

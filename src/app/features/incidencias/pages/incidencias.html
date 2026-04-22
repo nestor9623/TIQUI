@@ -31,10 +31,6 @@
       <p>Vista consolidada para análisis y seguimiento.</p>
     </div>
 
-    @if (feedbackMessage()) {
-      <p class="incidencias-page__feedback">{{ feedbackMessage() }}</p>
-    }
-
     <tiqui-incident-approval-list
       [items]="incidents()"
       emptyMessageKey="incidentApproval.emptyActive"

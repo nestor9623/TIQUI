@@ -47,14 +47,23 @@
           <span>{{ incidents().length }}</span>
         </div>
 
-        @if (incidentsFeedback()) {
-          <p class="empty-text">{{ incidentsFeedback() }}</p>
-        }
-
         <tiqui-incident-approval-list
           [items]="incidents()"
           (approved)="onIncidentsApproved($event)">
         </tiqui-incident-approval-list>
+      </section>
+
+      <section class="manager-card">
+        <div class="manager-card-header">
+          <h2>Fichajes pendientes</h2>
+          <span>{{ pendingFichajes().length }}</span>
+        </div>
+
+        <tiqui-fichaje-approval-list
+          [items]="pendingFichajes()"
+          (fichajeApproved)="onFichajeApproved($event)"
+          (fichajeRejected)="onFichajeRejected($event)">
+        </tiqui-fichaje-approval-list>
       </section>
 
       <section class="manager-card">

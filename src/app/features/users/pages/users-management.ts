@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { UserRole } from '../../../core/auth/models/auth.model';
 import { I18nStore } from '../../../core/i18n/i18n.store';
-import { ManagedUserDraft, ManagedUserRecord, MockUsersService } from '../../../core/mock/services/mock-users.service';
+import { UsersFacade } from '../../../core/application/services/users.facade';
+import { ProfileEntity } from '../../../core/domain/entities/profile.entity';
 import { AppAlertService } from '../../../shared/services/app-alert.service';
 import { TooltipDirective } from '../../../shared/directives/tooltip.directive';
 import { UiButtonComponent } from '../../../shared/ui/button/ui-button';
@@ -17,7 +18,7 @@ type StatusFilter = 'all' | 'active' | 'inactive';
 
 interface PendingConfirmation {
   type: 'toggle' | 'delete';
-  user: ManagedUserRecord;
+  user: ProfileEntity;
   nextActive?: boolean;
   title: string;
   message: string;
@@ -36,8 +37,9 @@ export class UsersManagement {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly i18n = inject(I18nStore);
-  private readonly usersService = inject(MockUsersService);
+  private readonly usersFacade = inject(UsersFacade);
   private readonly appAlertService = inject(AppAlertService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
 
   readonly searchTerm = signal('');
@@ -45,9 +47,11 @@ export class UsersManagement {
   readonly selectedStatus = signal<StatusFilter>('all');
   readonly editingUserId = signal<string | null>(null);
   readonly modalOpen = signal(false);
-  readonly feedbackMessage = signal('');
   readonly pendingConfirmation = signal<PendingConfirmation | null>(null);
   readonly translations = computed(() => this.i18n.translations().users);
+
+  private readonly usersState = signal<ProfileEntity[]>([]);
+  readonly users = this.usersState.asReadonly();
 
   readonly roleOptions = computed(() => {
     const texts = this.translations().roles;
@@ -66,7 +70,6 @@ export class UsersManagement {
     ];
   });
 
-  readonly users = toSignal(this.usersService.getUsers(), { initialValue: [] as ManagedUserRecord[] });
   readonly isEditing = computed(() => this.editingUserId() !== null);
   readonly modalTitle = computed(() => this.isEditing() ? this.translations().modal.editTitle : this.translations().modal.createTitle);
   readonly confirmOpen = computed(() => this.pendingConfirmation() !== null);
@@ -107,7 +110,6 @@ export class UsersManagement {
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
     role: [UserRole.EMPLOYEE, [Validators.required]],
     address: ['', [Validators.required]],
     area: ['', [Validators.required]],
@@ -116,6 +118,10 @@ export class UsersManagement {
     managerId: [''],
     active: [true],
   });
+
+  constructor() {
+    this.loadUsers();
+  }
 
   updateSearchTerm(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -136,7 +142,6 @@ export class UsersManagement {
 
   openCreateModal(): void {
     this.resetForm();
-    this.feedbackMessage.set('');
     this.modalOpen.set(true);
   }
 
@@ -153,48 +158,56 @@ export class UsersManagement {
 
     if (this.isEditing() && this.editingUserId() === this.authService.getCurrentUser()?.id && !this.userForm.getRawValue().active) {
       const message = this.translations().feedback.selfDeactivateBlocked;
-      this.feedbackMessage.set(message);
       this.appAlertService.warning(this.i18n.translations().alerts.users.actionNotAllowedTitle, message);
       return;
     }
 
     const value = this.userForm.getRawValue();
-    const payload: ManagedUserDraft = {
-      email: value.email,
-      password: value.password,
-      firstName: value.firstName,
-      lastName: value.lastName,
-      role: value.role,
-      active: value.active,
-      address: value.address,
-      area: value.area,
-      community: value.community,
-      weeklyHoursTarget: Number(value.weeklyHoursTarget),
-      managerId: value.role === UserRole.EMPLOYEE ? (value.managerId || null) : null,
-      vacationDates: [],
-    };
 
     if (this.isEditing() && this.editingUserId()) {
-      this.usersService.updateUser(this.editingUserId()!, payload);
-      this.feedbackMessage.set(this.translations().feedback.userUpdated);
+      const patch: Partial<ProfileEntity> = {
+        firstName: value.firstName,
+        lastName: value.lastName,
+        role: value.role,
+        active: value.active,
+        address: value.address,
+        area: value.area,
+        community: value.community,
+        weeklyHoursTarget: Number(value.weeklyHoursTarget),
+        managerId: value.role === UserRole.EMPLOYEE ? (value.managerId || null) : null,
+      };
+      this.usersFacade.update(this.editingUserId()!, patch)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: updated => {
+            this.usersState.update(list => list.map(u => u.id === updated.id ? updated : u));
+            this.appAlertService.success(
+              this.i18n.translations().alerts.users.actionNotAllowedTitle ?? 'Actualizado',
+              this.translations().feedback.userUpdated,
+            );
+          },
+          error: () => this.appAlertService.warning('Error', 'No se pudo actualizar el usuario.'),
+        });
     } else {
-      this.usersService.createUser(payload);
-      this.feedbackMessage.set(this.translations().feedback.userCreated);
+      // User creation requires Supabase Admin API (service role) – not available from the browser.
+      this.appAlertService.warning('No disponible', 'La creación de usuarios requiere acceso de administrador al servidor.');
+      this.modalOpen.set(false);
+      this.resetForm();
+      return;
     }
 
     this.modalOpen.set(false);
     this.resetForm();
   }
 
-  editUser(user: ManagedUserRecord): void {
+  editUser(user: ProfileEntity): void {
     this.editingUserId.set(user.id);
     this.userForm.setValue({
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      password: user.password,
       role: user.role,
-      address: user.address,
+      address: user.address ?? '',
       area: user.area ?? '',
       community: user.community ?? 'madrid',
       weeklyHoursTarget: user.weeklyHoursTarget ?? 40,
@@ -202,13 +215,11 @@ export class UsersManagement {
       active: user.active,
     });
     this.modalOpen.set(true);
-    this.feedbackMessage.set(this.interpolate(this.translations().feedback.editUser, { name: `${user.firstName} ${user.lastName}` }));
   }
 
-  requestToggleUserStatus(user: ManagedUserRecord): void {
+  requestToggleUserStatus(user: ProfileEntity): void {
     if (user.id === this.authService.getCurrentUser()?.id) {
       const message = this.translations().feedback.selfDeactivateBlocked;
-      this.feedbackMessage.set(message);
       this.appAlertService.warning(this.i18n.translations().alerts.users.actionNotAllowedTitle, message);
       return;
     }
@@ -229,20 +240,16 @@ export class UsersManagement {
     });
   }
 
-  requestDeleteUser(user: ManagedUserRecord): void {
+  requestDeleteUser(user: ProfileEntity): void {
     if (user.id === this.authService.getCurrentUser()?.id) {
-      this.feedbackMessage.set(this.translations().feedback.selfDeleteBlocked);
+      this.appAlertService.warning(
+        this.i18n.translations().alerts.users.actionNotAllowedTitle,
+        this.translations().feedback.selfDeleteBlocked,
+      );
       return;
     }
-
-    this.pendingConfirmation.set({
-      type: 'delete',
-      user,
-      title: this.translations().confirm.deleteTitle,
-      message: this.interpolate(this.translations().confirm.deleteMessage, { name: `${user.firstName} ${user.lastName}` }),
-      confirmLabel: this.translations().confirm.deleteLabel,
-      tone: 'danger',
-    });
+    // Delete requires service role – show info
+    this.appAlertService.warning('No disponible', 'La eliminación de usuarios requiere acceso de administrador al servidor.');
   }
 
   confirmPendingAction(): void {
@@ -252,17 +259,18 @@ export class UsersManagement {
     }
 
     if (pending.type === 'toggle') {
-      this.usersService.updateUser(pending.user.id, { active: pending.nextActive });
-      this.feedbackMessage.set(pending.nextActive ? this.translations().feedback.userActivated : this.translations().feedback.userDeactivated);
-    }
-
-    if (pending.type === 'delete') {
-      this.usersService.deleteUser(pending.user.id);
-      if (this.editingUserId() === pending.user.id) {
-        this.resetForm();
-        this.modalOpen.set(false);
-      }
-      this.feedbackMessage.set(this.translations().feedback.userDeleted);
+      this.usersFacade.update(pending.user.id, { active: pending.nextActive })
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: updated => {
+            this.usersState.update(list => list.map(u => u.id === updated.id ? updated : u));
+            const msg = pending.nextActive
+              ? this.translations().feedback.userActivated
+              : this.translations().feedback.userDeactivated;
+            this.appAlertService.success('Estado actualizado', msg);
+          },
+          error: () => this.appAlertService.warning('Error', 'No se pudo cambiar el estado del usuario.'),
+        });
     }
 
     this.pendingConfirmation.set(null);
@@ -274,7 +282,6 @@ export class UsersManagement {
 
   cancelEdit(): void {
     this.closeModal();
-    this.feedbackMessage.set(this.translations().feedback.editCancelled);
   }
 
   roleLabel(role: UserRole): string {
@@ -298,6 +305,20 @@ export class UsersManagement {
     return manager ? `${manager.firstName} ${manager.lastName}` : this.translations().page.table.noManager;
   }
 
+  private loadUsers(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+
+    const load$ = currentUser.role === UserRole.ADMIN
+      ? this.usersFacade.getAll()
+      : this.usersFacade.getByManager(currentUser.id);
+
+    load$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: users => this.usersState.set(users),
+      error: () => this.usersState.set([]),
+    });
+  }
+
   private normalizeRole(value: string): UserRole {
     if (value === UserRole.ADMIN) {
       return UserRole.ADMIN;
@@ -314,7 +335,6 @@ export class UsersManagement {
       firstName: '',
       lastName: '',
       email: '',
-      password: '',
       role: UserRole.EMPLOYEE,
       address: '',
       area: '',

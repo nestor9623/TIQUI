@@ -1,0 +1,48 @@
+@if (items().length === 0) {
+  <p class="fichaje-approval__empty">No hay fichajes pendientes de aprobación.</p>
+} @else {
+  <ul class="fichaje-approval__list">
+    @for (item of items(); track item.id) {
+      <li class="fichaje-approval__item">
+        <div class="fichaje-approval__info">
+          <strong class="fichaje-approval__name">{{ item.employeeName }}</strong>
+          <span class="fichaje-approval__meta">{{ item.date_iso }} · {{ item.hours }}</span>
+          @if (item.description) {
+            <p class="fichaje-approval__desc">{{ item.description }}</p>
+          }
+        </div>
+        <div class="fichaje-approval__actions">
+          <tiqui-ui-button size="sm" (pressed)="requestApprove(item.id)">Aprobar</tiqui-ui-button>
+          <tiqui-ui-button size="sm" variant="danger" (pressed)="requestReject(item.id)">Rechazar</tiqui-ui-button>
+        </div>
+      </li>
+    }
+  </ul>
+}
+
+<tiqui-ui-confirm-dialog
+  [open]="approveDialogOpen()"
+  title="Aprobar fichaje"
+  message="¿Confirmas la aprobación de este fichaje?"
+  [details]="dialogDetails()"
+  [showComment]="true"
+  commentLabel="Comentario para el empleado"
+  commentPlaceholder="Opcional — escribe un comentario..."
+  confirmLabel="Aprobar"
+  (cancelled)="closeDialog()"
+  (confirmed)="confirmApprove($event)">
+</tiqui-ui-confirm-dialog>
+
+<tiqui-ui-confirm-dialog
+  [open]="rejectDialogOpen()"
+  title="Rechazar fichaje"
+  message="¿Confirmas el rechazo de este fichaje?"
+  [details]="dialogDetails()"
+  [showComment]="true"
+  commentLabel="Motivo del rechazo"
+  commentPlaceholder="Explica el motivo del rechazo..."
+  confirmLabel="Rechazar"
+  tone="danger"
+  (cancelled)="closeDialog()"
+  (confirmed)="confirmReject($event)">
+</tiqui-ui-confirm-dialog>

@@ -42,7 +42,8 @@
       "emailInvalid": "Enter a valid email",
       "passwordRequired": "Password is required",
       "passwordMin": "Minimum 6 characters",
-      "generic": "Unable to sign in"
+      "generic": "Unable to sign in",
+      "authFailed": "Access denied"
     }
   }
 }

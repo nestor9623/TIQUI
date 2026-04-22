@@ -4,28 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { UserRole } from '../../../core/auth/models/auth.model';
-import { MockJsonLoaderService } from '../../../core/mock/services/mock-json-loader.service';
-import { MOCK_PATHS } from '../../../core/mock/mock-config';
-import { ReportMockDTO } from '../../../core/domain/entities/report.entity';
+import { TeamReportEntry } from '../../../core/domain/entities/team-report.entity';
+import { ReportesFacade } from '../../../core/application/services/reportes.facade';
 import { UiTableColumn, UiTableComponent } from '../../../shared/ui/table/ui-table';
-
-interface UserDto {
-  id: string;
-  firstName: string;
-  lastName: string;
-  role: 'admin' | 'manager' | 'employee';
-  area?: string;
-  managerId?: string | null;
-}
-
-interface ReportRow {
-  userId: string;
-  fullName: string;
-  area: string;
-  dateIso: string;
-  workedHours: string;
-  status: string;
-}
 
 @Component({
   selector: 'app-reportes',
@@ -36,10 +17,10 @@ interface ReportRow {
 })
 export class ReportesPage {
   private readonly authService = inject(AuthService);
-  private readonly jsonLoader = inject(MockJsonLoaderService);
+  private readonly reportesFacade = inject(ReportesFacade);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly allRows = signal<ReportRow[]>([]);
+  private readonly allRows = signal<TeamReportEntry[]>([]);
   filterFrom = signal('');
   filterTo = signal('');
   selectedUser = signal('all');
@@ -63,18 +44,10 @@ export class ReportesPage {
     const area = this.selectedArea();
 
     return this.allRows().filter(row => {
-      if (from && row.dateIso < from) {
-        return false;
-      }
-      if (to && row.dateIso > to) {
-        return false;
-      }
-      if (user !== 'all' && row.userId !== user) {
-        return false;
-      }
-      if (area !== 'all' && row.area !== area) {
-        return false;
-      }
+      if (from && row.dateIso < from) return false;
+      if (to && row.dateIso > to) return false;
+      if (user !== 'all' && row.userId !== user) return false;
+      if (area !== 'all' && row.area !== area) return false;
       return true;
     });
   });
@@ -82,9 +55,7 @@ export class ReportesPage {
   userOptions = computed(() => {
     const unique = new Map<string, string>();
     for (const row of this.allRows()) {
-      if (!unique.has(row.userId)) {
-        unique.set(row.userId, row.fullName);
-      }
+      if (!unique.has(row.userId)) unique.set(row.userId, row.fullName);
     }
     return [...unique.entries()].map(([id, label]) => ({ id, label }));
   });
@@ -101,93 +72,58 @@ export class ReportesPage {
 
   totalRows = computed(() => this.visibleRows().length);
 
-  uniquePeople = computed(() => {
-    const ids = new Set(this.visibleRows().map(row => row.userId));
-    return ids.size;
-  });
+  uniquePeople = computed(() => new Set(this.visibleRows().map(row => row.userId)).size);
 
-  totalWorkedMinutes = computed(() => {
-    return this.visibleRows().reduce((acc, row) => acc + this.parseWorkedMinutes(row.workedHours), 0);
-  });
+  totalWorkedMinutes = computed(() =>
+    this.visibleRows().reduce((acc, row) => acc + row.totalMinutes, 0),
+  );
 
   totalWorkedHoursLabel = computed(() => {
     const minutes = this.totalWorkedMinutes();
-    const hours = Math.floor(minutes / 60);
-    const rest = minutes % 60;
-    return `${hours}h ${String(rest).padStart(2, '0')}m`;
+    return `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, '0')}m`;
   });
 
-  statusAlertCount = computed(() => {
-    return this.visibleRows().filter(row => {
-      const normalized = row.status.toLowerCase();
-      return normalized.includes('late') || normalized.includes('incidence') || normalized.includes('alert');
-    }).length;
-  });
+  statusAlertCount = computed(() =>
+    this.visibleRows().filter(row => {
+      const s = row.status.toLowerCase();
+      return s.includes('late') || s.includes('incidence') || s.includes('alert');
+    }).length,
+  );
 
-  printReport(): void {
-    window.print();
+  printReport(): void { window.print(); }
+
+  updateFilterFrom(event: Event): void {
+    this.filterFrom.set((event.target as HTMLInputElement).value ?? '');
   }
 
-  updateFilterFrom(value: string | null): void {
-    this.filterFrom.set(value ?? '');
+  updateFilterTo(event: Event): void {
+    this.filterTo.set((event.target as HTMLInputElement).value ?? '');
   }
 
-  updateFilterTo(value: string | null): void {
-    this.filterTo.set(value ?? '');
+  updateSelectedUser(event: Event): void {
+    this.selectedUser.set((event.target as HTMLSelectElement).value ?? 'all');
   }
 
-  updateSelectedUser(value: string | null): void {
-    this.selectedUser.set(value ?? 'all');
-  }
-
-  updateSelectedArea(value: string | null): void {
-    this.selectedArea.set(value ?? 'all');
+  updateSelectedArea(event: Event): void {
+    this.selectedArea.set((event.target as HTMLSelectElement).value ?? 'all');
   }
 
   private loadRows(): void {
-    this.jsonLoader.loadJson<UserDto[]>(MOCK_PATHS.users)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(users => {
-        this.jsonLoader.loadJson<ReportMockDTO[]>(MOCK_PATHS.monthlyReports)
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(reports => {
-            const currentUser = this.authService.getCurrentUser();
-            const rows = reports.flatMap(report => {
-              const owner = users.find(user => user.id === report.user_id);
-              if (!owner) {
-                return [];
-              }
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
 
-              if (currentUser?.role === UserRole.EMPLOYEE && owner.id !== currentUser.id) {
-                return [];
-              }
-              if (currentUser?.role === UserRole.MANAGER && owner.managerId !== currentUser.id) {
-                return [];
-              }
+    const now = new Date();
+    const toIso = now.toISOString().substring(0, 10);
+    const fromDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+    const fromIso = fromDate.toISOString().substring(0, 10);
 
-              return [{
-                userId: owner.id,
-                fullName: `${owner.firstName} ${owner.lastName}`,
-                area: owner.area ?? 'Sin área',
-                dateIso: report.date_iso,
-                workedHours: report.worked_hours,
-                status: report.day_status,
-              }];
-            });
+    const load$ = currentUser.role === UserRole.ADMIN
+      ? this.reportesFacade.getAll(fromIso, toIso)
+      : this.reportesFacade.getForManager(currentUser.id, fromIso, toIso);
 
-            this.allRows.set(rows.sort((left, right) => right.dateIso.localeCompare(left.dateIso)));
-          });
-      });
-  }
-
-  private parseWorkedMinutes(value: string): number {
-    const match = value.match(/(\d+)h\s*(\d+)m/i);
-    if (!match) {
-      return 0;
-    }
-
-    const hours = Number(match[1]);
-    const minutes = Number(match[2]);
-    return (Number.isFinite(hours) ? hours : 0) * 60 + (Number.isFinite(minutes) ? minutes : 0);
+    load$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: rows => this.allRows.set(rows),
+      error: () => this.allRows.set([]),
+    });
   }
 }

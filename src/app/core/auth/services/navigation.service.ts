@@ -41,13 +41,13 @@ export class NavigationService {
           {
             label: 'Usuarios',
             icon: '👥',
-            route: '/usuarios',
+            route: '/configuracion/usuarios',
             visible: true,
           },
           {
-            label: 'Configuración',
-            icon: '⚙️',
-            route: '/home',
+            label: 'Catálogos',
+            icon: '🗂️',
+            route: '/configuracion/catalogos',
             visible: true,
           },
           {

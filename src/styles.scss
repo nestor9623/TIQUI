@@ -1,6 +1,6 @@
 // Estilos globales
+@use 'styles/abstracts/variables' as *;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import 'styles/abstracts/variables';
 @import 'tailwindcss';
 
 :root {

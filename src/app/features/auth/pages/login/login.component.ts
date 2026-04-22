@@ -8,8 +8,9 @@ import { AppLocale } from '../../../../core/i18n/i18n.config';
 import { I18nStore } from '../../../../core/i18n/i18n.store';
 import { AuthResponse, UserRole } from '../../../../core/auth/models/auth.model';
 import { AuthService } from '../../../../core/auth/services/auth.service';
-import { AuthMockService } from '../../../../core/mock/auth-mock.service';
+import { AppAlertService } from '../../../../shared/services/app-alert.service';
 import { ThemePalette, ThemeStore } from '../../../../shared/stores/theme.store';
+import { AsyncButtonState } from '../../../../shared/utils/async-button-state';
 import { WorldCoverageMapComponent } from '../../components/world-coverage-map/world-coverage-map.component';
 
 @Component({
@@ -22,7 +23,7 @@ import { WorldCoverageMapComponent } from '../../components/world-coverage-map/w
 export class LoginComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
-  private readonly authMockService = inject(AuthMockService);
+  private readonly appAlertService = inject(AppAlertService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly i18n = inject(I18nStore);
@@ -38,11 +39,14 @@ export class LoginComponent implements OnInit {
     { initialValue: this.loginForm.status },
   );
 
-  readonly loading = signal(false);
-  readonly error = signal<string | null>(null);
+  readonly submit = new AsyncButtonState();
   readonly showPassword = signal(false);
   readonly returnUrl = signal<string | null>(null);
-  readonly demoCredentials = signal<Array<{ email: string; password: string; role: string }>>([]);
+  readonly demoCredentials = signal([
+    { email: 'admin@tiqui.com', password: 'Admin123!', role: 'Admin' },
+    { email: 'manager@tiqui.com', password: 'Manager123!', role: 'Manager' },
+    { email: 'employee@tiqui.com', password: 'Employee123!', role: 'Employee' },
+  ]);
   readonly loginTexts = computed(() => this.i18n.translations().login);
   readonly commonTexts = computed(() => this.i18n.translations().common);
   readonly language = computed(() => this.i18n.locale());
@@ -65,7 +69,6 @@ export class LoginComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
 
     this.applyPreloadedPreferences(queryParams);
-    this.demoCredentials.set(this.authMockService.getDemoCredentials());
     this.returnUrl.set(queryParams['returnUrl'] ?? null);
 
     if (this.authService.isAuthenticated()) {
@@ -80,25 +83,32 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loading.set(true);
-    this.error.set(null);
+    if (this.submit.disabled()) return;
+
+    this.submit.start();
 
     const { email, password } = this.loginForm.getRawValue();
 
     this.authService.login({ email, password }).subscribe({
       next: (response: AuthResponse) => {
+        this.submit.success();
         const fallbackRoute = this.getDefaultRoute(response.user.role);
         void this.router.navigate([this.returnUrl() || fallbackRoute]);
       },
       error: (error: { message?: string } | null) => {
-        this.loading.set(false);
-        this.error.set(error?.message || this.loginTexts().form.errors.generic);
+        this.submit.error();
+        this.appAlertService.danger(
+          this.loginTexts().form.errors.authFailed ?? 'Error de acceso',
+          error?.message || this.loginTexts().form.errors.generic,
+        );
       },
     });
   }
 
   useDemoCredentials(email: string, password: string): void {
+    this.submit.reset();
     this.loginForm.setValue({ email, password });
+    this.onSubmit();
   }
 
   togglePasswordVisibility(): void {

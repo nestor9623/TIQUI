@@ -61,6 +61,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/incidencias/incidencias-routing.module').then(m => m.IncidenciasRoutingModule),
       },
+      {
+        path: 'configuracion',
+        canActivate: [RoleGuard],
+        data: { roles: [UserRole.ADMIN] },
+        loadChildren: () =>
+          import('./features/configuracion/configuracion-routing.module').then(m => m.CONFIGURACION_ROUTES),
+      },
     ]
   },
   {

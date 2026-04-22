@@ -42,10 +42,26 @@
 
   <div class="assistant-overview__alerts">
     @for (alert of topAlerts(); track trackAlert($index, alert)) {
-      <article class="assistant-overview__alert" [class.assistant-overview__alert--warning]="alert.severity === 'warning'" [class.assistant-overview__alert--success]="alert.severity === 'success'">
-        <h4>{{ alert.title }}</h4>
-        <p>{{ alert.message }}</p>
-      </article>
+      @if (alert.route) {
+        <a
+          class="assistant-overview__alert"
+          [class.assistant-overview__alert--warning]="alert.severity === 'warning'"
+          [class.assistant-overview__alert--success]="alert.severity === 'success'"
+          [routerLink]="alert.route"
+          role="link">
+          <h4>{{ alert.title }}</h4>
+          <p>{{ alert.message }}</p>
+          <span class="assistant-overview__alert-cta">Ir ahora →</span>
+        </a>
+      } @else {
+        <article
+          class="assistant-overview__alert"
+          [class.assistant-overview__alert--warning]="alert.severity === 'warning'"
+          [class.assistant-overview__alert--success]="alert.severity === 'success'">
+          <h4>{{ alert.title }}</h4>
+          <p>{{ alert.message }}</p>
+        </article>
+      }
     }
   </div>
 </section>

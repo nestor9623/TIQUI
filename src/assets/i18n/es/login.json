@@ -42,7 +42,8 @@
       "emailInvalid": "Ingresa un correo válido",
       "passwordRequired": "La contraseña es requerida",
       "passwordMin": "Mínimo 6 caracteres",
-      "generic": "Error al iniciar sesión"
+      "generic": "Error al iniciar sesión",
+      "authFailed": "Error de acceso"
     }
   }
 }
