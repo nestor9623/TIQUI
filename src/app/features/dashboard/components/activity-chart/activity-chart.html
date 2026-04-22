@@ -1,0 +1,26 @@
+<section class="activity-chart-container">
+  <div class="chart-header">
+    <div>
+      <h3>Horas semanales</h3>
+      <p>Evolución de carga por día laborable</p>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="chart">
+    @for (data of activityData(); track data.day) {
+    <div class="bar-item">
+      <div class="bar-wrapper">
+        <div
+          class="bar"
+          [style.height.px]="getBarHeight(data.hours)"
+          [title]="data.hours + 'h'"
+        ></div>
+      </div>
+      <span class="label">{{ data.day }}</span>
+    </div>
+    }
+  </div>
+</section>

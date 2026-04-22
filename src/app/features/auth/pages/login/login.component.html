@@ -1,0 +1,248 @@
+<section class="login">
+  <div class="login__orb login__orb--one" aria-hidden="true"></div>
+  <div class="login__orb login__orb--two" aria-hidden="true"></div>
+
+  <div class="login__topbar">
+    <div class="login__topbar-copy">
+      <span class="login__eyebrow">
+        <span class="login__eyebrow-dot"></span>
+        {{ loginTexts().hero.eyebrow }}
+      </span>
+      <p class="login__topbar-text">{{ loginTexts().hero.subtitle }}</p>
+    </div>
+
+    <div class="login__topbar-actions">
+      <div class="login__control-group">
+        <span class="login__control-label">{{ commonTexts().language.label }}</span>
+        <div class="login__locale-switch" role="group" [attr.aria-label]="commonTexts().language.label">
+          @for (option of languageOptions; track option.id) {
+            <button
+              type="button"
+              class="login__demo-btn login__locale-btn"
+              [class.active]="language() === option.id"
+              [attr.aria-pressed]="language() === option.id"
+              [title]="option.label"
+              (click)="onLocaleChange(option.id)">
+              {{ option.shortLabel }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="login__control-group">
+        <span class="login__control-label">{{ commonTexts().theme.label }}</span>
+        <div class="login__theme-tools">
+          <button
+            type="button"
+            class="login__demo-btn login__theme-toggle"
+            [class.active]="darkMode()"
+            [attr.aria-pressed]="darkMode()"
+            (click)="onToggleDarkMode()">
+            {{ darkMode() ? commonTexts().theme.light : commonTexts().theme.dark }}
+          </button>
+
+          <div class="login__palette-switch" role="group" [attr.aria-label]="commonTexts().theme.label">
+            @for (option of paletteOptions; track option.id) {
+              <button
+                type="button"
+                class="login__demo-btn login__palette-btn"
+                [class.active]="activePalette() === option.id"
+                [title]="option.label"
+                (click)="onPaletteChange(option.id)">
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login__hero">
+      <div class="login__hero-backdrop" aria-hidden="true">
+        <span class="login__beam login__beam--one"></span>
+        <span class="login__beam login__beam--two"></span>
+      </div>
+
+      <div class="login__hero-content">
+        <div class="login__brand">
+          <div class="login__logo" aria-hidden="true">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"></circle>
+              <text x="50" y="60" text-anchor="middle" font-size="48" font-weight="bold" fill="currentColor">T</text>
+            </svg>
+          </div>
+
+          <p class="login__intro">{{ loginTexts().hero.intro }}</p>
+          <h1 class="login__title">
+            {{ loginTexts().hero.titleLead }}
+            <span class="login__title-dynamic" aria-hidden="true">
+              <span class="login__title-dynamic-track">
+                @for (word of loginTexts().hero.rotator; track word) {
+                  <span>{{ word }}</span>
+                }
+              </span>
+            </span>
+          </h1>
+        </div>
+
+        <div class="login__insights">
+          <article class="login__world-card">
+            <div class="login__world-copy">
+              <p class="login__world-kicker">{{ loginTexts().hero.mapTitle }}</p>
+              <p class="login__world-caption">{{ loginTexts().hero.mapCaption }}</p>
+            </div>
+
+            <app-world-coverage-map></app-world-coverage-map>
+          </article>
+
+          <article class="login__story-card">
+            <p class="login__story-kicker">{{ loginTexts().hero.storyKicker }}</p>
+            <strong>{{ loginTexts().hero.storyTitle }}</strong>
+            <p>{{ loginTexts().hero.storyBody }}</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="login__feature-grid">
+        @for (feature of loginTexts().hero.features; track feature.title; let i = $index) {
+          <article class="login__feature" [style.--feature-delay]="i">
+            <span class="login__feature-dot"></span>
+            <div>
+              <strong>{{ feature.title }}</strong>
+              <p>{{ feature.description }}</p>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+
+    <div class="login__panel">
+    <div class="login__card">
+      <header class="login__card-header">
+        <p class="login__panel-kicker">{{ loginTexts().form.panelKicker }}</p>
+        <h2 class="login__card-title">{{ loginTexts().form.title }}</h2>
+        <p class="login__card-text">{{ loginTexts().form.subtitle }}</p>
+      </header>
+
+      @if (error()) {
+        <div class="login__alert login__alert--error" role="alert" aria-live="assertive">
+          <svg class="login__alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login__form">
+        <div class="login__field">
+          <label for="email" class="login__label">{{ loginTexts().form.emailLabel }}</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="login__input"
+            [class.login__input--error]="isEmailInvalid()"
+            [attr.aria-invalid]="isEmailInvalid()"
+            [attr.aria-describedby]="isEmailInvalid() ? 'login-email-error' : null"
+            [placeholder]="loginTexts().form.emailPlaceholder"
+            autocomplete="email"
+            [disabled]="loading()"
+          />
+          @if (isEmailInvalid()) {
+            <span id="login-email-error" class="login__error" role="alert" aria-live="polite">
+              @if (emailControl?.hasError('required')) {
+                {{ loginTexts().form.errors.emailRequired }}
+              } @else if (emailControl?.hasError('email')) {
+                {{ loginTexts().form.errors.emailInvalid }}
+              }
+            </span>
+          }
+        </div>
+
+        <div class="login__field">
+          <div class="login__label-row">
+            <label for="password" class="login__label">{{ loginTexts().form.passwordLabel }}</label>
+            <a [routerLink]="['/auth/forgot-password']" class="login__forgot-link">{{ loginTexts().form.forgotPassword }}</a>
+          </div>
+
+          <div class="login__password-wrap">
+            <input
+              id="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              class="login__input"
+              [class.login__input--error]="isPasswordInvalid()"
+              [attr.aria-invalid]="isPasswordInvalid()"
+              [attr.aria-describedby]="isPasswordInvalid() ? 'login-password-error' : null"
+              [placeholder]="loginTexts().form.passwordPlaceholder"
+              autocomplete="current-password"
+              [disabled]="loading()"
+            />
+            <button
+              type="button"
+              class="login__password-toggle"
+              (click)="togglePasswordVisibility()"
+              [disabled]="loading()"
+              aria-label="Mostrar u ocultar contraseña"
+            >
+              @if (showPassword()) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              }
+            </button>
+          </div>
+
+          @if (isPasswordInvalid()) {
+            <span id="login-password-error" class="login__error" role="alert" aria-live="polite">
+              @if (passwordControl?.hasError('required')) {
+                {{ loginTexts().form.errors.passwordRequired }}
+              } @else if (passwordControl?.hasError('minlength')) {
+                {{ loginTexts().form.errors.passwordMin }}
+              }
+            </span>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="login__submit"
+          [attr.aria-busy]="loading()"
+          [disabled]="loading() || loginForm.invalid"
+        >
+          @if (loading()) {
+            <span class="login__spinner"></span>
+            {{ loginTexts().form.submitting }}
+          } @else {
+            {{ loginTexts().form.submit }}
+          }
+        </button>
+      </form>
+
+      <div class="login__demo">
+        <p class="login__demo-title">{{ loginTexts().form.demoTitle }}</p>
+        <div class="login__demo-list">
+          @for (cred of demoCredentials(); track cred.email) {
+            <button
+              type="button"
+              class="login__demo-btn"
+              (click)="useDemoCredentials(cred.email, cred.password)"
+              [disabled]="loading()"
+            >
+              {{ cred.role }} · {{ cred.email }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+

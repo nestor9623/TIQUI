@@ -1,0 +1,64 @@
+@if (isAuthenticated()) {
+  <div class="layout-wrapper">
+    <tiqui-navbar
+      [sidebarCollapsed]="sidebarCollapsed()"
+      [userMenuOpen]="userMenuOpen()"
+      [darkMode]="darkMode()"
+      [activePalette]="activePalette()"
+      [paletteOptions]="paletteOptions"
+      [companyName]="commonTexts().appName"
+      [userName]="userName()"
+      (logout)="onLogout()"
+      (toggleMobileSidebar)="toggleMobileSidebar()"
+      (toggleUserMenu)="toggleUserMenu()"
+      (closeUserMenu)="closeUserMenu()"
+      (toggleDarkMode)="toggleDarkMode()"
+      (paletteChange)="setPalette($event)"
+    ></tiqui-navbar>
+
+    <div class="layout-body">
+      @if (sidebarOpen()) {
+        <div class="sidebar-overlay" (click)="closeMobileSidebar()"></div>
+      }
+
+      <tiqui-sidebar
+        [sections]="sidebarSections()"
+        [mobileOpen]="sidebarOpen()"
+        [collapsed]="sidebarCollapsed()"
+        (collapsedChange)="onSidebarCollapsedChange($event)"
+        (closeMobile)="closeMobileSidebar()"
+      ></tiqui-sidebar>
+
+      <main class="main-content" [class.sidebar-collapsed]="sidebarCollapsed()">
+        <div class="main-content__ambient" aria-hidden="true"></div>
+        <section class="main-content__inner">
+          <router-outlet></router-outlet>
+        </section>
+
+        <button
+          type="button"
+          class="assistant-trigger"
+          [class.assistant-trigger--has-unread]="assistantUnreadCount() > 0"
+          [attr.aria-expanded]="assistantPanelOpen()"
+          aria-controls="tiqui-assistant-panel"
+          (click)="toggleAssistantPanel()">
+          <span class="assistant-trigger__label">{{ assistantTexts().triggerLabel }}</span>
+
+          @if (assistantUnreadCount() > 0) {
+            <span class="assistant-trigger__badge" [attr.aria-label]="assistantUnreadAriaLabel()">
+              {{ assistantUnreadCountLabel() }}
+            </span>
+          }
+        </button>
+
+        <tiqui-worklog-assistant-panel
+          [open]="assistantPanelOpen()"
+          (closed)="closeAssistantPanel()">
+        </tiqui-worklog-assistant-panel>
+      </main>
+    </div>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}
+

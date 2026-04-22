@@ -1,0 +1,5 @@
+    <div class="date-nav">
+      <button class="nav-btn" type="button" (click)="prev.emit()" aria-label="Día anterior">‹</button>
+      <div class="date-label">{{ formattedDate() }}</div>
+      <button class="nav-btn" type="button" (click)="next.emit()" aria-label="Día siguiente">›</button>
+    </div>

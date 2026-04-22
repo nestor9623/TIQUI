@@ -1,0 +1,163 @@
+// ======================================================
+// DESIGN SYSTEM - VARIABLES
+// TiquiApp — Paleta azul/blanco, limpia y convencional
+// ======================================================
+
+
+// ======================================================
+// COLORES PRINCIPALES
+// ======================================================
+
+$primary-color:   #2563eb;   // azul principal — botones CTA, links, foco
+$secondary-color: #1e293b;   // slate oscuro — texto principal, headings
+$accent-color:    #0ea5e9;   // azul cielo — acento secundario (badges, highlights)
+$warning-color:   #f59e0b;   // ámbar — pausa/aviso
+$danger-color:    #ef4444;   // rojo — errores, sin fichar
+$success-color:   #22c55e;   // verde — éxito (solo para feedback puntual)
+$info-color:      #0ea5e9;   // informativo — vacaciones, estados neutros informativos
+
+
+// ======================================================
+// COLORES DE ESTADO DE FICHAJE
+// ======================================================
+
+$checkin-color:  $primary-color;   // trabajando → azul
+$checkout-color: #64748b;          // jornada completada → slate neutro
+$break-color:    $warning-color;   // pausa → ámbar
+$late-color:     $danger-color;    // retraso/sin fichar → rojo
+
+
+// ======================================================
+// FONDOS Y SUPERFICIES
+// ======================================================
+
+$app-background:  #f1f5f9;   // slate-100 — fondo general de páginas
+$card-background: #ffffff;   // blanco puro — tarjetas
+$border-color:    #e2e8f0;   // slate-200 — bordes suaves
+
+$surface-0:      #0f172a;   // shell oscuro (navbar/sidebar)
+$surface-1:      #ffffff;   // tarjetas
+$surface-2:      #f8fafc;   // paneles muy suaves
+$surface-border: #e2e8f0;   // borde estándar
+
+// Navbar / Sidebar — shell oscuro azul marino
+$nav-background:  #0f172a;              // slate-900
+$nav-text:        #94a3b8;              // slate-400
+$nav-text-strong: #f1f5f9;             // slate-100
+$nav-accent:      $primary-color;       // azul principal como acento
+$nav-active-bg:   rgba(37, 99, 235, 0.15); // azul translúcido para item activo
+
+
+// ======================================================
+// ESCALA DE GRISES (slate)
+// ======================================================
+
+$white:     #ffffff;
+
+$gray-50:   #f8fafc;
+$gray-100:  #f1f5f9;
+$gray-200:  #e2e8f0;
+$gray-300:  #cbd5e1;
+$gray-400:  #94a3b8;
+$gray-500:  #64748b;
+$gray-600:  #475569;
+$gray-700:  #334155;
+$gray-800:  #1e293b;
+$gray-900:  #0f172a;
+
+
+// ======================================================
+// ESPACIADO
+// ======================================================
+
+$spacing-xs:  0.25rem;
+$spacing-sm:  0.5rem;
+$spacing-md:  1rem;
+$spacing-lg:  1.5rem;
+$spacing-xl:  2rem;
+$spacing-2xl: 3rem;
+
+
+// ======================================================
+// BORDES
+// ======================================================
+
+$border-radius-sm:   0.25rem;
+$border-radius-md:   0.5rem;
+$border-radius-lg:   0.75rem;
+$border-radius-xl:   1rem;
+$border-radius-full: 999px;
+
+
+// ======================================================
+// SOMBRAS
+// ======================================================
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.10);
+
+
+// ======================================================
+// TIPOGRAFÍA
+// ======================================================
+
+$font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+
+// ======================================================
+// TAMAÑOS DE FUENTE
+// ======================================================
+
+$font-size-xs:   0.75rem;
+$font-size-sm:   0.875rem;
+$font-size-base: 1rem;
+$font-size-lg:   1.125rem;
+$font-size-xl:   1.25rem;
+$font-size-2xl:  1.5rem;
+$font-size-3xl:  1.875rem;
+$font-size-4xl:  2.25rem;
+$font-size-5xl:  3rem;
+
+
+// ======================================================
+// PESOS DE FUENTE
+// ======================================================
+
+$font-weight-light:    300;
+$font-weight-normal:   400;
+$font-weight-medium:   500;
+$font-weight-semibold: 600;
+$font-weight-bold:     700;
+
+
+// ======================================================
+// GRID
+// ======================================================
+
+$grid-columns: 12;
+$grid-gutter:  1rem;
+
+$grid-breakpoints: (
+  xs:  0,
+  sm:  576px,
+  md:  768px,
+  lg:  992px,
+  xl:  1200px,
+  xxl: 1400px
+);
+
+
+// ======================================================
+// Z-INDEX
+// ======================================================
+
+$z-dropdown:       1000;
+$z-sticky:         1020;
+$z-fixed:          1030;
+$z-modal-backdrop: 1040;
+$z-modal:          1050;
+$z-popover:        1060;
+$z-tooltip:        1070;

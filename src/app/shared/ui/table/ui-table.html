@@ -1,0 +1,35 @@
+<div class="ui-table-wrap">
+  <table class="ui-table">
+    <thead>
+      <tr>
+        @for (col of columns(); track col.key) {
+          <th
+            [class.ui-table__cell--center]="col.align === 'center'"
+            [class.ui-table__cell--right]="col.align === 'right'">
+            {{ col.label }}
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (rows().length === 0) {
+        <tr>
+          <td class="ui-table__empty" [attr.colspan]="columns().length">{{ emptyMessage() }}</td>
+        </tr>
+      } @else {
+        @for (row of rows(); track $index) {
+          <tr>
+            @for (col of columns(); track col.key) {
+              <td
+                [class.ui-table__cell--center]="col.align === 'center'"
+                [class.ui-table__cell--right]="col.align === 'right'">
+                {{ row[col.key] ?? '—' }}
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

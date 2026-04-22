@@ -1,0 +1,13 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkB0aXF1LmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJVc2VyIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzI5OTk5OTk5LCJleHAiOjE3Mjk5OTk5OTl9.mock-signature-0.123",
+  "refreshToken": "refresh_mock_abc123def456ghi789",
+  "user": {
+    "id": "1",
+    "email": "admin@tiqui.com",
+    "firstName": "Admin",
+    "lastName": "SuperUser",
+    "role": "admin",
+    "active": true
+  },
+  "expiresIn": 300
+}

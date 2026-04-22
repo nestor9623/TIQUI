@@ -1,0 +1,95 @@
+<header class="navbar" [class.sidebar-collapsed]="sidebarCollapsed()" (click)="closeMenu()">
+  <div class="navbar-container">
+    <button class="hamburger-btn" (click)="toggleMobileSidebar.emit(); $event.stopPropagation()" [title]="commonTexts().actions.menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="navbar-brand" aria-label="Nettime 2.0">
+      <div class="brand-meta">
+        <p class="brand-meta__company">Nettime 2.0</p>
+        <p class="brand-meta__page">{{ pageTitle() }}</p>
+      </div>
+    </div>
+
+    <div class="navbar-spacer"></div>
+
+    <div class="navbar-right">
+      <div
+        class="language-switch"
+        role="group"
+        [attr.aria-label]="commonTexts().language.label"
+        (click)="$event.stopPropagation()"
+      >
+        @for (option of languageOptions; track option.id) {
+          <button
+            type="button"
+            class="language-btn"
+            [class.active]="language() === option.id"
+            [title]="option.label"
+            [attr.aria-label]="option.label"
+            (click)="onLocaleChange(option.id)">
+            {{ option.shortLabel }}
+          </button>
+        }
+      </div>
+
+      <tiqui-ui-dropdown
+        class="user-menu"
+        [open]="userMenuOpen()"
+        (toggleRequested)="onToggleUserMenu()"
+        (closeRequested)="closeMenu()">
+        <div dropdown-trigger>
+          <button
+            class="user-btn"
+            [class.active]="userMenuOpen()"
+            [attr.aria-label]="navbarTexts().userMenu">
+            <div class="user-avatar">{{ userInitials() }}</div>
+            <span class="user-name">{{ userName() }}</span>
+            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div dropdown-panel>
+          <div class="dropdown-menu" (click)="$event.stopPropagation()">
+          <button class="dropdown-item" (click)="onToggleDarkMode()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3c0 0 0 0 0 0A7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span>{{ darkMode() ? commonTexts().theme.light : commonTexts().theme.dark }}</span>
+          </button>
+
+          <div class="palette-picker" role="group" [attr.aria-label]="commonTexts().theme.label">
+            <p class="palette-picker__label">{{ commonTexts().theme.label }}</p>
+            <div class="palette-picker__grid">
+              @for (option of paletteOptions(); track option.id) {
+                <button
+                  type="button"
+                  class="palette-swatch"
+                  [class.active]="activePalette() === option.id"
+                  [attr.data-theme]="option.id"
+                  [title]="option.label"
+                  (click)="onPaletteChange(option.id)">
+                  <span>{{ option.label }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <button class="dropdown-item logout-btn" (click)="onLogout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 4l2 2m0 0l-2 2m2-2l2-2m-2 2l-2 2M16 3v18"></path>
+            </svg>
+            <span>{{ commonTexts().actions.logout }}</span>
+          </button>
+          </div>
+        </div>
+      </tiqui-ui-dropdown>
+    </div>
+  </div>
+</header>

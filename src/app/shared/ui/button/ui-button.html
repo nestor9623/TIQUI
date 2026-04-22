@@ -1,0 +1,12 @@
+<button
+  [attr.type]="type()"
+  [class]="buttonClass()"
+  [disabled]="isDisabled()"
+  (click)="onClick()">
+  @if (loading()) {
+    <span class="ui-btn__spinner" aria-hidden="true"></span>
+    <span>Cargando...</span>
+  } @else {
+    <ng-content></ng-content>
+  }
+</button>

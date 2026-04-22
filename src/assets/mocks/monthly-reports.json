@@ -1,0 +1,36 @@
+[
+  {
+    "date_iso": "2026-03-24",
+    "user_id": "3",
+    "day_status": "clocked-out",
+    "worked_hours": "8h 45m",
+    "timeline_events": [
+      {"timestamp": "08:10", "event_type": "in", "description": "Entrada laboral"},
+      {"timestamp": "14:00", "event_type": "pause", "description": "Almuerzo"},
+      {"timestamp": "15:05", "event_type": "in", "description": "Vuelta del almuerzo"},
+      {"timestamp": "18:00", "event_type": "out", "description": "Salida laboral"}
+    ]
+  },
+  {
+    "date_iso": "2026-03-25",
+    "user_id": "3",
+    "day_status": "on-pause",
+    "worked_hours": "4h 30m",
+    "timeline_events": [
+      {"timestamp": "08:15", "event_type": "in", "description": "Entrada"},
+      {"timestamp": "12:45", "event_type": "pause", "description": "Pausa larga"}
+    ]
+  },
+  {
+    "date_iso": "2026-04-03",
+    "user_id": "3",
+    "day_status": "vacation",
+    "worked_hours": "8h 0m",
+    "timeline_events": [
+      {"timestamp": "08:00", "event_type": "in", "description": "Vacaciones (tramo automático 1)"},
+      {"timestamp": "14:00", "event_type": "pause", "description": "Corte automático"},
+      {"timestamp": "15:00", "event_type": "in", "description": "Vacaciones (tramo automático 2)"},
+      {"timestamp": "17:00", "event_type": "out", "description": "Cierre automático"}
+    ]
+  }
+]

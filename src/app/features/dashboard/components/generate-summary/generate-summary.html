@@ -1,0 +1,55 @@
+<section class="generate-summary-container">
+  <header class="generate-summary-header">
+    <h3>Generar resumen</h3>
+    <p>Define rango de fechas y exporta en el formato que necesites.</p>
+  </header>
+
+  <!-- Checkbox para solo hoy -->
+  <div class="today-checkbox">
+    <label class="checkbox-container">
+      <input
+        type="checkbox"
+        [(ngModel)]="onlyToday"
+        (change)="onTodayChange()" />
+      <span class="checkmark"></span>
+      <span class="label-text">Solo hoy</span>
+    </label>
+  </div>
+
+  <div class="date-range" [class.disabled]="onlyToday">
+    <div class="date-input">
+      <label for="startDate">Desde:</label>
+      <input
+        type="date"
+        id="startDate"
+        [(ngModel)]="startDate"
+        [disabled]="onlyToday" />
+    </div>
+    <div class="date-input">
+      <label for="endDate">Hasta:</label>
+      <input
+        type="date"
+        id="endDate"
+        [(ngModel)]="endDate"
+        [disabled]="onlyToday" />
+    </div>
+  </div>
+
+  <div class="summary-buttons">
+    <button class="btn-summary btn-pdf" (click)="generatePDF()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      PDF
+    </button>
+    <button class="btn-summary btn-excel" (click)="generateExcel()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="9" y1="15" x2="15" y2="15"></line>
+      </svg>
+      Excel
+    </button>
+  </div>
+</section>

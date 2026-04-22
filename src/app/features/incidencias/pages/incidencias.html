@@ -1,0 +1,45 @@
+<section class="incidencias-page">
+  <header class="incidencias-page__header">
+    <p class="incidencias-page__kicker">Control operativo</p>
+    <div>
+      <h1>Gestión de incidencias</h1>
+      <p>Supervisa fichajes incompletos y valida pendientes desde un único panel.</p>
+    </div>
+  </header>
+
+  <section class="incidencias-page__summary" aria-label="Métricas de incidencias">
+    <article class="summary-card">
+      <span class="summary-card__label">Incidencias totales</span>
+      <strong>{{ totalIncidents() }}</strong>
+      <small>Casos abiertos en el periodo visible</small>
+    </article>
+    <article class="summary-card">
+      <span class="summary-card__label">Fichaje faltante</span>
+      <strong>{{ missingCheckInCount() }}</strong>
+      <small>Entradas o salidas sin registrar</small>
+    </article>
+    <article class="summary-card summary-card--accent">
+      <span class="summary-card__label">Pendiente aprobación</span>
+      <strong>{{ pendingApprovalCount() }}</strong>
+      <small>Solicitudes que requieren validación</small>
+    </article>
+  </section>
+
+  <div class="incidencias-page__table-panel">
+    <div class="incidencias-page__table-head">
+      <h2>Listado de incidencias</h2>
+      <p>Vista consolidada para análisis y seguimiento.</p>
+    </div>
+
+    @if (feedbackMessage()) {
+      <p class="incidencias-page__feedback">{{ feedbackMessage() }}</p>
+    }
+
+    <tiqui-incident-approval-list
+      [items]="incidents()"
+      emptyMessageKey="incidentApproval.emptyActive"
+      (approved)="onIncidentsApproved($event)">
+    </tiqui-incident-approval-list>
+  </div>
+</section>
+

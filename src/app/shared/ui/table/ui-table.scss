@@ -1,0 +1,51 @@
+@import 'abstracts/variables';
+
+.ui-table-wrap {
+  overflow: auto;
+  background: var(--surface-card);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 92%, transparent);
+  border-radius: 0.75rem;
+  box-shadow: var(--elevation-1);
+}
+
+.ui-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.ui-table th,
+.ui-table td {
+  text-align: left;
+  padding: 0.72rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--surface-border) 88%, transparent);
+  color: var(--text-primary);
+  transition: background var(--motion-normal) var(--ease-standard);
+}
+
+.ui-table thead th {
+  background: color-mix(in srgb, var(--surface-card) 82%, var(--surface-border));
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.ui-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--brand-primary) 6%, transparent);
+}
+
+.ui-table__cell--right {
+  text-align: right;
+}
+
+.ui-table__cell--center {
+  text-align: center;
+}
+
+.ui-table__empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 1.2rem;
+}

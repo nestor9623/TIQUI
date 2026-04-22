@@ -1,0 +1,18 @@
+{
+  "emptyOpen": "No hay incidencias abiertas.",
+  "emptyActive": "No hay incidencias activas.",
+  "selectAll": "Seleccionar todo",
+  "selectedCountSingular": "{{count}} seleccionada",
+  "selectedCountPlural": "{{count}} seleccionadas",
+  "approveSelected": "Aprobar seleccionadas",
+  "approveOne": "Aprobar",
+  "confirmCommentLabel": "Comentario para la persona",
+  "confirmCommentPlaceholder": "Añade un mensaje opcional para dar contexto o indicar la resolucion",
+  "confirmLabel": "Confirmar aprobacion",
+  "titleSingle": "Aprobar solicitud",
+  "titleMultiple": "Aprobar {{count}} solicitudes",
+  "messageSingle": "Confirma la solicitud y anade un comentario opcional si quieres aportar contexto.",
+  "messageMultiple": "Vas a aprobar varias incidencias al mismo tiempo. Puedes anadir un comentario opcional para la persona.",
+  "typeMissingCheckin": "Empleado sin fichar",
+  "typePendingApproval": "Pendiente de aprobacion"
+}

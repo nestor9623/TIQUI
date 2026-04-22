@@ -1,0 +1,394 @@
+@import 'abstracts/variables';
+
+.time-summary-container {
+  display: grid;
+  grid-template-columns: 1.35fr repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: color-mix(in srgb, var(--surface-card) 95%, transparent);
+  padding: 1.05rem;
+  border-radius: 0.95rem;
+  text-align: left;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 82%, transparent);
+  transition: transform var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard), border-color var(--motion-normal) var(--ease-standard);
+  box-shadow: var(--elevation-1);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-2);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.card .hours {
+  margin: 0.55rem 0 0;
+  font-size: 1.56rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.meta {
+  margin: auto 0 0;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.card-today {
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--brand-primary) 17%, transparent) 0%, transparent 40%),
+    color-mix(in srgb, var(--surface-card) 96%, transparent);
+}
+
+.card-today.status-not-clocked {
+  border-left: 3px solid color-mix(in srgb, var(--text-muted) 55%, transparent);
+}
+
+.card-today.status-clocked-in {
+  border-left: 3px solid var(--brand-primary);
+}
+
+.card-today.status-on-pause {
+  border-left: 3px solid var(--brand-warning);
+}
+
+.card-today.status-clocked-out {
+  border-left: 3px solid color-mix(in srgb, var(--text-muted) 55%, transparent);
+}
+
+.card-today.status-vacation {
+  border-left: 3px solid var(--brand-info);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.card-header h3 {
+  margin: 0;
+}
+
+.current-date {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.state-pill {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.28rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.entry-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.62rem 0.72rem;
+  background: color-mix(in srgb, var(--surface-app) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 80%, transparent);
+  border-radius: 0.72rem;
+  margin-bottom: 0.75rem;
+}
+
+.entry-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.entry-time {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.no-records {
+  margin: 0.32rem 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 7px;
+  background: color-mix(in srgb, var(--surface-border) 74%, transparent);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  border-radius: 4px;
+  transition: width var(--motion-slow) var(--ease-standard);
+}
+
+.progress-label {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin: 0 0 0.72rem;
+  font-weight: 600;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.48rem;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 0.62rem;
+  font-size: 0.82rem;
+}
+
+.timeline-item .time {
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 46px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-item .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-in {
+  background: var(--brand-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 24%, transparent);
+}
+
+.dot-out {
+  background: var(--brand-danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-danger) 24%, transparent);
+}
+
+.dot-pause {
+  background: var(--brand-warning);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-warning) 24%, transparent);
+}
+
+.timeline-item .label {
+  color: var(--text-muted);
+  font-weight: 500;
+  flex: 1;
+}
+
+.progress-circle {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  margin-top: 0.4rem;
+}
+
+.progress-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-bg {
+  fill: none;
+  stroke: color-mix(in srgb, var(--surface-border) 68%, transparent);
+  stroke-width: 8;
+}
+
+.progress-bar {
+  fill: none;
+  stroke: var(--brand-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
+.mini-chart {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3px;
+  margin-top: 0.75rem;
+}
+
+.mini-chart-bar {
+  flex: 1;
+  background: var(--brand-primary);
+  border-radius: 2px 2px 0 0;
+  opacity: 0.8;
+  transition: transform var(--motion-normal) var(--ease-standard), opacity var(--motion-normal) var(--ease-standard);
+  min-height: 4px;
+}
+
+.mini-chart-bar:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.card-calendar {
+  position: relative;
+}
+
+.calendar-mini {
+  margin-top: 0.75rem;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.calendar-days span {
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+
+.calendar-days span.today {
+  background: var(--brand-primary);
+  color: white;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.calendar-arrow {
+  position: absolute;
+  top: 0.95rem;
+  right: 0.92rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform var(--motion-normal) var(--ease-standard), color var(--motion-normal) var(--ease-standard);
+}
+
+.calendar-arrow:hover {
+  color: var(--brand-primary);
+  transform: translateX(1px);
+}
+
+@media (max-width: 1240px) {
+  .time-summary-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-today {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .time-summary-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: auto;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .time-summary-container {
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .time-summary-container {
+    flex-direction: column;
+  }
+
+  .card {
+    flex: 1 1 100%;
+    padding: 1.25rem;
+  }
+
+  .card .hours {
+    font-size: 1.75rem;
+  }
+
+  .progress-circle {
+    width: 70px;
+    height: 70px;
+  }
+
+  .progress-text {
+    font-size: 1.1rem;
+  }
+}

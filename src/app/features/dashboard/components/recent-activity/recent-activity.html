@@ -1,0 +1,14 @@
+<section class="recent-activity-container">
+  <header class="recent-activity-header">
+    <h3>Actividad reciente</h3>
+    <p>Últimos eventos registrados por el equipo.</p>
+  </header>
+  <div class="activities-list">
+    @for (activity of activities(); track activity.id) {
+    <div class="activity-item">
+      <span class="activity-number">{{ activity.id }}</span>
+      <span class="activity-title">{{ activity.title }}</span>
+    </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,107 @@
+:host {
+  display: block;
+}
+
+.tiqui-world-map {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #07111f 0%, #0b1728 100%);
+  min-height: 238px;
+}
+
+.tiqui-world-map__svg {
+  display: block;
+  width: 100%;
+  height: 238px;
+}
+
+.tiqui-world-map__ocean {
+  fill: #081120;
+}
+
+.tiqui-world-map__continent {
+  fill: #9aaec0;
+  fill-opacity: 0.92;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.tiqui-world-map__route-base,
+.tiqui-world-map__route-active {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tiqui-world-map__route-base {
+  stroke: rgba(235, 243, 255, 0.82);
+  stroke-width: 2.3;
+  stroke-dasharray: 10 8;
+}
+
+.tiqui-world-map__route-active {
+  stroke: url(#tiquiRouteGradient);
+  stroke-width: 3.2;
+  stroke-dasharray: 28 420;
+  animation: tiqui-map-route 5.5s linear infinite;
+}
+
+.tiqui-world-map__marker-ring {
+  fill: rgba(255, 55, 74, 0.16);
+}
+
+.tiqui-world-map__pin {
+  fill: #ff374a;
+  filter: drop-shadow(0 6px 12px rgba(255, 55, 74, 0.28));
+}
+
+.tiqui-world-map__marker-core,
+.tiqui-world-map__traveler {
+  fill: #ffffff;
+}
+
+.tiqui-world-map__label {
+  fill: #eef6ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.tiqui-world-map__traveler {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.85));
+}
+
+.tiqui-world-map__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 55, 74, 0.12), transparent 25%),
+    radial-gradient(circle at 82% 80%, rgba(255, 55, 74, 0.1), transparent 24%);
+}
+
+@keyframes tiqui-map-route {
+  from {
+    stroke-dashoffset: 460;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .tiqui-world-map,
+  .tiqui-world-map__svg {
+    min-height: 190px;
+    height: 190px;
+  }
+
+  .tiqui-world-map__label {
+    font-size: 10px;
+  }
+}
+

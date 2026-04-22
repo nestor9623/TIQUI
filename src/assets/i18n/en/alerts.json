@@ -1,0 +1,30 @@
+{
+  "assistant": {
+    "reviewedTitle": "Recommendation reviewed",
+    "reviewedMessage": "The recommendation was archived and is no longer shown as pending.",
+    "removedTitle": "Recommendation removed",
+    "removedMessage": "The recommendation was removed from your current inbox.",
+    "clearedTitle": "Inbox cleared",
+    "clearedMessage": "All visible recommendations were marked as reviewed."
+  },
+  "users": {
+    "actionNotAllowedTitle": "Action not allowed"
+  },
+  "checkins": {
+    "blockedTitle": "Check-in blocked",
+    "approvedDayTitle": "Day already approved",
+    "registeredTitle": "Check-in registered",
+    "registeredMessage": "{{type}} added at {{time}}.",
+    "vacationBlockedMessage": "Vacation day: 08:00-14:00 and 15:00-17:00 are auto-filled.",
+    "weekendBlockedMessage": "Weekend check-ins require manager approval.",
+    "holidayBlockedMessage": "Holiday in your region: check-in blocked.",
+    "approvedDayMessage": "The manager has already approved this day. You can only review the record."
+  },
+  "incidents": {
+    "approvedSingleTitle": "Request approved",
+    "approvedMultipleTitle": "Requests approved",
+    "approvedSingleMessage": "Request approved.",
+    "approvedMultipleMessage": "{{count}} requests approved.",
+    "noteRegisteredMessage": "{{message}} Note saved: {{comment}}"
+  }
+}

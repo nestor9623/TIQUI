@@ -1,0 +1,30 @@
+{
+  "assistant": {
+    "reviewedTitle": "Recomendación revisada",
+    "reviewedMessage": "La recomendación se archivó y deja de mostrarse como pendiente.",
+    "removedTitle": "Recomendación eliminada",
+    "removedMessage": "La recomendación se borró de tu bandeja actual.",
+    "clearedTitle": "Bandeja vaciada",
+    "clearedMessage": "Todas las recomendaciones visibles se marcaron como revisadas."
+  },
+  "users": {
+    "actionNotAllowedTitle": "Acción no permitida"
+  },
+  "checkins": {
+    "blockedTitle": "Fichaje bloqueado",
+    "approvedDayTitle": "Día ya aprobado",
+    "registeredTitle": "Fichaje registrado",
+    "registeredMessage": "{{type}} añadida a las {{time}}.",
+    "vacationBlockedMessage": "Día de vacaciones: se autocompleta 08:00-14:00 y 15:00-17:00.",
+    "weekendBlockedMessage": "No se puede fichar en fin de semana sin habilitación del manager.",
+    "holidayBlockedMessage": "Festivo en tu comunidad: fichaje bloqueado.",
+    "approvedDayMessage": "El manager ya aprobó este día. Solo puedes consultar el registro."
+  },
+  "incidents": {
+    "approvedSingleTitle": "Solicitud aprobada",
+    "approvedMultipleTitle": "Solicitudes aprobadas",
+    "approvedSingleMessage": "Solicitud aprobada.",
+    "approvedMultipleMessage": "{{count}} solicitudes aprobadas.",
+    "noteRegisteredMessage": "{{message}} Nota registrada: {{comment}}"
+  }
+}

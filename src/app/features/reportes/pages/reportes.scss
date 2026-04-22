@@ -1,0 +1,175 @@
+@import 'abstracts/variables';
+
+.reportes-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reportes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+}
+
+.reportes-kicker {
+  margin: 0 0 0.3rem;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.reportes-header h1 {
+  margin: 0;
+  font-size: clamp(1.28rem, 2vw, 1.8rem);
+  line-height: 1.1;
+}
+
+.reportes-header p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  max-width: 65ch;
+  font-size: 0.93rem;
+}
+
+.btn-export {
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 34%, transparent);
+  border-radius: 0.72rem;
+  background: linear-gradient(120deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  color: var(--text-on-brand);
+  padding: 0.64rem 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.btn-export:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-2);
+}
+
+.btn-export:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand-accent) 72%, white);
+  outline-offset: 2px;
+}
+
+.reportes-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.metric-card {
+  background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 85%, transparent);
+  border-radius: 0.84rem;
+  box-shadow: var(--elevation-1);
+  padding: 0.85rem 0.95rem;
+}
+
+.metric-card p {
+  margin: 0;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.metric-card strong {
+  display: block;
+  margin-top: 0.42rem;
+  font-size: 1.28rem;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.metric-card--alert {
+  border-color: color-mix(in srgb, var(--brand-warning) 46%, transparent);
+  background: color-mix(in srgb, var(--brand-warning) 11%, var(--surface-card));
+}
+
+.filters-card {
+  background: color-mix(in srgb, var(--surface-card) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 82%, transparent);
+  border-radius: 0.92rem;
+  box-shadow: var(--elevation-1);
+  padding: 0.85rem;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.filters input,
+.filters select {
+  border: 1px solid color-mix(in srgb, var(--surface-border) 88%, transparent);
+  border-radius: 0.62rem;
+  padding: 0.58rem 0.62rem;
+  background: color-mix(in srgb, var(--surface-app) 50%, var(--surface-card));
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: border-color var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.filters input:focus-visible,
+.filters select:focus-visible {
+  border-color: color-mix(in srgb, var(--brand-primary) 58%, transparent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 18%, transparent);
+}
+
+.reportes-table {
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 82%, transparent);
+  border-radius: 0.92rem;
+  box-shadow: var(--elevation-1);
+  padding: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .reportes-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .reportes-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reportes-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-export {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

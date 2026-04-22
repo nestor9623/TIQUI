@@ -1,0 +1,68 @@
+<section class="reportes-page">
+  <header class="reportes-header">
+    <div>
+      <p class="reportes-kicker">Centro de análisis</p>
+      <h1>Reportes</h1>
+      <p>Filtra por fechas, persona y área. Exporta el resultado en un clic para auditoría.</p>
+    </div>
+    <button type="button" class="btn-export" (click)="printReport()">Descargar PDF</button>
+  </header>
+
+  <div class="reportes-metrics">
+    <article class="metric-card">
+      <p>Registros</p>
+      <strong>{{ totalRows() }}</strong>
+    </article>
+    <article class="metric-card">
+      <p>Personas</p>
+      <strong>{{ uniquePeople() }}</strong>
+    </article>
+    <article class="metric-card">
+      <p>Horas visibles</p>
+      <strong>{{ totalWorkedHoursLabel() }}</strong>
+    </article>
+    <article class="metric-card metric-card--alert">
+      <p>Alertas</p>
+      <strong>{{ statusAlertCount() }}</strong>
+    </article>
+  </div>
+
+  <div class="filters-card">
+    <div class="filters">
+      <label>
+        Desde
+        <input type="date" [ngModel]="filterFrom()" (ngModelChange)="updateFilterFrom($event)" />
+      </label>
+      <label>
+        Hasta
+        <input type="date" [ngModel]="filterTo()" (ngModelChange)="updateFilterTo($event)" />
+      </label>
+      <label>
+        Persona
+        <select [ngModel]="selectedUser()" (ngModelChange)="updateSelectedUser($event)">
+          <option value="all">Todas</option>
+          @for (option of userOptions(); track option.id) {
+            <option [value]="option.id">{{ option.label }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Área
+        <select [ngModel]="selectedArea()" (ngModelChange)="updateSelectedArea($event)">
+          <option value="all">Todas</option>
+          @for (option of areaOptions(); track option) {
+            <option [value]="option">{{ option }}</option>
+          }
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="reportes-table">
+    <tiqui-ui-table
+      [columns]="tableColumns"
+      [rows]="tableRows()"
+      emptyMessage="No hay registros para los filtros actuales.">
+    </tiqui-ui-table>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+<section class="app-alert-center" [attr.aria-label]="commonTexts().common.labels.appAlerts">
+  @for (alert of alerts(); track trackAlert($index, alert)) {
+    <article
+      class="app-alert"
+      [class.app-alert--success]="alert.tone === 'success'"
+      [class.app-alert--warning]="alert.tone === 'warning'"
+      [class.app-alert--danger]="alert.tone === 'danger'"
+      [attr.role]="alert.tone === 'danger' || alert.tone === 'warning' ? 'alert' : 'status'"
+      [attr.aria-live]="alert.tone === 'danger' || alert.tone === 'warning' ? 'assertive' : 'polite'">
+      <div class="app-alert__body">
+        <strong>{{ alert.title }}</strong>
+        <p>{{ alert.message }}</p>
+      </div>
+
+      @if (alert.dismissible) {
+        <button type="button" class="app-alert__close" [attr.aria-label]="commonTexts().common.labels.closeAlert" (click)="dismiss(alert.id)">
+          <span aria-hidden="true">×</span>
+        </button>
+      }
+    </article>
+  }
+</section>

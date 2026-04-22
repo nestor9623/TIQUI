@@ -1,0 +1,86 @@
+@import 'abstracts/variables';
+
+.app-alert-center {
+  position: fixed;
+  top: calc(var(--shell-header-height) + 1rem);
+  right: 1rem;
+  z-index: 140;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: min(24rem, calc(100vw - 1.5rem));
+  pointer-events: none;
+}
+
+.app-alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.9rem 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--brand-info) 24%, var(--surface-border));
+  border-left: 4px solid var(--brand-info);
+  background: color-mix(in srgb, var(--surface-card) 93%, var(--brand-info) 7%);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-2);
+  pointer-events: auto;
+}
+
+.app-alert--success {
+  border-color: color-mix(in srgb, var(--brand-success) 28%, var(--surface-border));
+  border-left-color: var(--brand-success);
+  background: color-mix(in srgb, var(--surface-card) 92%, var(--brand-success) 8%);
+}
+
+.app-alert--warning {
+  border-color: color-mix(in srgb, var(--brand-warning) 30%, var(--surface-border));
+  border-left-color: var(--brand-warning);
+  background: color-mix(in srgb, var(--surface-card) 92%, var(--brand-warning) 8%);
+}
+
+.app-alert--danger {
+  border-color: color-mix(in srgb, var(--brand-danger) 30%, var(--surface-border));
+  border-left-color: var(--brand-danger);
+  background: color-mix(in srgb, var(--surface-card) 92%, var(--brand-danger) 8%);
+}
+
+.app-alert__body {
+  min-width: 0;
+}
+
+.app-alert__body strong,
+.app-alert__body p {
+  margin: 0;
+}
+
+.app-alert__body p {
+  margin-top: 0.28rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.app-alert__close {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 86%, transparent);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.app-alert__close:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand-primary) 72%, white);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .app-alert-center {
+    top: calc(var(--shell-header-height) + 0.75rem);
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+  }
+}

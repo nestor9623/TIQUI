@@ -1,0 +1,58 @@
+<section class="fichajes-shell">
+  <header class="fichajes-header">
+    <div class="header-title">
+      <p class="fichajes-kicker">Control horario</p>
+      <h1>Fichajes</h1>
+      <p>Registra movimientos y revisa el histórico del día seleccionado en tiempo real.</p>
+    </div>
+
+    <app-date-navigator
+      [formattedDate]="formattedSelectedDate()"
+      (prev)="prevDay()"
+      (next)="nextDay()">
+    </app-date-navigator>
+  </header>
+
+  <div class="fichajes-metrics">
+    <article class="metric-card">
+      <p>Horas netas</p>
+      <strong>{{ totalWorked() }}</strong>
+    </article>
+    <article class="metric-card">
+      <p>Tiempo de pausa</p>
+      <strong>{{ totalPause() }}</strong>
+    </article>
+    <article class="metric-card metric-card--status">
+      <p>Estado actual</p>
+      <strong>{{ currentStatus() }}</strong>
+    </article>
+  </div>
+
+  <div class="fichajes-grid">
+    <main class="fichajes-main">
+      <app-history-table [entries]="entries()"></app-history-table>
+    </main>
+
+    <aside class="fichajes-aside">
+      @if (dayBlockedMessage()) {
+        <div class="day-warning">{{ dayBlockedMessage() }}</div>
+      }
+
+      <app-summary-card
+        [totalWorked]="totalWorked()"
+        [totalPause]="totalPause()"
+        [currentStatus]="currentStatus()">
+      </app-summary-card>
+
+      <app-time-entry-form
+        [timeInput]="timeInput()"
+        [typeInput]="typeInput()"
+        [description]="description()"
+        (timeInputChange)="timeInput.set($event)"
+        (typeInputChange)="typeInput.set($event)"
+        (descriptionChange)="description.set($event)"
+        (addEntry)="addEntry()">
+      </app-time-entry-form>
+    </aside>
+  </div>
+</section>

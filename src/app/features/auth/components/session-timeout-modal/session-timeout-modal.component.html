@@ -1,0 +1,51 @@
+@if (isVisible) {
+  <div class="session-timeout-modal" (keydown.escape)="onLogout()">
+    <div class="modal-overlay" (click)="onLogout()" aria-hidden="true"></div>
+
+    <div
+      class="modal-content"
+      tabindex="0"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="session-timeout-title"
+      [attr.aria-describedby]="'session-timeout-description session-timeout-info'"
+      [class.critical]="getTimeWarningClass() === 'critical'"
+      [class.warning]="getTimeWarningClass() === 'warning'"
+      [class.normal]="getTimeWarningClass() === 'normal'">
+      <div class="modal-header">
+        <div class="warning-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+        </div>
+        <h2 id="session-timeout-title">Sesión por expirar</h2>
+      </div>
+
+      <div class="modal-body">
+        <p id="session-timeout-description" class="warning-text">
+          Tu sesión está a punto de expirar debido a inactividad.
+        </p>
+
+        <div class="countdown">
+          <p class="countdown-label">Tiempo restante:</p>
+          <div class="countdown-display" role="status" [attr.aria-live]="getTimeWarningClass() === 'critical' ? 'assertive' : 'polite'">
+            {{ formatTime(remainingSeconds) }}
+          </div>
+        </div>
+
+        <p id="session-timeout-info" class="info-text">
+          Haz clic en <strong>"Extender Sesión"</strong> para continuar trabajando, o tu sesión se cerrará automáticamente.
+        </p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="onLogout()">
+          Cerrar Sesión Ahora
+        </button>
+        <button class="btn btn-primary" (click)="onExtendSession()">
+          Extender Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+}

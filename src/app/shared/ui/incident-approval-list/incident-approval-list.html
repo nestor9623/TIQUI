@@ -1,0 +1,58 @@
+@if (items().length === 0) {
+  <p class="incident-approval__empty">{{ resolvedEmptyMessage() }}</p>
+} @else {
+  <div class="incident-approval__toolbar">
+    <div class="incident-approval__selection">
+      <label class="incident-approval__check">
+        <input
+          type="checkbox"
+          [checked]="selectedCount() === items().length && items().length > 0"
+          (change)="toggleAllSelections()" />
+        <span>{{ texts().selectAll }}</span>
+      </label>
+
+      @if (selectedCount() > 0) {
+        <span class="incident-approval__count">{{ selectedCountLabel() }}</span>
+      }
+    </div>
+
+    <tiqui-ui-button size="sm" [disabled]="selectedCount() === 0" (pressed)="requestApproveSelected()">
+      {{ texts().approveSelected }}
+    </tiqui-ui-button>
+  </div>
+
+  <ul class="incident-approval__list">
+    @for (item of items(); track item.id) {
+      <li class="incident-approval__item" [class.incident-approval__item--selected]="isSelected(item.id)">
+        <label class="incident-approval__check incident-approval__check--row">
+          <input type="checkbox" [checked]="isSelected(item.id)" (change)="toggleSelection(item.id, $event)" />
+        </label>
+
+        <div class="incident-approval__content">
+          <strong class="incident-approval__name">{{ item.fullName }}</strong>
+          <p class="incident-approval__type">{{ typeLabel(item.type) }}</p>
+        </div>
+
+        <div class="incident-approval__meta">
+          <span class="incident-approval__date">{{ item.dateIso }}</span>
+          <tiqui-ui-button variant="ghost" size="sm" (pressed)="requestApproveOne(item.id)">
+            {{ texts().approveOne }}
+          </tiqui-ui-button>
+        </div>
+      </li>
+    }
+  </ul>
+}
+
+<tiqui-ui-confirm-dialog
+  [open]="confirmOpen()"
+  [title]="confirmTitle()"
+  [message]="confirmMessage()"
+  [details]="confirmDetails()"
+  [showComment]="true"
+  [commentLabel]="texts().confirmCommentLabel"
+  [commentPlaceholder]="texts().confirmCommentPlaceholder"
+  [confirmLabel]="texts().confirmLabel"
+  (cancelled)="closeDialog()"
+  (confirmed)="confirmApproval($event)">
+</tiqui-ui-confirm-dialog>

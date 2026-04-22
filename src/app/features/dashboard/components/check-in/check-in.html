@@ -1,0 +1,33 @@
+<section class="check-in-container">
+  <div class="check-in-header">
+    <div>
+      <h3>Día de hoy</h3>
+      <p class="check-in-subtitle">Registro cronológico de entradas, pausas y salidas.</p>
+    </div>
+    <div class="today-date">{{ currentTime() }}</div>
+  </div>
+
+  <div class="today-timeline">
+    <div class="timeline-horizontal">
+      @for (entry of todayEntries(); track entry.time) {
+      <div
+        class="timeline-entry"
+        [class.entry-in]="entry.type === 'in'"
+        [class.entry-out]="entry.type === 'out'"
+        [class.entry-pause]="entry.type === 'pause'">
+        <span class="entry-time">{{ entry.time }}</span>
+        <span
+          class="entry-dot"
+          [class.dot-in]="entry.type === 'in'"
+          [class.dot-out]="entry.type === 'out'"
+          [class.dot-pause]="entry.type === 'pause'"></span>
+        <span class="entry-label">{{ entry.label }}</span>
+      </div>
+      }
+    </div>
+  </div>
+
+  <button class="btn-check-in" (click)="handleCheckIn()">
+    Fichar {{ isCheckedIn() ? 'Salida' : 'Entrada' }}
+  </button>
+</section>

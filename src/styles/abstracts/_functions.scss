@@ -1,0 +1,27 @@
+// Función para calcular rem desde px
+@function rem($px) {
+  @return ($px / 16px) * 1rem;
+}
+
+// Función para opacidad
+@function alpha($color, $opacity) {
+  @return rgba($color, $opacity);
+}
+
+// Función para espaciado
+@function spacing($multiplier) {
+  @return $spacing-md * $multiplier;
+}
+
+// Función para colores de estado
+@function status-color($status) {
+  @if $status == 'success' {
+    @return $accent-color;
+  } @else if $status == 'warning' {
+    @return $warning-color;
+  } @else if $status == 'danger' {
+    @return $danger-color;
+  } @else {
+    @return $gray-500;
+  }
+}

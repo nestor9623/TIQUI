@@ -1,0 +1,13 @@
+<div class="ui-dropdown" [class.ui-dropdown--open]="open()" (click)="$event.stopPropagation()">
+  <div
+    class="ui-dropdown__trigger"
+    (click)="toggleRequested.emit()">
+    <ng-content select="[dropdown-trigger]"></ng-content>
+  </div>
+
+  @if (open()) {
+    <div class="ui-dropdown__panel">
+      <ng-content select="[dropdown-panel]"></ng-content>
+    </div>
+  }
+</div>

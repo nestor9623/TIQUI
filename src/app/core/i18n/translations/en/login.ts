@@ -1,0 +1,46 @@
+export const loginEn = {
+  hero: {
+    eyebrow: 'Real-time operations',
+    intro: 'Your day, clearer from the very first second',
+    titleLead: 'Time tracking that feels',
+    rotator: ['clear', 'fast', 'live'],
+    subtitle: 'Tiqui organizes check-ins, breaks, check-outs and daily review in a clean, precise and modern experience.',
+    storyKicker: 'What Tiqui does',
+    storyTitle: 'Turns time control into a simple and actionable view.',
+    storyBody: 'Less friction for employees. More context for managers. Better traceability for the business.',
+    features: [
+      {
+        title: 'Guided check-in',
+        description: 'Start, break and finish with instant status feedback.',
+      },
+      {
+        title: 'Manager visibility',
+        description: 'Daily tracking, approvals and key alerts in one place.',
+      },
+      {
+        title: 'Audit-ready history',
+        description: 'Clean records and reports prepared to scale.',
+      },
+    ],
+  },
+  form: {
+    panelKicker: 'Welcome back',
+    title: 'Sign in',
+    subtitle: 'Enter and continue with your working day',
+    emailLabel: 'Email',
+    emailPlaceholder: 'example@tiqui.com',
+    passwordLabel: 'Password',
+    passwordPlaceholder: 'Minimum 6 characters',
+    forgotPassword: 'Forgot your password?',
+    submit: 'Enter dashboard',
+    submitting: 'Signing in...',
+    demoTitle: 'Demo access',
+    errors: {
+      emailRequired: 'Email is required',
+      emailInvalid: 'Enter a valid email',
+      passwordRequired: 'Password is required',
+      passwordMin: 'Minimum 6 characters',
+      generic: 'Unable to sign in',
+    },
+  },
+} as const;

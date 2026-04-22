@@ -1,0 +1,75 @@
+// Mixins para botones
+@mixin btn-primary {
+  padding: $spacing-md $spacing-lg;
+  border: none;
+  border-radius: $border-radius-lg;
+  background: $primary-color;
+  color: $white;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+
+  &:focus {
+    outline: 2px solid lighten($primary-color, 20%);
+    outline-offset: 2px;
+  }
+}
+
+@mixin btn-secondary {
+  @include btn-primary;
+  background: $gray-200;
+  color: $gray-700;
+
+  &:hover {
+    background: $gray-300;
+  }
+}
+
+// Mixin para cards
+@mixin card {
+  background: $white;
+  border-radius: $border-radius-xl;
+  padding: $spacing-lg;
+  box-shadow: $shadow-lg;
+}
+
+// Mixin para inputs
+@mixin input {
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius-md;
+  font-size: $font-size-base;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: $primary-color;
+  }
+}
+
+// Mixin para flexbox centering
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Mixin para responsive
+@mixin respond-to($breakpoint) {
+  @if map-has-key($grid-breakpoints, $breakpoint) {
+    @media (min-width: map-get($grid-breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// Mixin para grid
+@mixin grid($columns: 1, $gap: $grid-gutter) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}

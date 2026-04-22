@@ -1,0 +1,104 @@
+{
+  "eyebrow": "Tiqui Assistant",
+  "triggerLabel": "Assistant",
+  "panel": {
+    "title": "Recommendations inbox",
+    "intro": "Operational recommendations calculated inside the app from your time logs and incidents.",
+    "queuePending": "You have recommendations pending review.",
+    "metrics": {
+      "dailyBalance": "Today balance",
+      "weeklyBalance": "Week balance",
+      "incidents": "Incidents"
+    },
+    "plan": {
+      "suggestedStart": "Suggested start",
+      "suggestedEnd": "Suggested end",
+      "noAdjustment": "No adjustment"
+    },
+    "recommendations": {
+      "title": "Recommendations",
+      "subtitle": "They remain pending until you review or dismiss them.",
+      "clearInbox": "Clear inbox",
+      "markReviewed": "Mark reviewed",
+      "remove": "Delete"
+    },
+    "empty": {
+      "title": "All reviewed",
+      "description": "You have no pending recommendations. When a new one appears, it will be highlighted in red again."
+    },
+    "footer": {
+      "openDashboard": "Open dashboard",
+      "goToCheckins": "Go to check-ins"
+    },
+    "accessibility": {
+      "closeOverlay": "Close assistant",
+      "closePanel": "Close panel",
+      "unreadCount": "{{count}} pending recommendations"
+    }
+  },
+  "overview": {
+    "title": "Operational recommendations",
+    "subtitle": "Automatic suggestions generated with internal rules based on your time logs.",
+    "actions": {
+      "openCheckins": "Open check-ins",
+      "viewDashboard": "View dashboard"
+    }
+  },
+  "status": {
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "excess": "Excess",
+    "adjust": "Adjust",
+    "closed": "Closed",
+    "active": "Active"
+  },
+  "fallback": {
+    "inactiveHeadline": "Sign in to activate the assistant.",
+    "inactiveSummary": "The assistant uses internal rules to generate workday recommendations.",
+    "noPendingHeadline": "You have no pending recommendations.",
+    "noPendingSummary": "When a useful new suggestion appears, it will be marked here as pending."
+  },
+  "alerts": {
+    "missingCheckin": {
+      "title": "There are no check-ins today yet.",
+      "message": "Start your day in check-ins and the assistant will calculate your optimal end time.",
+      "action": "Open check-ins"
+    },
+    "suggestedEnd": {
+      "titleExceeded": "You are already above your target day.",
+      "titleAligned": "You already have a recommended end time.",
+      "messageExceeded": "If you stop now or reduce tomorrow, you avoid building up more excess. Your reference closing time was already {{time}}.",
+      "messageAligned": "If you keep this pace, leaving at {{time}} keeps you aligned with your daily target.",
+      "action": "View check-ins"
+    },
+    "suggestedStart": {
+      "titlePositive": "Tomorrow you can compensate by starting later.",
+      "titleNegative": "It would be good to adjust tomorrow's start time.",
+      "messagePositive": "You ended today with extra time. If you start tomorrow at {{time}}, you recover part of the balance.",
+      "messageNegative": "You ended today below target. If you start tomorrow at {{time}}, you reduce the weekly drag.",
+      "action": "Open dashboard"
+    },
+    "breakReminder": {
+      "title": "A short break would help now.",
+      "message": "You have been working continuously for {{duration}}. A short break would help.",
+      "action": "Review check-ins"
+    },
+    "weeklyBalance": {
+      "titlePositive": "Your week is above target.",
+      "titleNegative": "Your week needs compensation.",
+      "messagePositive": "You have accumulated {{duration}} extra compared to the expected pace. You can ease it by starting tomorrow at {{time}}.",
+      "messageNegative": "You are {{duration}} below the expected pace. Adjust tomorrow so the end of the week does not get overloaded.",
+      "action": "View dashboard"
+    },
+    "incidentsPending": {
+      "title": "You have {{count}} pending incidents.",
+      "message": "This notice requires operational review so it does not remain pending.",
+      "action": "Open incidents"
+    },
+    "balancedDay": {
+      "title": "Your day is balanced.",
+      "message": "No intervention is needed right now. The assistant stays quiet when there is no useful action to suggest.",
+      "action": "View dashboard"
+    }
+  }
+}
