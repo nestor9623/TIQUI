@@ -21,11 +21,14 @@ export interface User {
   lastName: string;
   role: UserRole;
   active: boolean;
+  loginMethod?: 'local' | 'microsoft';
+  azureConnected?: boolean;
   address?: string;
   area?: string;
   community?: 'madrid' | 'galicia';
   weeklyHoursTarget?: number;
   managerId?: string | null;
+  isTeamLeader?: boolean;
   vacationDates?: string[];
   avatar?: string;
 }
@@ -40,6 +43,8 @@ export interface TokenPayload {
   sub: string;
   email: string;
   role: UserRole;
+  loginMethod?: 'local' | 'microsoft';
+  azureConnected?: boolean;
   firstName?: string;
   lastName?: string;
   active?: boolean;
@@ -48,6 +53,7 @@ export interface TokenPayload {
   community?: 'madrid' | 'galicia';
   weeklyHoursTarget?: number;
   managerId?: string | null;
+  isTeamLeader?: boolean;
   iat: number;
   exp: number;
 }

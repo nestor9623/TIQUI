@@ -38,6 +38,9 @@
       "inactive": "Inactivo",
       "tooltipActivate": "Activar usuario",
       "tooltipDeactivate": "Desactivar usuario",
+      "tooltipPromoteTeamLeader": "Dar rol Team Leader",
+      "tooltipDemoteTeamLeader": "Quitar Team Leader",
+      "teamLeaderBadge": "TL",
       "tooltipEdit": "Editar usuario",
       "tooltipDelete": "Eliminar usuario"
     }
@@ -106,6 +109,14 @@
     "deactivateLabel": "Desactivar",
     "deleteTitle": "Eliminar usuario",
     "deleteMessage": "¿Seguro que quieres eliminar a {{name}}? Esta acción no se puede deshacer.",
-    "deleteLabel": "Eliminar"
+    "deleteLabel": "Eliminar",
+    "promoteTeamLeaderTitle": "Promover a Team Leader",
+    "demoteTeamLeaderTitle": "Quitar Team Leader",
+    "promoteTeamLeaderMessage": "¿Quieres dar el rol de Team Leader a {{name}}?",
+    "demoteTeamLeaderMessage": "¿Quieres quitar el rol de Team Leader a {{name}}?",
+    "promoteTeamLeaderLabel": "Promover",
+    "demoteTeamLeaderLabel": "Quitar rol",
+    "teamLeaderEnabledFeedback": "El usuario ahora es Team Leader.",
+    "teamLeaderDisabledFeedback": "Se ha quitado el rol de Team Leader."
   }
 }

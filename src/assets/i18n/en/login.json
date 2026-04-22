@@ -37,12 +37,20 @@
     "submit": "Enter dashboard",
     "submitting": "Signing in...",
     "demoTitle": "Demo access",
+    "microsoft": {
+      "submit": "Sign in with Microsoft 365",
+      "errors": {
+        "title": "Microsoft 365",
+        "generic": "Microsoft sign-in could not be started."
+      }
+    },
     "errors": {
       "emailRequired": "Email is required",
       "emailInvalid": "Enter a valid email",
       "passwordRequired": "Password is required",
       "passwordMin": "Minimum 6 characters",
-      "generic": "Unable to sign in"
+      "generic": "Unable to sign in",
+      "authFailed": "Access denied"
     }
   }
 }

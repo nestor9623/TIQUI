@@ -39,11 +39,11 @@
   <section class="assistant-panel__metrics" aria-label="Balance del asistente">
     <article class="assistant-metric">
       <span>{{ texts().panel.metrics.dailyBalance }}</span>
-      <strong>{{ snapshot().dailyBalanceLabel }}</strong>
+      <strong>{{ snapshot().todayWorkedLabel }}</strong>
     </article>
     <article class="assistant-metric">
       <span>{{ texts().panel.metrics.weeklyBalance }}</span>
-      <strong>{{ snapshot().weeklyBalanceLabel }}</strong>
+      <strong>{{ snapshot().weeklyWorkedLabel }}</strong>
     </article>
     <article class="assistant-metric">
       <span>{{ texts().panel.metrics.incidents }}</span>
@@ -61,6 +61,30 @@
       <strong>{{ snapshot().suggestedEndTime ?? texts().panel.plan.noAdjustment }}</strong>
     </div>
   </section>
+
+  @if (snapshot().pendingManagerActionsCount > 0) {
+  <section class="assistant-panel__manager-actions" aria-label="Acciones pendientes de aprobación">
+    <div class="assistant-panel__section-head assistant-panel__section-head--compact">
+      <div>
+        <h3>{{ texts().panel.pendingActions.title }}</h3>
+        <p>{{ texts().panel.pendingActions.subtitle }}</p>
+      </div>
+      <span class="assistant-panel__queue-badge">{{ snapshot().pendingManagerActionsCount }}</span>
+    </div>
+
+    <div class="assistant-panel__actions-grid">
+      <a class="assistant-action-tile" routerLink="/vacaciones" (click)="onClose()">
+        <span>{{ texts().panel.pendingActions.vacationApprovals }}</span>
+        <strong>{{ snapshot().pendingVacationApprovals }}</strong>
+      </a>
+
+      <a class="assistant-action-tile" routerLink="/home" (click)="onClose()">
+        <span>{{ texts().panel.pendingActions.fichajeApprovals }}</span>
+        <strong>{{ snapshot().pendingFichajeApprovals }}</strong>
+      </a>
+    </div>
+  </section>
+  }
 
   <section class="assistant-panel__alerts">
     <div class="assistant-panel__section-head">

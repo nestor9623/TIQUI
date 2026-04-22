@@ -34,7 +34,7 @@
         </div>
 
         <div class="incident-approval__meta">
-          <span class="incident-approval__date">{{ item.dateIso }}</span>
+          <span class="incident-approval__date">{{ item.dateIso | date: 'dd/MM/yyyy' }}</span>
           <tiqui-ui-button variant="ghost" size="sm" (pressed)="requestApproveOne(item.id)">
             {{ texts().approveOne }}
           </tiqui-ui-button>

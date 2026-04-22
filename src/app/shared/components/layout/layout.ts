@@ -66,7 +66,7 @@ export class LayoutComponent {
       return [];
     }
 
-    return this.navigationService.getNavigationByRole(user.role);
+    return this.navigationService.getNavigationByRole(user.role, user);
   });
 
   onLogout(): void {

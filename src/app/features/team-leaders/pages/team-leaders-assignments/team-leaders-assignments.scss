@@ -1,0 +1,198 @@
+@use 'abstracts/variables' as *;
+
+.tl-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tl-feedback {
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 26%, transparent);
+  background: color-mix(in srgb, var(--brand-primary) 10%, transparent);
+  color: var(--text-primary);
+  padding: 0.7rem 0.85rem;
+  font-weight: 600;
+}
+
+.tl-shell__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.tl-shell__kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.tl-shell__header h1 {
+  margin: 0;
+}
+
+.tl-shell__header p {
+  margin: 0.3rem 0 0;
+  color: var(--text-muted);
+}
+
+.tl-shell__badge {
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 44%, transparent);
+  background: color-mix(in srgb, var(--brand-primary) 14%, transparent);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.tl-shell__layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 33%) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.tl-card {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 88%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+  padding: 0.9rem;
+}
+
+.tl-card label {
+  display: block;
+  font-size: 0.78rem;
+  margin-bottom: 0.3rem;
+}
+
+.tl-card input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 86%, transparent);
+  background: color-mix(in srgb, var(--surface-app) 55%, transparent);
+  color: var(--text-primary);
+  padding: 0.6rem 0.65rem;
+}
+
+.tl-card ul {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tl-empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.tl-leader-item {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.tl-card button {
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 86%, transparent);
+  background: color-mix(in srgb, var(--surface-app) 55%, transparent);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.tl-card--leaders button {
+  width: 100%;
+  text-align: left;
+  padding: 0.65rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.tl-card--leaders button.active {
+  border-color: color-mix(in srgb, var(--brand-primary) 52%, transparent);
+  background: color-mix(in srgb, var(--brand-primary) 14%, transparent);
+}
+
+.tl-card--leaders small,
+.tl-card--employees small {
+  color: var(--text-muted);
+}
+
+.tl-employee-area::before {
+  content: '·';
+  margin-right: 0.35rem;
+  margin-left: 0.25rem;
+}
+
+.tl-card--employees h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.tl-card--employees li {
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 86%, transparent);
+  background: color-mix(in srgb, var(--surface-app) 42%, transparent);
+  padding: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.tl-card--employees li.is-disabled {
+  opacity: 0.7;
+}
+
+.tl-card--employees li button {
+  padding: 0.35rem 0.6rem;
+  font-weight: 600;
+}
+
+.tl-card--employees li button.secondary {
+  border-color: color-mix(in srgb, var(--warning-color) 52%, transparent);
+  background: color-mix(in srgb, var(--warning-color) 16%, transparent);
+}
+
+.tl-card__readonly-label {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.tag {
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, #1f7a4f 40%, transparent);
+  background: color-mix(in srgb, #1f7a4f 14%, transparent);
+  color: #1f7a4f;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.tag--member {
+  border-color: color-mix(in srgb, var(--brand-primary) 34%, transparent);
+  background: color-mix(in srgb, var(--brand-primary) 12%, transparent);
+  color: var(--brand-primary);
+}
+
+.tag--pending {
+  border-color: color-mix(in srgb, var(--warning-color) 46%, transparent);
+  background: color-mix(in srgb, var(--warning-color) 18%, transparent);
+  color: color-mix(in srgb, var(--warning-color) 88%, black);
+}
+
+@media (max-width: 900px) {
+  .tl-shell__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tl-shell__header {
+    flex-direction: column;
+  }
+}

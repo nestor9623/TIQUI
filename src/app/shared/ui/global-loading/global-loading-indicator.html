@@ -1,0 +1,6 @@
+@if (loading()) {
+  <div class="global-loading" role="status" aria-live="polite" [attr.aria-label]="loadingText()">
+    <span class="global-loading__spinner" aria-hidden="true"></span>
+    <span class="global-loading__text">{{ loadingText() }}</span>
+  </div>
+}

@@ -1,0 +1,42 @@
+{
+  "header": {
+    "kicker": "Executive panel",
+    "title": "Operations dashboard",
+    "subtitle": "Real-time state of teams, incidents, and global presence."
+  },
+  "stats": {
+    "ariaLabel": "Workforce summary",
+    "totalIcon": "Tot",
+    "totalLabel": "Employees",
+    "activeIcon": "Act",
+    "activeLabel": "Active",
+    "pauseIcon": "Pau",
+    "pauseLabel": "On break",
+    "absentIcon": "Abs",
+    "absentLabel": "Absent",
+    "noData": "No data"
+  },
+  "manager": {
+    "incidents": "Incidents",
+    "pendingCheckins": "Pending check-ins",
+    "monthlyOvertime": "Monthly overtime",
+    "monthlyAccumulated": "Monthly accumulated",
+    "emptyOvertime": "No overtime records found."
+  },
+  "presence": {
+    "title": "Global presence today",
+    "subtitle": "Cities with registered activity during the current day.",
+    "menuAriaLabel": "More options",
+    "mapSummary": "Total {{total}} | Active {{active}}"
+  },
+  "alerts": {
+    "approvedTitle": "Approved",
+    "approvedMessage": "The check-in has been approved.",
+    "approvedErrorTitle": "Error",
+    "approvedErrorMessage": "The check-in could not be approved.",
+    "rejectedTitle": "Rejected",
+    "rejectedMessage": "The check-in has been rejected.",
+    "rejectedErrorTitle": "Error",
+    "rejectedErrorMessage": "The check-in could not be rejected."
+  }
+}

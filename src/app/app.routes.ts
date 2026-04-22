@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth.guard';
 import { RoleGuard } from './core/auth/guards/role.guard';
+import { TeamLeaderAccessGuard } from './core/auth/guards/team-leader-access.guard';
 import { LayoutComponent } from './shared/components/layout/layout';
 import { UserRole } from './core/auth/models/auth.model';
 
@@ -55,11 +56,29 @@ export const routes: Routes = [
           import('./features/reportes/reportes-routing.module').then(m => m.ReportesRoutingModule),
       },
       {
+        path: 'vacaciones',
+        loadChildren: () =>
+          import('./features/vacaciones/vacaciones-routing.module').then(m => m.VACACIONES_ROUTES),
+      },
+      {
+        path: 'team-leaders',
+        canActivate: [TeamLeaderAccessGuard],
+        loadChildren: () =>
+          import('./features/team-leaders/team-leaders-routing.module').then(m => m.TEAM_LEADERS_ROUTES),
+      },
+      {
         path: 'incidencias',
         canActivate: [RoleGuard],
         data: { roles: [UserRole.ADMIN, UserRole.MANAGER] },
         loadChildren: () =>
           import('./features/incidencias/incidencias-routing.module').then(m => m.IncidenciasRoutingModule),
+      },
+      {
+        path: 'configuracion',
+        canActivate: [RoleGuard],
+        data: { roles: [UserRole.ADMIN] },
+        loadChildren: () =>
+          import('./features/configuracion/configuracion-routing.module').then(m => m.CONFIGURACION_ROUTES),
       },
     ]
   },

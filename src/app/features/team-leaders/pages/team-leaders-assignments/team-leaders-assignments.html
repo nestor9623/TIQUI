@@ -1,0 +1,87 @@
+<section class="tl-shell">
+  <header class="tl-shell__header">
+    <div>
+      <p class="tl-shell__kicker">{{ canDirectManage() ? texts().header.manageKicker : texts().header.requestKicker }}</p>
+      <h1>{{ canDirectManage() ? texts().header.manageTitle : texts().header.requestTitle }}</h1>
+      <p>{{ canDirectManage() ? texts().header.manageSubtitle : texts().header.requestSubtitle }}</p>
+    </div>
+    @if (canDirectManage()) {
+      <span class="tl-shell__badge">{{ texts().header.manageBadge }}</span>
+    } @else {
+      <span class="tl-shell__badge tl-shell__badge--readonly">{{ texts().header.requestBadge }}</span>
+    }
+  </header>
+
+  <div class="tl-shell__layout">
+    <aside class="tl-card tl-card--leaders">
+      @if (canDirectManage()) {
+        <label for="tl-filter">{{ texts().leaders.filterLabel }}</label>
+        <input id="tl-filter" type="text" [value]="filters()" (input)="updateFilter($event)" [placeholder]="texts().leaders.filterPlaceholder" />
+      } @else {
+        <p class="tl-card__readonly-label">{{ texts().leaders.readonlyLabel }}</p>
+      }
+
+      <ul>
+        @if (loading()) {
+          <li><p class="tl-empty">{{ texts().leaders.loading }}</p></li>
+        } @else if (visibleTeamLeaders().length === 0) {
+          <li><p class="tl-empty">{{ texts().leaders.empty }}</p></li>
+        } @else {
+        @for (leader of visibleTeamLeaders(); track leader.id) {
+          <li class="tl-leader-item">
+            <button
+              type="button"
+              [class.active]="targetTeamLeaderId() === leader.id"
+              [disabled]="!canDirectManage()"
+              (click)="selectTeamLeader(leader.id)"
+              [class.readonly]="!canDirectManage()">
+              <strong>{{ leader.name }}</strong>
+              <small>{{ leader.area }} · {{ formatAssignedLabel(leader.assigned) }}</small>
+            </button>
+          </li>
+        }
+        }
+      </ul>
+    </aside>
+
+    <section class="tl-card tl-card--employees">
+      <h2>{{ canDirectManage() ? texts().employees.titleManage : texts().employees.titleReadonly }}</h2>
+      <ul>
+        @if (loading()) {
+          <li><p class="tl-empty">{{ texts().employees.loading }}</p></li>
+        } @else if (availableEmployees().length === 0) {
+          <li><p class="tl-empty">{{ texts().employees.empty }}</p></li>
+        } @else {
+        @for (employee of availableEmployees(); track employee.id) {
+          <li [class.is-disabled]="employee.needsReassignment && canDirectManage()">
+            <div>
+              <strong>{{ employee.name }}</strong>
+              <small class="tl-employee-area">{{ employee.area }}</small>
+            </div>
+
+            @if (canDirectManage()) {
+              @if (!employee.assignedTeamLeaderId) {
+                <button type="button" (click)="assignEmployee(employee.id)">{{ texts().employees.assign }}</button>
+              } @else if (employee.needsReassignment) {
+                <button type="button" class="secondary" (click)="assignEmployee(employee.id)">{{ texts().employees.reassign }}</button>
+              } @else {
+                <span class="tag">{{ texts().employees.assignedToCurrent }}</span>
+              }
+            } @else {
+              @if (employee.isAssignedToSelected) {
+                <span class="tag tag--member">{{ texts().employees.assignedToYourTeam }}</span>
+              } @else if (employee.requestPending) {
+                <span class="tag tag--pending">{{ texts().employees.requestSent }}</span>
+              } @else if (!employee.assignedTeamLeaderId) {
+                <button type="button" (click)="requestAssignment(employee.id)">{{ texts().employees.requestJoin }}</button>
+              } @else {
+                <button type="button" class="secondary" (click)="requestAssignment(employee.id)">{{ texts().employees.requestChange }}</button>
+              }
+            }
+          </li>
+        }
+        }
+      </ul>
+    </section>
+  </div>
+</section>

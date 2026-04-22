@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SidebarSection } from '../../../shared/models/navigation.model';
-import { UserRole } from '../../../core/auth/models/auth.model';
+import { User, UserRole } from '../../../core/auth/models/auth.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,14 @@ export class NavigationService {
   /**
    * Genera las secciones del sidebar según el rol del usuario
    */
-  getNavigationByRole(role: UserRole): SidebarSection[] {
+  getNavigationByRole(role: UserRole, user?: User | null): SidebarSection[] {
     switch (role) {
       case UserRole.ADMIN:
         return this.getAdminNavigation();
       case UserRole.MANAGER:
         return this.getManagerNavigation();
       case UserRole.EMPLOYEE:
-        return this.getEmployeeNavigation();
+        return this.getEmployeeNavigation(user);
       default:
         return [];
     }
@@ -41,19 +41,31 @@ export class NavigationService {
           {
             label: 'Usuarios',
             icon: '👥',
-            route: '/usuarios',
+            route: '/configuracion/usuarios',
             visible: true,
           },
           {
-            label: 'Configuración',
-            icon: '⚙️',
-            route: '/home',
+            label: 'Catálogos',
+            icon: '🗂️',
+            route: '/configuracion/catalogos',
             visible: true,
           },
           {
             label: 'Reportes',
             icon: '📈',
             route: '/reportes',
+            visible: true,
+          },
+          {
+            label: 'Team Leaders',
+            icon: '🧭',
+            route: '/team-leaders',
+            visible: true,
+          },
+          {
+            label: 'Vacaciones',
+            icon: '🏖️',
+            route: '/vacaciones',
             visible: true,
           },
           {
@@ -107,6 +119,18 @@ export class NavigationService {
             visible: true,
           },
           {
+            label: 'Team Leaders',
+            icon: '🧭',
+            route: '/team-leaders',
+            visible: true,
+          },
+          {
+            label: 'Vacaciones',
+            icon: '🏖️',
+            route: '/vacaciones',
+            visible: true,
+          },
+          {
             label: 'Reportes',
             icon: '📈',
             route: '/reportes',
@@ -150,31 +174,48 @@ export class NavigationService {
   /**
    * Navegación para Empleados
    */
-  private getEmployeeNavigation(): SidebarSection[] {
+  private getEmployeeNavigation(user?: User | null): SidebarSection[] {
+    const items = [
+      {
+        label: 'Dashboard',
+        icon: '🏠',
+        route: '/home',
+        visible: true,
+      },
+      {
+        label: 'Fichajes',
+        icon: '⏱️',
+        route: '/fichajes',
+        visible: true,
+      },
+      {
+        label: 'Calendario',
+        icon: '📅',
+        route: '/calendar',
+        visible: true,
+      },
+      {
+        label: 'Vacaciones',
+        icon: '🏖️',
+        route: '/vacaciones',
+        visible: true,
+      },
+    ];
+
+    if (user?.isTeamLeader) {
+      items.push({
+        label: 'Mi Equipo TL',
+        icon: '🧭',
+        route: '/team-leaders',
+        visible: true,
+      });
+    }
+
     return [
       {
         title: 'Principal',
         expanded: true,
-        items: [
-          {
-            label: 'Dashboard',
-            icon: '🏠',
-            route: '/home',
-            visible: true,
-          },
-          {
-            label: 'Fichajes',
-            icon: '⏱️',
-            route: '/fichajes',
-            visible: true,
-          },
-          {
-            label: 'Calendario',
-            icon: '📅',
-            route: '/calendar',
-            visible: true,
-          },
-        ],
+        items,
       },
     ];
   }

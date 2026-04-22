@@ -1,13 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-type EntryType = 'Entrada' | 'Salida' | 'Pausa';
-
-interface HistoryEntry {
-  time: string;
-  type: EntryType;
-  label: string;
-}
+import { HistoryEntry } from '../../../../core/domain/models/timeline-entry.model';
 
 @Component({
   selector: 'app-history-table',

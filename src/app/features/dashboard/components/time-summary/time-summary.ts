@@ -53,6 +53,27 @@ export class TimeSummary implements OnInit {
     return firstEntry?.time ?? 'Sin fichar';
   }
 
+  getFirstEntryTime(): string | null {
+    const firstEntry = this.todayTimeline().find(entry => entry.type === 'in');
+    return firstEntry?.time ?? null;
+  }
+
+  isParsableDate(value: string): boolean {
+    const date = new Date(value);
+    return !Number.isNaN(date.getTime());
+  }
+
+  isTodayEntry(value: string): boolean {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return true;
+    }
+    const now = new Date();
+    return date.getFullYear() === now.getFullYear()
+      && date.getMonth() === now.getMonth()
+      && date.getDate() === now.getDate();
+  }
+
   getStatusLabel(): string {
     const status = this.getDayStatus();
     if (status === 'clocked-in') {

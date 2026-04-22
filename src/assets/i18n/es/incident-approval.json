@@ -14,5 +14,6 @@
   "messageSingle": "Confirma la solicitud y anade un comentario opcional si quieres aportar contexto.",
   "messageMultiple": "Vas a aprobar varias incidencias al mismo tiempo. Puedes anadir un comentario opcional para la persona.",
   "typeMissingCheckin": "Empleado sin fichar",
-  "typePendingApproval": "Pendiente de aprobacion"
+  "typePendingApproval": "Pendiente de aprobacion",
+  "typeVacationPending": "Solicitud de vacaciones"
 }

@@ -1,0 +1,59 @@
+.fichaje-approval__empty {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  padding: 1rem 0;
+}
+
+.fichaje-approval__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fichaje-approval__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  background: var(--surface-card);
+}
+
+.fichaje-approval__info {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.fichaje-approval__name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fichaje-approval__meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.fichaje-approval__desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fichaje-approval__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}

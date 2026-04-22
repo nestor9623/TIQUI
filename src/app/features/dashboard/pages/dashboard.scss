@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .dashboard-shell {
   display: flex;
@@ -52,6 +52,124 @@
   white-space: nowrap;
 }
 
+.dashboard-shell__azure {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 24%, transparent);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--brand-primary) 11%, transparent),
+    color-mix(in srgb, var(--surface-card) 92%, transparent)
+  );
+  padding: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.dashboard-shell__azure--inactive {
+  border-color: color-mix(in srgb, var(--surface-border) 88%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+}
+
+.dashboard-shell__azure-head h2,
+.dashboard-shell__azure-empty h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.dashboard-shell__azure-head p,
+.dashboard-shell__azure-empty p {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.dashboard-shell__azure-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.dashboard-shell__azure-metrics article {
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: color-mix(in srgb, var(--surface-app) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+}
+
+.dashboard-shell__azure-metrics small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.dashboard-shell__azure-metrics strong {
+  font-size: 0.95rem;
+}
+
+.dashboard-shell__azure-tasks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.dashboard-shell__azure-tasks li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 86%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 94%, transparent);
+}
+
+.dashboard-shell__azure-tasks small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.dashboard-shell__azure-tasks p {
+  margin: 0.15rem 0 0;
+  font-size: 0.88rem;
+}
+
+.task-state,
+.task-priority {
+  font-size: 0.74rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+
+.task-state {
+  border: 1px solid color-mix(in srgb, var(--info-color) 44%, transparent);
+  background: color-mix(in srgb, var(--info-color) 16%, transparent);
+}
+
+.task-priority {
+  text-transform: uppercase;
+}
+
+.priority-low {
+  color: #1f7a4f;
+  border: 1px solid color-mix(in srgb, #1f7a4f 40%, transparent);
+  background: color-mix(in srgb, #1f7a4f 14%, transparent);
+}
+
+.priority-medium {
+  color: #9a6a08;
+  border: 1px solid color-mix(in srgb, #9a6a08 40%, transparent);
+  background: color-mix(in srgb, #9a6a08 14%, transparent);
+}
+
+.priority-high {
+  color: #b03030;
+  border: 1px solid color-mix(in srgb, #b03030 40%, transparent);
+  background: color-mix(in srgb, #b03030 14%, transparent);
+}
+
 .dashboard-shell__grid {
   display: flex;
   flex-direction: column;
@@ -80,6 +198,11 @@
   .dashboard-shell__row {
     gap: 1rem;
   }
+
+  .dashboard-shell__azure-tasks li {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 768px) {
@@ -91,6 +214,10 @@
 
   .dashboard-shell__subtitle {
     font-size: 0.88rem;
+  }
+
+  .dashboard-shell__azure-metrics {
+    grid-template-columns: 1fr;
   }
 
   .dashboard-shell__grid {

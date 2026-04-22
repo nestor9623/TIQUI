@@ -5,8 +5,11 @@ import { AuthService } from '../../auth/services/auth.service';
 import { User, UserRole } from '../../auth/models/auth.model';
 import { DailyReport } from '../../domain/entities/report.entity';
 import { I18nStore } from '../../i18n/i18n.store';
-import { MockWorkforceDashboardService } from '../../mock/services/mock-workforce-dashboard.service';
+import { IncidenciasFacade } from './incidencias.facade';
 import { DashboardSummary, WorklogDashboardFacade } from './worklog-dashboard.facade';
+import { AssistantPreferencesService } from './assistant-preferences.service';
+import { FichajeApprovalFacade } from './fichaje-approval.facade';
+import { SupabaseVacacionesService } from '../../infraestructure/repositories/supabase-vacaciones.service';
 
 const ASSISTANT_INBOX_STORAGE_KEY = 'tiqui.assistant.reviewed-alerts';
 
@@ -26,11 +29,16 @@ export interface WorklogAssistantSnapshot {
   headline: string;
   summary: string;
   statusLabel: string;
+  todayWorkedLabel: string;
+  weeklyWorkedLabel: string;
   dailyBalanceLabel: string;
   weeklyBalanceLabel: string;
   suggestedStartTime: string | null;
   suggestedEndTime: string | null;
   incidentCount: number;
+  pendingVacationApprovals: number;
+  pendingFichajeApprovals: number;
+  pendingManagerActionsCount: number;
   unreadCount: number;
   alerts: WorklogAssistantAlert[];
 }
@@ -39,11 +47,16 @@ export const EMPTY_ASSISTANT_SNAPSHOT: WorklogAssistantSnapshot = {
   headline: '',
   summary: '',
   statusLabel: '',
+  todayWorkedLabel: '0h 00m',
+  weeklyWorkedLabel: '0h 00m',
   dailyBalanceLabel: '0h 00m',
   weeklyBalanceLabel: '0h 00m',
   suggestedStartTime: null,
   suggestedEndTime: null,
   incidentCount: 0,
+  pendingVacationApprovals: 0,
+  pendingFichajeApprovals: 0,
+  pendingManagerActionsCount: 0,
   unreadCount: 0,
   alerts: [],
 };
@@ -53,7 +66,10 @@ export class WorklogAssistantService {
   private readonly authService = inject(AuthService);
   private readonly i18n = inject(I18nStore);
   private readonly dashboardFacade = inject(WorklogDashboardFacade);
-  private readonly workforceDashboardService = inject(MockWorkforceDashboardService);
+  private readonly incidenciasFacade = inject(IncidenciasFacade);
+  private readonly fichajeApprovalFacade = inject(FichajeApprovalFacade);
+  private readonly vacacionesService = inject(SupabaseVacacionesService);
+  private readonly preferencesService = inject(AssistantPreferencesService);
   private readonly authState$ = toObservable(this.authService.auth);
   private readonly reviewedAlertsState = signal<Record<string, string[]>>(this.readReviewedAlerts());
   private readonly reviewedAlerts$ = toObservable(this.reviewedAlertsState);
@@ -73,12 +89,27 @@ export class WorklogAssistantService {
         }
 
         const summary$ = this.dashboardFacade.getDashboardSummary(user.id, baseDate);
-        const incidentData$ = user.role === UserRole.EMPLOYEE
-          ? of(null)
-          : this.workforceDashboardService.getDashboardData(user.role === UserRole.MANAGER ? user.id : undefined);
+        const incidentCount$ = user.role === UserRole.EMPLOYEE
+          ? of(0)
+          : (user.role === UserRole.MANAGER
+            ? this.incidenciasFacade.getByManager(user.id)
+            : this.incidenciasFacade.getAll()
+          ).pipe(map(items => items.length));
 
-        return combineLatest([summary$, incidentData$]).pipe(
-          map(([summary, dashboardData]) => this.buildSnapshot(user, summary, dashboardData?.incidents.length ?? 0, baseDate)),
+        const pendingVacationApprovals$ = user.role === UserRole.EMPLOYEE
+          ? of(0)
+          : this.vacacionesService
+            .getPendingRequestsForReviewer(user.role, user.id)
+            .pipe(map(items => items.length));
+
+        const pendingFichajeApprovals$ = user.role === UserRole.MANAGER
+          ? this.fichajeApprovalFacade.getPendingByManager(user.id).pipe(map(items => items.length))
+          : of(0);
+
+        return combineLatest([summary$, incidentCount$, pendingVacationApprovals$, pendingFichajeApprovals$]).pipe(
+          map(([summary, incidentCount, pendingVacationApprovals, pendingFichajeApprovals]) =>
+            this.buildSnapshot(user, summary, incidentCount, pendingVacationApprovals, pendingFichajeApprovals, baseDate),
+          ),
         );
       }),
     );
@@ -119,6 +150,8 @@ export class WorklogAssistantService {
     user: User,
     summary: DashboardSummary,
     incidentCount: number,
+    pendingVacationApprovals: number,
+    pendingFichajeApprovals: number,
     baseDate: Date,
   ): WorklogAssistantSnapshot {
     const assistantTexts = this.i18n.translations().assistant;
@@ -149,11 +182,16 @@ export class WorklogAssistantService {
       headline: primaryAlert?.title ?? assistantTexts.fallback.noPendingHeadline,
       summary: primaryAlert?.message ?? assistantTexts.fallback.noPendingSummary,
       statusLabel: this.getStatusLabel(summary.todayReport, dailyBalanceMinutes),
+      todayWorkedLabel: this.formatAbsoluteDuration(todayMinutes),
+      weeklyWorkedLabel: this.formatAbsoluteDuration(summary.weeklyTotalMinutes),
       dailyBalanceLabel: this.formatSignedDuration(dailyBalanceMinutes),
       weeklyBalanceLabel: this.formatSignedDuration(weeklyBalanceMinutes),
       suggestedStartTime,
       suggestedEndTime,
       incidentCount,
+      pendingVacationApprovals,
+      pendingFichajeApprovals,
+      pendingManagerActionsCount: pendingVacationApprovals + pendingFichajeApprovals,
       unreadCount: hasPendingAlerts ? alerts.length : 0,
       alerts: alerts.slice(0, 4),
     };
@@ -173,6 +211,7 @@ export class WorklogAssistantService {
     const alerts: WorklogAssistantAlert[] = [];
     const texts = this.i18n.translations().assistant.alerts;
     const { todayReport, dailyBalanceMinutes, weeklyBalanceMinutes, incidentCount, suggestedStartTime, suggestedEndTime, baseDate } = context;
+    const prefs = this.preferencesService.getPreferences(context.user.id);
 
     if (!todayReport || todayReport.totalMinutes === 0) {
       alerts.push({
@@ -192,14 +231,14 @@ export class WorklogAssistantService {
         id: 'suggested-end',
         fingerprint: this.buildFingerprint(
           'suggested-end',
-          dailyBalanceMinutes >= 60 ? texts.suggestedEnd.titleExceeded : texts.suggestedEnd.titleAligned,
-          dailyBalanceMinutes >= 60
+          dailyBalanceMinutes >= prefs.suggestedEndOvertimeThresholdMinutes ? texts.suggestedEnd.titleExceeded : texts.suggestedEnd.titleAligned,
+          dailyBalanceMinutes >= prefs.suggestedEndOvertimeThresholdMinutes
             ? this.interpolate(texts.suggestedEnd.messageExceeded, { time: suggestedEndTime ?? '' })
             : this.interpolate(texts.suggestedEnd.messageAligned, { time: suggestedEndTime ?? '' }),
         ),
-        severity: dailyBalanceMinutes >= 60 ? 'warning' : 'info',
-        title: dailyBalanceMinutes >= 60 ? texts.suggestedEnd.titleExceeded : texts.suggestedEnd.titleAligned,
-        message: dailyBalanceMinutes >= 60
+        severity: dailyBalanceMinutes >= prefs.suggestedEndOvertimeThresholdMinutes ? 'warning' : 'info',
+        title: dailyBalanceMinutes >= prefs.suggestedEndOvertimeThresholdMinutes ? texts.suggestedEnd.titleExceeded : texts.suggestedEnd.titleAligned,
+        message: dailyBalanceMinutes >= prefs.suggestedEndOvertimeThresholdMinutes
           ? this.interpolate(texts.suggestedEnd.messageExceeded, { time: suggestedEndTime ?? '' })
           : this.interpolate(texts.suggestedEnd.messageAligned, { time: suggestedEndTime ?? '' }),
         actionLabel: texts.suggestedEnd.action,
@@ -228,7 +267,7 @@ export class WorklogAssistantService {
     }
 
     const continuousWorkMinutes = this.getContinuousWorkMinutes(todayReport, baseDate);
-    if (continuousWorkMinutes >= 180) {
+    if (continuousWorkMinutes >= prefs.breakReminderMinutes) {
       alerts.push({
         id: 'break-reminder',
         fingerprint: this.buildFingerprint(
@@ -244,7 +283,7 @@ export class WorklogAssistantService {
       });
     }
 
-    if (Math.abs(weeklyBalanceMinutes) >= 120 && suggestedStartTime) {
+    if (Math.abs(weeklyBalanceMinutes) >= prefs.weeklyBalanceThresholdMinutes && suggestedStartTime) {
       alerts.push({
         id: 'weekly-balance',
         fingerprint: this.buildFingerprint(

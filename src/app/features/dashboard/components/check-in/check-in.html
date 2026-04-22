@@ -15,7 +15,16 @@
         [class.entry-in]="entry.type === 'in'"
         [class.entry-out]="entry.type === 'out'"
         [class.entry-pause]="entry.type === 'pause'">
+        @if (isParsableDate(entry.time)) {
+        <span class="entry-time">
+          @if (!isTodayEntry(entry.time)) {
+          <span>{{ entry.time | date: 'dd/MM ' }}</span>
+          }
+          <span>{{ entry.time | date: 'HH:mm' }}</span>
+        </span>
+        } @else {
         <span class="entry-time">{{ entry.time }}</span>
+        }
         <span
           class="entry-dot"
           [class.dot-in]="entry.type === 'in'"
@@ -27,7 +36,11 @@
     </div>
   </div>
 
-  <button class="btn-check-in" (click)="handleCheckIn()">
+  <button class="btn-check-in" (click)="handleCheckIn()" [disabled]="isOnVacation()">
     Fichar {{ isCheckedIn() ? 'Salida' : 'Entrada' }}
   </button>
+
+  @if (isOnVacation()) {
+    <p class="check-in-vacation-notice">Estás de vacaciones hoy. No es necesario fichar.</p>
+  }
 </section>

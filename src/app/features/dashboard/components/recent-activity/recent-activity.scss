@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .recent-activity-container {
   background: color-mix(in srgb, var(--surface-card) 96%, transparent);

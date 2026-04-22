@@ -1,5 +1,5 @@
 // Página de fichajes - usando el sistema de diseño
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .fichajes-shell {
   display: flex;

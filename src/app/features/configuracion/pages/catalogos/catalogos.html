@@ -1,0 +1,115 @@
+<section class="catalogos-page">
+  <header class="catalogos-page__header">
+    <h1 class="catalogos-page__title">Catálogos</h1>
+    <p class="catalogos-page__subtitle">Gestión de comunidades y áreas de la aplicación</p>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="catalogos-page__tabs">
+    <button
+      class="catalogos-page__tab"
+      [class.catalogos-page__tab--active]="store.activeTab() === 'community'"
+      (click)="setTab('community')">
+      🏘️ Comunidades
+    </button>
+    <button
+      class="catalogos-page__tab"
+      [class.catalogos-page__tab--active]="store.activeTab() === 'area'"
+      (click)="setTab('area')">
+      🏢 Áreas
+    </button>
+  </nav>
+
+  <div class="catalogos-page__body">
+    <!-- Form -->
+    <div class="catalogos-page__form-card">
+      <h2 class="catalogos-page__form-title">
+        {{ store.editingId() ? 'Editar ítem' : 'Nuevo ítem' }}
+      </h2>
+      <form [formGroup]="form" (ngSubmit)="save()" class="catalogos-page__form">
+        <div class="catalogos-page__field">
+          <label class="catalogos-page__label" for="code">Código</label>
+          <input
+            id="code"
+            class="catalogos-page__input"
+            formControlName="code"
+            placeholder="ej. madrid"
+          />
+          @if (form.get('code')?.invalid && form.get('code')?.touched) {
+            <span class="catalogos-page__error">El código es obligatorio</span>
+          }
+        </div>
+        <div class="catalogos-page__field">
+          <label class="catalogos-page__label" for="name">Nombre</label>
+          <input
+            id="name"
+            class="catalogos-page__input"
+            formControlName="name"
+            placeholder="ej. Comunidad de Madrid"
+          />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <span class="catalogos-page__error">El nombre es obligatorio</span>
+          }
+        </div>
+        <div class="catalogos-page__field catalogos-page__field--checkbox">
+          <input id="active" type="checkbox" formControlName="active" />
+          <label class="catalogos-page__label" for="active">Activo</label>
+        </div>
+        <div class="catalogos-page__form-actions">
+          <button
+            type="submit"
+            class="catalogos-page__btn catalogos-page__btn--primary"
+            [disabled]="form.invalid || store.saving()">
+            {{ store.editingId() ? 'Guardar cambios' : 'Crear ítem' }}
+          </button>
+          @if (store.editingId()) {
+            <button type="button" class="catalogos-page__btn catalogos-page__btn--secondary" (click)="cancelEdit()">
+              Cancelar
+            </button>
+          }
+        </div>
+      </form>
+    </div>
+
+    <!-- List -->
+    <div class="catalogos-page__list-card">
+      @if (store.loading()) {
+        <p class="catalogos-page__loading">Cargando…</p>
+      } @else if (store.items().length === 0) {
+        <p class="catalogos-page__empty">No hay ítems para este catálogo.</p>
+      } @else {
+        <table class="catalogos-page__table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Activo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of store.items(); track item.id) {
+              <tr [class.catalogos-page__row--inactive]="!item.active">
+                <td>{{ item.code }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.active ? '✅' : '❌' }}</td>
+                <td class="catalogos-page__actions">
+                  <button
+                    class="catalogos-page__btn catalogos-page__btn--sm catalogos-page__btn--secondary"
+                    (click)="startEdit(item)">
+                    ✏️ Editar
+                  </button>
+                  <button
+                    class="catalogos-page__btn catalogos-page__btn--sm catalogos-page__btn--danger"
+                    (click)="deleteItem(item)">
+                    🗑️ Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+</section>

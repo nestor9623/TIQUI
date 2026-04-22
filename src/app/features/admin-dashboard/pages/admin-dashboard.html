@@ -1,16 +1,16 @@
 <div class="admin-dashboard-container">
   <header class="dashboard-header">
-    <p class="dashboard-kicker">Panel ejecutivo</p>
+    <p class="dashboard-kicker">{{ texts().header.kicker }}</p>
     <div>
-      <h1>Dashboard de operaciones</h1>
-      <p class="subtitle">Estado en tiempo real de equipos, incidencias y presencia global.</p>
+      <h1>{{ texts().header.title }}</h1>
+      <p class="subtitle">{{ texts().header.subtitle }}</p>
     </div>
   </header>
 
-  <section class="stats-grid" aria-label="Resumen de plantilla">
+  <section class="stats-grid" [attr.aria-label]="texts().stats.ariaLabel">
     <div class="stat-card total">
-      <div class="stat-icon" aria-hidden="true">Tot</div>
-      <div class="stat-label">Empleados</div>
+      <div class="stat-icon" aria-hidden="true">{{ texts().stats.totalIcon }}</div>
+      <div class="stat-label">{{ texts().stats.totalLabel }}</div>
       <div class="stat-value">{{ employeeStats().total }}</div>
       <div class="stat-breakdown">
         {{ getTopCitiesLabel() }}
@@ -18,22 +18,22 @@
     </div>
 
     <div class="stat-card active">
-      <div class="stat-icon" aria-hidden="true">Act</div>
-      <div class="stat-label">En activo</div>
+      <div class="stat-icon" aria-hidden="true">{{ texts().stats.activeIcon }}</div>
+      <div class="stat-label">{{ texts().stats.activeLabel }}</div>
       <div class="stat-value">{{ employeeStats().active }}</div>
       <div class="stat-breakdown">{{ getBreakdownText('active') }}</div>
     </div>
 
     <div class="stat-card pause">
-      <div class="stat-icon" aria-hidden="true">Pau</div>
-      <div class="stat-label">En pausa</div>
+      <div class="stat-icon" aria-hidden="true">{{ texts().stats.pauseIcon }}</div>
+      <div class="stat-label">{{ texts().stats.pauseLabel }}</div>
       <div class="stat-value">{{ employeeStats().onPause }}</div>
       <div class="stat-breakdown">{{ getBreakdownText('onPause') }}</div>
     </div>
 
     <div class="stat-card absent">
-      <div class="stat-icon" aria-hidden="true">Aus</div>
-      <div class="stat-label">Ausente</div>
+      <div class="stat-icon" aria-hidden="true">{{ texts().stats.absentIcon }}</div>
+      <div class="stat-label">{{ texts().stats.absentLabel }}</div>
       <div class="stat-value">{{ employeeStats().absent }}</div>
       <div class="stat-breakdown">{{ getBreakdownText('absent') }}</div>
     </div>
@@ -43,13 +43,9 @@
     <div class="manager-grid">
       <section class="manager-card">
         <div class="manager-card-header">
-          <h2>Incidencias</h2>
+          <h2>{{ texts().manager.incidents }}</h2>
           <span>{{ incidents().length }}</span>
         </div>
-
-        @if (incidentsFeedback()) {
-          <p class="empty-text">{{ incidentsFeedback() }}</p>
-        }
 
         <tiqui-incident-approval-list
           [items]="incidents()"
@@ -59,19 +55,32 @@
 
       <section class="manager-card">
         <div class="manager-card-header">
-          <h2>Horas extra del mes</h2>
+          <h2>{{ texts().manager.pendingCheckins }}</h2>
+          <span>{{ pendingFichajes().length }}</span>
+        </div>
+
+        <tiqui-fichaje-approval-list
+          [items]="pendingFichajes()"
+          (fichajeApproved)="onFichajeApproved($event)"
+          (fichajeRejected)="onFichajeRejected($event)">
+        </tiqui-fichaje-approval-list>
+      </section>
+
+      <section class="manager-card">
+        <div class="manager-card-header">
+          <h2>{{ texts().manager.monthlyOvertime }}</h2>
           <span>{{ overtimeByEmployee().length }}</span>
         </div>
 
         @if (overtimeByEmployee().length === 0) {
-          <p class="empty-text">No hay horas extra registradas.</p>
+          <p class="empty-text">{{ texts().manager.emptyOvertime }}</p>
         } @else {
           <ul class="manager-list">
             @for (overtime of overtimeByEmployee(); track overtime.userId) {
               <li>
                 <div>
                   <strong>{{ overtime.fullName }}</strong>
-                  <p>Acumulado mensual</p>
+                  <p>{{ texts().manager.monthlyAccumulated }}</p>
                 </div>
                 <span>{{ formatExtraMinutes(overtime.extraMinutes) }}</span>
               </li>
@@ -85,10 +94,10 @@
   <section class="world-presence-card">
     <div class="card-header">
       <div>
-        <h2>Presencia global de hoy</h2>
-        <p class="card-subtitle">Ciudades con actividad registrada en la jornada actual.</p>
+        <h2>{{ texts().presence.title }}</h2>
+        <p class="card-subtitle">{{ texts().presence.subtitle }}</p>
       </div>
-      <button class="menu-btn" type="button" aria-label="Más opciones">
+      <button class="menu-btn" type="button" [attr.aria-label]="texts().presence.menuAriaLabel">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="1"></circle>
           <circle cx="12" cy="5" r="1"></circle>
@@ -134,7 +143,7 @@
                 <g class="map-tooltip">
                   <rect x="12" y="-54" width="180" height="52" rx="8" ry="8"></rect>
                   <text x="22" y="-34">{{ point.city }}, {{ point.country }}</text>
-                  <text x="22" y="-18">Total {{ point.total }} | Activos {{ point.active }}</text>
+                  <text x="22" y="-18">{{ formatPresenceSummary(point.total, point.active) }}</text>
                 </g>
               </g>
             }

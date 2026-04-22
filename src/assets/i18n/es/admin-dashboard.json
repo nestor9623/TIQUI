@@ -1,0 +1,42 @@
+{
+  "header": {
+    "kicker": "Panel ejecutivo",
+    "title": "Dashboard de operaciones",
+    "subtitle": "Estado en tiempo real de equipos, incidencias y presencia global."
+  },
+  "stats": {
+    "ariaLabel": "Resumen de plantilla",
+    "totalIcon": "Tot",
+    "totalLabel": "Empleados",
+    "activeIcon": "Act",
+    "activeLabel": "En activo",
+    "pauseIcon": "Pau",
+    "pauseLabel": "En pausa",
+    "absentIcon": "Aus",
+    "absentLabel": "Ausente",
+    "noData": "Sin datos"
+  },
+  "manager": {
+    "incidents": "Incidencias",
+    "pendingCheckins": "Fichajes pendientes",
+    "monthlyOvertime": "Horas extra del mes",
+    "monthlyAccumulated": "Acumulado mensual",
+    "emptyOvertime": "No hay horas extra registradas."
+  },
+  "presence": {
+    "title": "Presencia global de hoy",
+    "subtitle": "Ciudades con actividad registrada en la jornada actual.",
+    "menuAriaLabel": "Mas opciones",
+    "mapSummary": "Total {{total}} | Activos {{active}}"
+  },
+  "alerts": {
+    "approvedTitle": "Aprobado",
+    "approvedMessage": "El fichaje ha sido aprobado.",
+    "approvedErrorTitle": "Error",
+    "approvedErrorMessage": "No se pudo aprobar el fichaje.",
+    "rejectedTitle": "Rechazado",
+    "rejectedMessage": "El fichaje ha sido rechazado.",
+    "rejectedErrorTitle": "Error",
+    "rejectedErrorMessage": "No se pudo rechazar el fichaje."
+  }
+}

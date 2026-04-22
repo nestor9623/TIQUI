@@ -14,5 +14,6 @@
   "messageSingle": "Confirm the request and add an optional comment if you want to provide context.",
   "messageMultiple": "You are about to approve multiple incidents at once. You can add an optional comment for the person.",
   "typeMissingCheckin": "Employee missing check-in",
-  "typePendingApproval": "Pending approval"
+  "typePendingApproval": "Pending approval",
+  "typeVacationPending": "Vacation request"
 }

@@ -1,9 +1,9 @@
 <section class="fichajes-shell">
   <header class="fichajes-header">
     <div class="header-title">
-      <p class="fichajes-kicker">Control horario</p>
-      <h1>Fichajes</h1>
-      <p>Registra movimientos y revisa el histórico del día seleccionado en tiempo real.</p>
+      <p class="fichajes-kicker">{{ texts().header.kicker }}</p>
+      <h1>{{ texts().header.title }}</h1>
+      <p>{{ texts().header.subtitle }}</p>
     </div>
 
     <app-date-navigator
@@ -15,15 +15,15 @@
 
   <div class="fichajes-metrics">
     <article class="metric-card">
-      <p>Horas netas</p>
+      <p>{{ texts().metrics.worked }}</p>
       <strong>{{ totalWorked() }}</strong>
     </article>
     <article class="metric-card">
-      <p>Tiempo de pausa</p>
+      <p>{{ texts().metrics.pause }}</p>
       <strong>{{ totalPause() }}</strong>
     </article>
     <article class="metric-card metric-card--status">
-      <p>Estado actual</p>
+      <p>{{ texts().metrics.status }}</p>
       <strong>{{ currentStatus() }}</strong>
     </article>
   </div>
@@ -46,12 +46,13 @@
 
       <app-time-entry-form
         [timeInput]="timeInput()"
-        [typeInput]="typeInput()"
         [description]="description()"
+        [allowedActions]="allowedActions()"
+        [isDayClosed]="!!dayBlockedMessage()"
+        [saving]="saving()"
         (timeInputChange)="timeInput.set($event)"
-        (typeInputChange)="typeInput.set($event)"
         (descriptionChange)="description.set($event)"
-        (addEntry)="addEntry()">
+        (directAction)="onDirectAction($event)">
       </app-time-entry-form>
     </aside>
   </div>

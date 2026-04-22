@@ -5,8 +5,44 @@
       <h1>Dashboard de fichajes</h1>
       <p class="dashboard-shell__subtitle">Vista consolidada de tiempos, actividad semanal y generación rápida de reportes.</p>
     </div>
-    <span class="dashboard-shell__badge">Sprint C</span>
+    <span class="dashboard-shell__badge">{{ sprintBadge() }}</span>
   </header>
+
+  <section class="dashboard-shell__azure" [class.dashboard-shell__azure--inactive]="!isAzureConnected()">
+    @if (isAzureConnected()) {
+      <div class="dashboard-shell__azure-head">
+        <h2>Sprint actual</h2>
+        <p>{{ sprintRange() }}</p>
+      </div>
+      <div class="dashboard-shell__azure-metrics">
+        <article>
+          <small>Hoy</small>
+          <strong>{{ sprintRemainingDays() }} dias restantes</strong>
+        </article>
+        <article>
+          <small>Tareas rapidas</small>
+          <strong>{{ quickTasks().length }} asignadas</strong>
+        </article>
+      </div>
+      <ul class="dashboard-shell__azure-tasks">
+        @for (task of quickTasks(); track task.id) {
+          <li>
+            <div>
+              <small>{{ task.id }}</small>
+              <p>{{ task.title }}</p>
+            </div>
+            <span class="task-state">{{ task.state }}</span>
+            <span class="task-priority" [class]="taskPriorityClass(task.priority)">{{ task.priority }}</span>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="dashboard-shell__azure-empty">
+        <h2>Azure Boards opcional</h2>
+        <p>Este usuario no tiene conectada su cuenta Microsoft 365. Al conectarla se mostrara sprint y tareas en modo informativo.</p>
+      </div>
+    }
+  </section>
 
   <div class="dashboard-shell__grid">
     <app-assistant-overview />

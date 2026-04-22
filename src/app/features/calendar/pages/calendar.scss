@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .calendar-container {
   display: flex;
@@ -574,6 +574,107 @@
   padding: 0.85rem;
 }
 
+.detail-adjustments {
+  margin-top: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, var(--surface-border) 72%, transparent);
+  padding-top: 0.75rem;
+}
+
+.detail-adjustments__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.detail-adjustments__header h4 {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--text-primary);
+}
+
+.detail-adjustments__empty {
+  margin: 0.6rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.btn-adjust-add,
+.btn-adjust-submit,
+.btn-adjust-remove {
+  border: 1px solid color-mix(in srgb, var(--surface-border) 84%, transparent);
+  border-radius: 0.62rem;
+  background: color-mix(in srgb, var(--surface-app) 52%, var(--surface-card));
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.btn-adjust-add {
+  padding: 0.32rem 0.56rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.adjustment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.adjustment-item {
+  display: grid;
+  grid-template-columns: 108px 96px 1fr 78px;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.adjustment-item select,
+.adjustment-item input {
+  height: 2rem;
+  border-radius: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 82%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 94%, transparent);
+  color: var(--text-primary);
+  padding: 0 0.5rem;
+}
+
+.btn-adjust-remove {
+  height: 2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.detail-adjustments__actions {
+  margin-top: 0.62rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-adjust-submit {
+  padding: 0.42rem 0.72rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  background: linear-gradient(120deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  color: var(--text-on-brand);
+  border-color: color-mix(in srgb, var(--brand-primary) 34%, transparent);
+}
+
+.btn-adjust-add:hover,
+.btn-adjust-submit:hover,
+.btn-adjust-remove:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-2);
+}
+
+.btn-adjust-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 @media (max-width: 1080px) {
   .calendar-header {
     flex-direction: column;
@@ -617,5 +718,17 @@
 
   .total-divider {
     display: none;
+  }
+
+  .adjustment-item {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-adjustments__actions {
+    justify-content: stretch;
+  }
+
+  .btn-adjust-submit {
+    width: 100%;
   }
 }

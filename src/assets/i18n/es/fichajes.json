@@ -1,0 +1,16 @@
+{
+  "header": {
+    "kicker": "Control horario",
+    "title": "Fichajes",
+    "subtitle": "Registra movimientos y revisa el historico del dia seleccionado en tiempo real."
+  },
+  "metrics": {
+    "worked": "Horas netas",
+    "pause": "Tiempo de pausa",
+    "status": "Estado actual"
+  },
+  "alerts": {
+    "saveErrorTitle": "Error",
+    "saveErrorMessage": "No se pudo guardar el fichaje. Intentalo de nuevo."
+  }
+}

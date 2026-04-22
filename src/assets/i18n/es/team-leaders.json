@@ -1,0 +1,49 @@
+{
+  "header": {
+    "manageKicker": "Gestion de equipos",
+    "manageTitle": "Asignacion de Team Leaders",
+    "manageSubtitle": "El manager puede asignar y reasignar integrantes directamente sin pasar por aprobacion.",
+    "requestKicker": "Solicitudes de equipo",
+    "requestTitle": "Solicitudes de incorporacion al equipo",
+    "requestSubtitle": "Como team leader puedes solicitar incorporaciones o cambios. La aprobacion final le llega al manager.",
+    "manageBadge": "Gestion directa manager",
+    "requestBadge": "Solicitud con aprobacion manager"
+  },
+  "leaders": {
+    "filterLabel": "Filtrar team leaders",
+    "filterPlaceholder": "Nombre o area",
+    "readonlyLabel": "Tu team leader",
+    "loading": "Cargando...",
+    "empty": "No hay team leaders configurados.",
+    "assignedLabel": "{{count}} personas"
+  },
+  "employees": {
+    "titleManage": "Empleados",
+    "titleReadonly": "Personas disponibles para tu equipo",
+    "loading": "Cargando...",
+    "empty": "No hay empleados disponibles en tu ambito.",
+    "assign": "Asignar",
+    "reassign": "Reasignar",
+    "assignedToCurrent": "Asignado a este TL",
+    "assignedToYourTeam": "Asignado a tu equipo",
+    "requestSent": "Solicitud enviada",
+    "requestJoin": "Solicitar incorporacion",
+    "requestChange": "Solicitar cambio"
+  },
+  "alerts": {
+    "loadErrorTitle": "Error",
+    "loadErrorMessage": "No se pudo cargar la configuracion de Team Leaders.",
+    "missingTargetTitle": "Error",
+    "missingTargetMessage": "Selecciona primero un Team Leader de destino.",
+    "assignmentUpdatedTitle": "Asignacion actualizada",
+    "assignmentUpdatedMessage": "Cambio aplicado correctamente.",
+    "assignmentSaveErrorTitle": "Error",
+    "assignmentSaveErrorMessage": "No se pudo guardar la asignacion.",
+    "requestSentTitle": "Solicitud enviada",
+    "requestJoinMessage": "Solicitud enviada para incorporacion al equipo.",
+    "requestChangeMessage": "Solicitud de cambio enviada. Queda pendiente de aprobacion."
+  },
+  "fallback": {
+    "area": "Sin area"
+  }
+}

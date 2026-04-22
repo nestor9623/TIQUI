@@ -75,10 +75,6 @@
     </div>
   </section>
 
-  @if (feedbackMessage()) {
-    <p class="users-page__feedback">{{ feedbackMessage() }}</p>
-  }
-
   <section class="users-page__panel users-page__panel--table">
     <div class="users-page__panel-header">
       <div>
@@ -111,7 +107,7 @@
                   {{ user.address }}
                   <small>{{ managerName(user.managerId) }}</small>
                 </td>
-                <td [attr.data-label]="translations().page.table.weeklyHours">{{ user.weeklyHoursTarget ?? 40 }} {{ translations().page.table.hoursSuffix }}</td>
+                <td [attr.data-label]="translations().page.table.weeklyHours">{{ user.weeklyHoursTarget }} {{ translations().page.table.hoursSuffix }}</td>
                 <td [attr.data-label]="translations().page.table.status">
                   <div class="users-page__status-cell">
                     <span class="users-page__status-text" [class.is-inactive]="!user.active">
@@ -134,6 +130,23 @@
                 </td>
                 <td [attr.data-label]="translations().page.table.actions">
                   <div class="users-page__actions">
+                    @if (user.role === 'employee') {
+                      <button
+                        type="button"
+                        class="users-page__state-switch"
+                        [class.is-active]="user.isTeamLeader"
+                        [class.is-inactive]="!user.isTeamLeader"
+                        [tiquiTooltip]="user.isTeamLeader ? translations().page.table.tooltipDemoteTeamLeader : translations().page.table.tooltipPromoteTeamLeader"
+                        (click)="requestToggleTeamLeader(user)">
+                        <span class="users-page__state-switch-track">
+                          <span class="users-page__state-switch-thumb">
+                            <tiqui-ui-icon [name]="user.isTeamLeader ? 'check' : 'close'" [size]="14"></tiqui-ui-icon>
+                          </span>
+                        </span>
+                      </button>
+                      <small class="users-page__tl-label">{{ translations().page.table.teamLeaderBadge }}</small>
+                    }
+
                     <button
                       type="button"
                       class="users-page__icon-action"
@@ -202,11 +215,6 @@
           <label class="users-page__field">
             <span>{{ translations().modal.fields.email }}</span>
             <input type="email" formControlName="email" [placeholder]="translations().modal.placeholders.email" />
-          </label>
-
-          <label class="users-page__field">
-            <span>{{ translations().modal.fields.password }}</span>
-            <input type="text" formControlName="password" [placeholder]="translations().modal.placeholders.password" />
           </label>
 
           <label class="users-page__field">

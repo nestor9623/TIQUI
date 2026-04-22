@@ -1,0 +1,16 @@
+{
+  "header": {
+    "kicker": "Time tracking",
+    "title": "Check-ins",
+    "subtitle": "Register events and review the selected day history in real time."
+  },
+  "metrics": {
+    "worked": "Net hours",
+    "pause": "Break time",
+    "status": "Current status"
+  },
+  "alerts": {
+    "saveErrorTitle": "Error",
+    "saveErrorMessage": "The check-in could not be saved. Please try again."
+  }
+}

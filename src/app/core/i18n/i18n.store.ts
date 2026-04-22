@@ -1,31 +1,38 @@
 import { HttpClient } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
 import { Injectable, effect, inject, signal } from '@angular/core';
-import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
+import { Observable, catchError, firstValueFrom, forkJoin, of } from 'rxjs';
 import {
   AppLocale,
-  CommonTranslations,
-  createEmptyTranslationBundle,
+  TranslationBundle,
   DEFAULT_LOCALE,
   I18N_STORAGE_KEY,
   LOCALE_OPTIONS,
-  LoginTranslations,
-  NavbarTranslations,
-  ForgotPasswordTranslations,
-  ReportsTranslations,
-  IncidentApprovalTranslations,
-  AssistantTranslations,
-  UsersTranslations,
-  AlertsTranslations,
-  TranslationBundle,
 } from './i18n.config';
+
+const EMPTY_BUNDLE: TranslationBundle = {} as TranslationBundle;
+
+const BUNDLE_KEYS: Record<string, string> = {
+  common: 'common.json',
+  login: 'login.json',
+  navbar: 'navbar.json',
+  forgotPassword: 'forgot-password.json',
+  reports: 'reports.json',
+  incidentApproval: 'incident-approval.json',
+  assistant: 'assistant.json',
+  users: 'users.json',
+  alerts: 'alerts.json',
+  teamLeaders: 'team-leaders.json',
+  fichajes: 'fichajes.json',
+  adminDashboard: 'admin-dashboard.json',
+};
 
 @Injectable({ providedIn: 'root' })
 export class I18nStore {
   private readonly document = inject(DOCUMENT);
   private readonly http = inject(HttpClient);
   private readonly localeState = signal<AppLocale>(this.readLocale());
-  private readonly translationsState = signal<TranslationBundle>(createEmptyTranslationBundle());
+  private readonly translationsState = signal<TranslationBundle>(EMPTY_BUNDLE);
 
   readonly localeOptions = LOCALE_OPTIONS;
   readonly locale = this.localeState.asReadonly();
@@ -74,7 +81,7 @@ export class I18nStore {
             return this.fetchBundle(DEFAULT_LOCALE);
           }
 
-          return of(createEmptyTranslationBundle());
+          return of(EMPTY_BUNDLE);
         }),
       ),
     );
@@ -82,20 +89,16 @@ export class I18nStore {
     this.translationsState.set(bundle);
   }
 
-  private fetchBundle(locale: AppLocale) {
+  private fetchBundle(locale: AppLocale): Observable<TranslationBundle> {
     const basePath = `assets/i18n/${locale}`;
-
-    return forkJoin({
-      common: this.http.get<CommonTranslations>(`${basePath}/common.json`),
-      login: this.http.get<LoginTranslations>(`${basePath}/login.json`),
-      navbar: this.http.get<NavbarTranslations>(`${basePath}/navbar.json`),
-      forgotPassword: this.http.get<ForgotPasswordTranslations>(`${basePath}/forgot-password.json`),
-      reports: this.http.get<ReportsTranslations>(`${basePath}/reports.json`),
-      incidentApproval: this.http.get<IncidentApprovalTranslations>(`${basePath}/incident-approval.json`),
-      assistant: this.http.get<AssistantTranslations>(`${basePath}/assistant.json`),
-      users: this.http.get<UsersTranslations>(`${basePath}/users.json`),
-      alerts: this.http.get<AlertsTranslations>(`${basePath}/alerts.json`),
-    });
+    const requests = Object.fromEntries(
+      Object.entries(BUNDLE_KEYS).map(([key, file]) => [
+        key,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this.http.get<any>(`${basePath}/${file}`),
+      ]),
+    );
+    return forkJoin(requests) as Observable<TranslationBundle>;
   }
 
   private readLocale(): AppLocale {

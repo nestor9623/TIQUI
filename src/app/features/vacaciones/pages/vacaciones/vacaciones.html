@@ -1,0 +1,154 @@
+<section class="vac-shell">
+  <header class="vac-shell__header">
+    <div>
+      <p class="vac-shell__kicker">Módulo de vacaciones</p>
+      <h1>Solicitudes y cupos</h1>
+      <p>Las opciones se habilitan según los días disponibles por tipo.</p>
+    </div>
+  </header>
+
+  <!-- BOLSAS + FORMULARIO -->
+  <div class="vac-shell__grid">
+    <!-- Bolsas disponibles -->
+    <article class="vac-card vac-card--balances">
+      <h2>Bolsas disponibles</h2>
+      <ul class="vac-balance-list">
+        @for (item of balances(); track item.code) {
+          <li class="vac-balance-item" [class.vac-balance-item--empty]="item.available <= 0">
+            <div class="vac-balance-item__info">
+              <strong>{{ item.label }}</strong>
+              <small>{{ item.total }} días totales</small>
+            </div>
+            <div class="vac-balance-item__count" [class.vac-balance-item__count--zero]="item.available <= 0">
+              {{ item.available }}
+            </div>
+          </li>
+        }
+      </ul>
+    </article>
+
+    <!-- Formulario de solicitud -->
+    <article class="vac-card vac-card--request">
+      <h2>Nueva solicitud</h2>
+
+      <form [formGroup]="vacationForm" (ngSubmit)="submitRequest()" class="vac-form">
+        <div class="vac-form__row">
+          <div class="vac-form__field">
+            <label for="vac-start">Fecha inicio</label>
+            <input id="vac-start" type="date" formControlName="startDate" [min]="todayIso" />
+          </div>
+          <div class="vac-form__field">
+            <label for="vac-end">Fecha fin</label>
+            <input id="vac-end" type="date" formControlName="endDate" [min]="vacationForm.controls.startDate.value || todayIso" />
+          </div>
+        </div>
+
+        @if (estimatedDays() > 0) {
+          <p class="vac-form__days-hint">
+            {{ estimatedDays() }} día{{ estimatedDays() !== 1 ? 's' : '' }} laborable{{ estimatedDays() !== 1 ? 's' : '' }}
+          </p>
+        }
+
+        <div class="vac-form__field">
+          <label for="vac-type">Tipo de solicitud</label>
+          <select id="vac-type" formControlName="vacationType">
+            <option value="" disabled>Selecciona un tipo</option>
+            @for (option of vacationTypeOptions(); track option.value) {
+              <option [value]="option.value" [disabled]="option.disabled">
+                {{ option.label }} · {{ option.badge }}
+              </option>
+            }
+          </select>
+          @if (showNoTypesHint()) {
+            <small class="vac-form__hint vac-form__hint--warning">
+              No hay tipos disponibles. Revisa la carga de vacation_type_catalog en base de datos.
+            </small>
+          }
+        </div>
+
+        <div class="vac-form__field">
+          <label for="vac-notes">Comentario</label>
+          <textarea id="vac-notes" rows="3" formControlName="notes" placeholder="Motivo o contexto adicional"></textarea>
+        </div>
+
+        <button type="submit" class="vac-btn vac-btn--primary" [disabled]="vacationForm.invalid || submitting() || balancesLoading() || vacationTypeOptions().length === 0">
+          {{ submitting() ? 'Enviando...' : 'Enviar solicitud' }}
+        </button>
+      </form>
+    </article>
+  </div>
+
+  <!-- MIS SOLICITUDES -->
+  <article class="vac-card vac-card--history">
+    <h2>Mis solicitudes</h2>
+    @if (loading()) {
+      <p class="vac-empty">Cargando...</p>
+    } @else if (myRequests().length === 0) {
+      <p class="vac-empty">No tienes solicitudes aún.</p>
+    } @else {
+      <ul class="vac-request-list">
+        @for (req of myRequests(); track req.id) {
+          <li class="vac-request-item">
+            <div class="vac-request-item__dates">
+              <strong>{{ req.start_date | date:'dd/MM/yyyy' }} – {{ req.end_date | date:'dd/MM/yyyy' }}</strong>
+              <small>{{ req.days_count }} días · {{ req.vacation_type }}</small>
+            </div>
+            <span class="vac-status vac-status--{{ req.status }}">{{ statusLabel(req.status) }}</span>
+            @if (req.status === 'pending') {
+              <button type="button" class="vac-btn vac-btn--ghost" (click)="cancelMyRequest(req.id)">Cancelar</button>
+            }
+            @if (req.manager_comment) {
+              <small class="vac-request-item__comment">Manager: {{ req.manager_comment }}</small>
+            }
+          </li>
+        }
+      </ul>
+    }
+  </article>
+
+  <!-- PANEL MANAGER: solicitudes pendientes de aprobación -->
+  @if (isManagerView()) {
+    <article class="vac-card vac-card--approval">
+      <h2>Solicitudes pendientes de aprobación</h2>
+      @if (pendingRequests().length === 0) {
+        <p class="vac-empty">No hay solicitudes pendientes.</p>
+      } @else {
+        <ul class="vac-request-list">
+          @for (req of pendingRequests(); track req.id) {
+            <li class="vac-request-item vac-request-item--approval">
+              <div class="vac-request-item__info">
+                <strong>{{ req.user_name ?? req.user_id }}</strong>
+                <small>{{ req.start_date | date:'dd/MM/yyyy' }} – {{ req.end_date | date:'dd/MM/yyyy' }} · {{ req.days_count }} días · {{ req.vacation_type }}</small>
+                @if (req.notes) {
+                  <small class="vac-request-item__notes">{{ req.notes }}</small>
+                }
+              </div>
+              @if (approvingId() === req.id) {
+                <div class="vac-reject-inline">
+                  <textarea rows="2" placeholder="Comentario de aprobación (opcional)" [value]="approveComment()" (input)="approveComment.set($any($event.target).value)"></textarea>
+                  <div class="vac-reject-inline__actions">
+                    <button type="button" class="vac-btn vac-btn--success" (click)="confirmApprove()">Confirmar aprobación</button>
+                    <button type="button" class="vac-btn vac-btn--ghost" (click)="approvingId.set(null)">Cancelar</button>
+                  </div>
+                </div>
+              } @else if (rejectingId() === req.id) {
+                <div class="vac-reject-inline">
+                  <textarea rows="2" placeholder="Motivo del rechazo (opcional)" [value]="rejectComment()" (input)="rejectComment.set($any($event.target).value)"></textarea>
+                  <div class="vac-reject-inline__actions">
+                    <button type="button" class="vac-btn vac-btn--danger" (click)="confirmReject()">Confirmar rechazo</button>
+                    <button type="button" class="vac-btn vac-btn--ghost" (click)="rejectingId.set(null)">Cancelar</button>
+                  </div>
+                </div>
+              } @else {
+                <div class="vac-request-item__actions">
+                  <button type="button" class="vac-btn vac-btn--success" (click)="startApprove(req.id)">Aprobar</button>
+                  <button type="button" class="vac-btn vac-btn--danger-outline" (click)="startReject(req.id)">Rechazar</button>
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </article>
+  }
+</section>

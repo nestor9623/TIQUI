@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .login {
   position: relative;
@@ -547,6 +547,38 @@ app-world-coverage-map {
   opacity: 0.65;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.login__microsoft {
+  width: 100%;
+  margin-top: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 88%, transparent);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--nav-text-strong);
+  background: color-mix(in srgb, var(--surface-card) 55%, transparent);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.login__microsoft:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--brand-accent) 52%, transparent);
+}
+
+.login__microsoft:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.login__microsoft-icon {
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .login__spinner {

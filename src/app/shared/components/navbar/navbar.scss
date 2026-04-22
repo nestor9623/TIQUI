@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 /* Navbar Premium Enterprise Style - Ultra Clean & High Fidelity */
 
@@ -422,7 +422,7 @@
   display: none;
   background: transparent;
   border: none;
-  color: var(--text-on-brand);
+  color: var(--nav-text-strong);
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 6px;
@@ -437,7 +437,7 @@
   }
 
   &:hover {
-    background: color-mix(in srgb, var(--text-on-brand) 16%, transparent);
+    background: color-mix(in srgb, var(--nav-text-strong) 10%, transparent);
     color: var(--nav-accent);
   }
 

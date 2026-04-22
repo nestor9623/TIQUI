@@ -16,7 +16,20 @@
 
     <div class="entry-block">
       <span class="entry-label">Entrada</span>
-      <span class="entry-time">{{ getEntryTime() }}</span>
+      @if (getFirstEntryTime(); as firstEntryTime) {
+        @if (isParsableDate(firstEntryTime)) {
+        <span class="entry-time">
+          @if (!isTodayEntry(firstEntryTime)) {
+          <span>{{ firstEntryTime | date: 'dd/MM ' }}</span>
+          }
+          <span>{{ firstEntryTime | date: 'HH:mm' }}</span>
+        </span>
+        } @else {
+        <span class="entry-time">{{ firstEntryTime }}</span>
+        }
+      } @else {
+      <span class="entry-time">Sin fichar</span>
+      }
     </div>
 
     <div class="progress-bar-container">
@@ -30,7 +43,16 @@
       } @else {
         @for (entry of todayTimeline(); track entry.time + entry.type) {
           <div class="timeline-item">
+            @if (isParsableDate(entry.time)) {
+            <span class="time">
+              @if (!isTodayEntry(entry.time)) {
+              <span>{{ entry.time | date: 'dd/MM ' }}</span>
+              }
+              <span>{{ entry.time | date: 'HH:mm' }}</span>
+            </span>
+            } @else {
             <span class="time">{{ entry.time }}</span>
+            }
             <span class="dot" [class.dot-in]="entry.type === 'in'" [class.dot-out]="entry.type === 'out'" [class.dot-pause]="entry.type === 'pause'"></span>
             <span class="label">{{ entry.label }}</span>
           </div>

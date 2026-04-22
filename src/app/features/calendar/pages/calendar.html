@@ -181,7 +181,16 @@
               [class.entry-in]="entry.type === 'in'"
               [class.entry-out]="entry.type === 'out'"
               [class.entry-pause]="entry.type === 'pause'">
+              @if (isParsableDate(entry.time)) {
+              <span class="entry-time">
+                @if (!isTodayEntry(entry.time)) {
+                <span>{{ entry.time | date: 'dd/MM ' }}</span>
+                }
+                <span>{{ entry.time | date: 'HH:mm' }}</span>
+              </span>
+              } @else {
               <span class="entry-time">{{ entry.time }}</span>
+              }
               <span
                 class="entry-dot"
                 [class.dot-in]="entry.type === 'in'"
@@ -195,6 +204,50 @@
         } @else {
         <div class="no-entries">
           <p>No hay registros de fichaje para este día</p>
+        </div>
+        }
+
+        @if (canSubmitAdjustments()) {
+        <div class="detail-adjustments">
+          <div class="detail-adjustments__header">
+            <h4>Solicitudes de ajuste del día</h4>
+            <button class="btn-adjust-add" (click)="addAdjustmentDraft()" type="button">Añadir solicitud</button>
+          </div>
+
+          @if (adjustmentDrafts().length === 0) {
+          <p class="detail-adjustments__empty">Puedes registrar ajustes de entrada/salida y se enviarán al manager al pulsar "Enviar solicitud".</p>
+          } @else {
+          <div class="adjustment-list">
+            @for (draft of adjustmentDrafts(); track draft.id) {
+            <div class="adjustment-item">
+              <select [value]="draft.type" (change)="updateDraftType(draft.id, $event)">
+                <option value="Entrada">Entrada</option>
+                <option value="Salida">Salida</option>
+              </select>
+
+              <input type="time" [value]="draft.time" (input)="updateDraftTime(draft.id, $event)" />
+
+              <input
+                type="text"
+                placeholder="Motivo (opcional)"
+                [value]="draft.note"
+                (input)="updateDraftNote(draft.id, $event)" />
+
+              <button class="btn-adjust-remove" type="button" (click)="removeDraft(draft.id)">Quitar</button>
+            </div>
+            }
+          </div>
+
+          <div class="detail-adjustments__actions">
+            <button
+              class="btn-adjust-submit"
+              type="button"
+              [disabled]="adjustmentSubmitting()"
+              (click)="submitAdjustmentRequests()">
+              {{ adjustmentSubmitting() ? 'Enviando...' : 'Enviar solicitud' }}
+            </button>
+          </div>
+          }
         </div>
         }
       </div>

@@ -6,14 +6,20 @@
     "intro": "Recomendaciones operativas calculadas dentro de la app según tus fichajes e incidencias.",
     "queuePending": "Tienes recomendaciones pendientes de revisar.",
     "metrics": {
-      "dailyBalance": "Balance hoy",
-      "weeklyBalance": "Balance semana",
+      "dailyBalance": "Fichado hoy",
+      "weeklyBalance": "Fichado semana",
       "incidents": "Incidencias"
     },
     "plan": {
       "suggestedStart": "Entrada sugerida",
       "suggestedEnd": "Salida sugerida",
       "noAdjustment": "Sin ajuste"
+    },
+    "pendingActions": {
+      "title": "Acciones pendientes",
+      "subtitle": "Aprobaciones que requieren gestión",
+      "vacationApprovals": "Solicitudes de vacaciones",
+      "fichajeApprovals": "Solicitudes de ajuste de fichaje"
     },
     "recommendations": {
       "title": "Recomendaciones",

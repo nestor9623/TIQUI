@@ -125,17 +125,6 @@
         <p class="login__card-text">{{ loginTexts().form.subtitle }}</p>
       </header>
 
-      @if (error()) {
-        <div class="login__alert login__alert--error" role="alert" aria-live="assertive">
-          <svg class="login__alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-          </svg>
-          <span>{{ error() }}</span>
-        </div>
-      }
-
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login__form">
         <div class="login__field">
           <label for="email" class="login__label">{{ loginTexts().form.emailLabel }}</label>
@@ -149,7 +138,7 @@
             [attr.aria-describedby]="isEmailInvalid() ? 'login-email-error' : null"
             [placeholder]="loginTexts().form.emailPlaceholder"
             autocomplete="email"
-            [disabled]="loading()"
+            [disabled]="submit.disabled()"
           />
           @if (isEmailInvalid()) {
             <span id="login-email-error" class="login__error" role="alert" aria-live="polite">
@@ -179,13 +168,13 @@
               [attr.aria-describedby]="isPasswordInvalid() ? 'login-password-error' : null"
               [placeholder]="loginTexts().form.passwordPlaceholder"
               autocomplete="current-password"
-              [disabled]="loading()"
+              [disabled]="submit.disabled()"
             />
             <button
               type="button"
               class="login__password-toggle"
               (click)="togglePasswordVisibility()"
-              [disabled]="loading()"
+              [disabled]="submit.disabled()"
               aria-label="Mostrar u ocultar contraseña"
             >
               @if (showPassword()) {
@@ -216,15 +205,26 @@
         <button
           type="submit"
           class="login__submit"
-          [attr.aria-busy]="loading()"
-          [disabled]="loading() || loginForm.invalid"
+          [attr.aria-busy]="submit.loading()"
+          [disabled]="submit.disabled() || loginForm.invalid"
         >
-          @if (loading()) {
+          @if (submit.loading()) {
             <span class="login__spinner"></span>
             {{ loginTexts().form.submitting }}
+          } @else if (submit.cooling()) {
+            {{ loginTexts().form.errors.generic }}
           } @else {
             {{ loginTexts().form.submit }}
           }
+        </button>
+
+        <button
+          type="button"
+          class="login__microsoft"
+          [disabled]="submit.disabled()"
+          (click)="onMicrosoftLogin()">
+          <span class="login__microsoft-icon" aria-hidden="true">◧</span>
+          {{ loginTexts().form.microsoft?.submit ?? 'Acceder con Microsoft 365' }}
         </button>
       </form>
 
@@ -236,7 +236,7 @@
               type="button"
               class="login__demo-btn"
               (click)="useDemoCredentials(cred.email, cred.password)"
-              [disabled]="loading()"
+              [disabled]="submit.disabled()"
             >
               {{ cred.role }} · {{ cred.email }}
             </button>
@@ -245,4 +245,5 @@
       </div>
     </div>
   </div>
+
 

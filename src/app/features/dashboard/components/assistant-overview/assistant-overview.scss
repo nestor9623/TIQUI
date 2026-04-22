@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 .assistant-overview {
   display: flex;
@@ -150,6 +150,37 @@
 
 .assistant-overview__alert {
   padding: 0.95rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+a.assistant-overview__alert {
+  display: block;
+  cursor: pointer;
+  transition:
+    transform var(--motion-fast, 150ms) ease,
+    box-shadow var(--motion-normal, 250ms) ease,
+    border-color var(--motion-normal, 250ms) ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-1);
+    border-color: color-mix(in srgb, var(--brand-primary) 40%, var(--surface-border));
+  }
+
+  &:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--brand-primary) 72%, white);
+    outline-offset: 2px;
+  }
+}
+
+.assistant-overview__alert-cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  letter-spacing: 0.02em;
 }
 
 .assistant-overview__alert--warning {
@@ -158,6 +189,50 @@
 
 .assistant-overview__alert--success {
   border-color: color-mix(in srgb, #10b981 42%, var(--surface-border));
+}
+
+.assistant-overview__preferences {
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 76%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+  padding: 0.9rem;
+}
+
+.assistant-overview__preferences h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.assistant-overview__preferences p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.assistant-overview__preferences-grid {
+  margin-top: 0.7rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.assistant-overview__preferences-grid label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.assistant-overview__preferences-grid span {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.assistant-overview__preferences-grid input {
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 78%, transparent);
+  background: color-mix(in srgb, var(--surface-app) 50%, transparent);
+  color: var(--text-primary);
+  padding: 0.45rem 0.55rem;
 }
 
 @media (max-width: 900px) {
@@ -185,5 +260,9 @@
 
   .assistant-overview__actions {
     flex-direction: column;
+  }
+
+  .assistant-overview__preferences-grid {
+    grid-template-columns: 1fr;
   }
 }

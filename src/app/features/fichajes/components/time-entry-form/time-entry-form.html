@@ -1,22 +1,22 @@
-    <div class="card">
-      <h2>Registrar fichaje</h2>
+<div class="card" [class.card--closed]="isDayClosed()">
+  <h2>Registrar fichaje</h2>
 
+  @if (isDayClosed()) {
+    <div class="day-closed-msg">
+      <span class="day-closed-icon">🚫</span>
+      <p>Este día está bloqueado y no permite fichajes.</p>
+    </div>
+  } @else {
+    <!-- Time + description fields -->
+    <div class="form-fields">
       <label class="input-group">
         <span>Hora</span>
         <input
           type="time"
           [value]="timeInput()"
+          [disabled]="saving()"
           (input)="onTimeInput($event)"
         />
-      </label>
-
-      <label class="input-group">
-        <span>Tipo</span>
-        <select [value]="typeInput()" (change)="onTypeChange($event)">
-          <option value="Entrada">Entrada</option>
-          <option value="Salida">Salida</option>
-          <option value="Pausa">Pausa</option>
-        </select>
       </label>
 
       <label class="input-group">
@@ -25,9 +25,31 @@
           type="text"
           placeholder="Opcional"
           [value]="description()"
+          [disabled]="saving()"
           (input)="onDescriptionInput($event)"
         />
       </label>
-
-      <button class="btn" type="button" (click)="addEntry.emit()">Fichar</button>
     </div>
+
+    <!-- Direct action CTA buttons — one click registers the fichaje -->
+    <div class="action-ctas" role="group" aria-label="Registrar fichaje">
+      @for (cfg of actionConfigs(); track cfg.type) {
+        <button
+          type="button"
+          class="action-cta"
+          [class]="'action-cta action-cta--' + cfg.colorClass"
+          [disabled]="saving()"
+          (click)="onDirectAction(cfg.type)"
+          [attr.aria-label]="cfg.label + ' a las ' + timeInput()">
+          @if (saving()) {
+            <span class="spinner"></span>
+            Guardando…
+          } @else {
+            <span class="action-cta__icon">{{ cfg.icon }}</span>
+            {{ cfg.label }}
+          }
+        </button>
+      }
+    </div>
+  }
+</div>

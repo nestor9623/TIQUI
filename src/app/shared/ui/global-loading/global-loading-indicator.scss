@@ -1,0 +1,43 @@
+.global-loading {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1200;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 34%, transparent);
+  background: color-mix(in srgb, var(--surface-card) 88%, var(--brand-primary));
+  color: var(--text-primary);
+  box-shadow: var(--elevation-2);
+}
+
+.global-loading__spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--brand-primary) 24%, transparent);
+  border-top-color: var(--brand-primary);
+  animation: global-loading-spin 0.8s linear infinite;
+}
+
+.global-loading__text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@keyframes global-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-loading__spinner {
+    animation: none;
+  }
+}

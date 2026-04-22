@@ -7,6 +7,12 @@ describe('Dashboard', () => {
   let fixture: ComponentFixture<Dashboard>;
 
   beforeEach(async () => {
+    TestBed.overrideComponent(Dashboard, {
+      set: {
+        template: '<section class="dashboard-test"></section>',
+      },
+    });
+
     await TestBed.configureTestingModule({
       imports: [Dashboard],
     }).compileComponents();

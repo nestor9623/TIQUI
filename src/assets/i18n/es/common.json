@@ -9,7 +9,8 @@
   "labels": {
     "userFallback": "Usuario",
     "appAlerts": "Alertas de la aplicación",
-    "closeAlert": "Cerrar alerta"
+    "closeAlert": "Cerrar alerta",
+    "globalLoading": "Cargando"
   },
   "language": {
     "label": "Idioma",

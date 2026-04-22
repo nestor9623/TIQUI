@@ -8,7 +8,7 @@ export interface IncidentApprovalItem {
   id: string;
   userId: string;
   fullName: string;
-  type: 'missing-checkin' | 'pending-approval';
+  type: 'missing-checkin' | 'pending-approval' | 'vacation-pending';
   dateIso: string;
 }
 
@@ -105,8 +105,14 @@ export class IncidentApprovalListComponent {
     this.closeDialog();
   }
 
-  typeLabel(type: 'missing-checkin' | 'pending-approval'): string {
-    return type === 'missing-checkin' ? this.texts().typeMissingCheckin : this.texts().typePendingApproval;
+  typeLabel(type: 'missing-checkin' | 'pending-approval' | 'vacation-pending'): string {
+    if (type === 'missing-checkin') {
+      return this.texts().typeMissingCheckin;
+    }
+    if (type === 'vacation-pending') {
+      return this.texts().typeVacationPending;
+    }
+    return this.texts().typePendingApproval;
   }
 
   private interpolate(template: string, values: Record<string, string | number>): string {

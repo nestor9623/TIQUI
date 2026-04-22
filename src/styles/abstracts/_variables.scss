@@ -1,6 +1,6 @@
 // ======================================================
 // DESIGN SYSTEM - VARIABLES
-// TiquiApp — Paleta azul/blanco, limpia y convencional
+// TiquiApp — Paleta rojo crimson / verde / naranja
 // ======================================================
 
 
@@ -8,20 +8,20 @@
 // COLORES PRINCIPALES
 // ======================================================
 
-$primary-color:   #2563eb;   // azul principal — botones CTA, links, foco
+$primary-color:   #e11d48;   // crimson — botones CTA, links, foco
 $secondary-color: #1e293b;   // slate oscuro — texto principal, headings
-$accent-color:    #0ea5e9;   // azul cielo — acento secundario (badges, highlights)
+$accent-color:    #f43f5e;   // rojo suave — acento secundario (badges, highlights)
 $warning-color:   #f59e0b;   // ámbar — pausa/aviso
 $danger-color:    #ef4444;   // rojo — errores, sin fichar
 $success-color:   #22c55e;   // verde — éxito (solo para feedback puntual)
-$info-color:      #0ea5e9;   // informativo — vacaciones, estados neutros informativos
+$info-color:      #38bdf8;   // azul cielo — informativo / vacaciones
 
 
 // ======================================================
 // COLORES DE ESTADO DE FICHAJE
 // ======================================================
 
-$checkin-color:  $primary-color;   // trabajando → azul
+$checkin-color:  $primary-color;   // trabajando → crimson
 $checkout-color: #64748b;          // jornada completada → slate neutro
 $break-color:    $warning-color;   // pausa → ámbar
 $late-color:     $danger-color;    // retraso/sin fichar → rojo
@@ -40,12 +40,12 @@ $surface-1:      #ffffff;   // tarjetas
 $surface-2:      #f8fafc;   // paneles muy suaves
 $surface-border: #e2e8f0;   // borde estándar
 
-// Navbar / Sidebar — shell oscuro azul marino
+// Navbar / Sidebar — shell oscuro neutro
 $nav-background:  #0f172a;              // slate-900
 $nav-text:        #94a3b8;              // slate-400
 $nav-text-strong: #f1f5f9;             // slate-100
-$nav-accent:      $primary-color;       // azul principal como acento
-$nav-active-bg:   rgba(37, 99, 235, 0.15); // azul translúcido para item activo
+$nav-accent:      $primary-color;       // crimson como acento
+$nav-active-bg:   rgba(225, 29, 72, 0.15); // crimson translúcido para item activo
 
 
 // ======================================================

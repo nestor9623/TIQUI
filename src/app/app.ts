@@ -6,10 +6,11 @@ import { AuthService } from './core/auth/services/auth.service';
 import { SessionTimeoutService } from './core/auth/services/session-timeout.service';
 import { Subscription } from 'rxjs';
 import { AppAlertCenterComponent } from './shared/ui/app-alert-center/app-alert-center';
+import { GlobalLoadingIndicatorComponent } from './shared/ui/global-loading/global-loading-indicator';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, SessionTimeoutModalComponent, AppAlertCenterComponent],
+  imports: [CommonModule, RouterOutlet, SessionTimeoutModalComponent, AppAlertCenterComponent, GlobalLoadingIndicatorComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

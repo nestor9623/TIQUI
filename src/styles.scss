@@ -1,12 +1,12 @@
 // Estilos globales
+@use 'styles/abstracts/variables' as *;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import 'styles/abstracts/variables';
 @import 'tailwindcss';
 
 :root {
-  --brand-primary: #ff2e63;
+  --brand-primary: #e11d48;
   --brand-secondary: #f8fafc;
-  --brand-accent: #ff4f8b;
+  --brand-accent: #f43f5e;
   --brand-warning: #f59e0b;
   --brand-danger: #ef4444;
   --brand-success: #10b981;
@@ -17,11 +17,11 @@
   --surface-overlay: #cfd8e6;
   --text-primary: #172033;
   --text-muted: #667085;
-  --nav-background: #fff8fb;
+  --nav-background: #f8fafc;
   --nav-text: #6b7285;
   --nav-text-strong: #172033;
-  --nav-accent: #ff2e63;
-  --nav-active-bg: rgba(255, 46, 99, 0.12);
+  --nav-accent: #e11d48;
+  --nav-active-bg: rgba(225, 29, 72, 0.12);
   --text-on-brand: #ffffff;
   --accent-primary: var(--brand-primary);
   --text-secondary: var(--text-muted);
@@ -49,20 +49,20 @@
 }
 
 .theme-tiqui {
-  --brand-primary: #ff2e63;
-  --brand-accent: #ff4f8b;
-  --brand-secondary: #fff7fb;
+  --brand-primary: #e11d48;
+  --brand-accent: #f43f5e;
+  --brand-secondary: #fdf2f5;
   --surface-app: #f7f9fd;
   --surface-card: #ffffff;
   --surface-border: #dbe3ef;
   --surface-overlay: #d4dbe8;
   --text-primary: #172033;
   --text-muted: #667085;
-  --nav-background: #fff7fb;
+  --nav-background: #f8fafc;
   --nav-text: #6b7285;
   --nav-text-strong: #172033;
-  --nav-accent: #ff2e63;
-  --nav-active-bg: rgba(255, 46, 99, 0.12);
+  --nav-accent: #e11d48;
+  --nav-active-bg: rgba(225, 29, 72, 0.12);
 }
 
 .theme-emerald {

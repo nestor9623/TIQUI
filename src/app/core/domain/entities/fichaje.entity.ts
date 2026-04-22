@@ -13,8 +13,13 @@ export interface FichajeEntity {
   managerId?: string;
   approvedAt?: string;
   rejectionReason?: string;
+  managerComment?: string;
 }
 
 export interface PendingFichaje extends FichajeEntity {
   status: 'PENDING';
+}
+
+export interface PendingFichajeWithUser extends PendingFichaje {
+  employeeName: string;
 }

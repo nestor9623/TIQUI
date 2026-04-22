@@ -37,12 +37,20 @@
     "submit": "Entrar al panel",
     "submitting": "Iniciando sesión...",
     "demoTitle": "Accesos de demo",
+    "microsoft": {
+      "submit": "Acceder con Microsoft 365",
+      "errors": {
+        "title": "Microsoft 365",
+        "generic": "No se pudo iniciar el acceso con Microsoft."
+      }
+    },
     "errors": {
       "emailRequired": "El correo es requerido",
       "emailInvalid": "Ingresa un correo válido",
       "passwordRequired": "La contraseña es requerida",
       "passwordMin": "Mínimo 6 caracteres",
-      "generic": "Error al iniciar sesión"
+      "generic": "Error al iniciar sesión",
+      "authFailed": "Error de acceso"
     }
   }
 }

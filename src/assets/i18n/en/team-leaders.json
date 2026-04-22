@@ -1,0 +1,49 @@
+{
+  "header": {
+    "manageKicker": "Team management",
+    "manageTitle": "Team Leader assignments",
+    "manageSubtitle": "Managers can assign and reassign members directly without an approval flow.",
+    "requestKicker": "Team requests",
+    "requestTitle": "Requests to join a team",
+    "requestSubtitle": "As a team leader you can request joins or changes. Final approval goes to the manager.",
+    "manageBadge": "Direct manager control",
+    "requestBadge": "Request with manager approval"
+  },
+  "leaders": {
+    "filterLabel": "Filter team leaders",
+    "filterPlaceholder": "Name or area",
+    "readonlyLabel": "Your team leader",
+    "loading": "Loading...",
+    "empty": "No team leaders configured.",
+    "assignedLabel": "{{count}} people"
+  },
+  "employees": {
+    "titleManage": "Employees",
+    "titleReadonly": "People available for your team",
+    "loading": "Loading...",
+    "empty": "No employees available in your scope.",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "assignedToCurrent": "Assigned to this TL",
+    "assignedToYourTeam": "Assigned to your team",
+    "requestSent": "Request sent",
+    "requestJoin": "Request join",
+    "requestChange": "Request change"
+  },
+  "alerts": {
+    "loadErrorTitle": "Error",
+    "loadErrorMessage": "Team Leader settings could not be loaded.",
+    "missingTargetTitle": "Error",
+    "missingTargetMessage": "Select a target Team Leader first.",
+    "assignmentUpdatedTitle": "Assignment updated",
+    "assignmentUpdatedMessage": "Change applied successfully.",
+    "assignmentSaveErrorTitle": "Error",
+    "assignmentSaveErrorMessage": "The assignment could not be saved.",
+    "requestSentTitle": "Request sent",
+    "requestJoinMessage": "Join request sent for the team.",
+    "requestChangeMessage": "Change request sent. It is pending manager approval."
+  },
+  "fallback": {
+    "area": "No area"
+  }
+}

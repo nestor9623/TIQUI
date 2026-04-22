@@ -23,11 +23,11 @@
     <section class="assistant-overview__metrics" aria-label="Balance actual">
       <article class="assistant-pill">
         <span>Hoy</span>
-        <strong>{{ snapshot().dailyBalanceLabel }}</strong>
+        <strong>{{ snapshot().todayWorkedLabel }}</strong>
       </article>
       <article class="assistant-pill">
         <span>Semana</span>
-        <strong>{{ snapshot().weeklyBalanceLabel }}</strong>
+        <strong>{{ snapshot().weeklyWorkedLabel }}</strong>
       </article>
       <article class="assistant-pill">
         <span>Entrada sugerida</span>
@@ -42,10 +42,65 @@
 
   <div class="assistant-overview__alerts">
     @for (alert of topAlerts(); track trackAlert($index, alert)) {
-      <article class="assistant-overview__alert" [class.assistant-overview__alert--warning]="alert.severity === 'warning'" [class.assistant-overview__alert--success]="alert.severity === 'success'">
-        <h4>{{ alert.title }}</h4>
-        <p>{{ alert.message }}</p>
-      </article>
+      @if (alert.route) {
+        <a
+          class="assistant-overview__alert"
+          [class.assistant-overview__alert--warning]="alert.severity === 'warning'"
+          [class.assistant-overview__alert--success]="alert.severity === 'success'"
+          [routerLink]="alert.route"
+          role="link">
+          <h4>{{ alert.title }}</h4>
+          <p>{{ alert.message }}</p>
+          <span class="assistant-overview__alert-cta">Ir ahora →</span>
+        </a>
+      } @else {
+        <article
+          class="assistant-overview__alert"
+          [class.assistant-overview__alert--warning]="alert.severity === 'warning'"
+          [class.assistant-overview__alert--success]="alert.severity === 'success'">
+          <h4>{{ alert.title }}</h4>
+          <p>{{ alert.message }}</p>
+        </article>
+      }
     }
   </div>
+
+  @if (preferences(); as prefs) {
+    <section class="assistant-overview__preferences" aria-label="Preferencias de alertas">
+      <h3>Sensibilidad de alertas</h3>
+      <p>Ajustes personalizados para este usuario.</p>
+
+      <div class="assistant-overview__preferences-grid">
+        <label>
+          <span>Recordatorio de pausa (min)</span>
+          <input
+            type="number"
+            min="60"
+            max="360"
+            [value]="prefs.breakReminderMinutes"
+            (change)="updateNumberPreference('breakReminderMinutes', $event)" />
+        </label>
+
+        <label>
+          <span>Desbalance semanal (min)</span>
+          <input
+            type="number"
+            min="30"
+            max="480"
+            [value]="prefs.weeklyBalanceThresholdMinutes"
+            (change)="updateNumberPreference('weeklyBalanceThresholdMinutes', $event)" />
+        </label>
+
+        <label>
+          <span>Exceso en salida sugerida (min)</span>
+          <input
+            type="number"
+            min="30"
+            max="240"
+            [value]="prefs.suggestedEndOvertimeThresholdMinutes"
+            (change)="updateNumberPreference('suggestedEndOvertimeThresholdMinutes', $event)" />
+        </label>
+      </div>
+    </section>
+  }
 </section>

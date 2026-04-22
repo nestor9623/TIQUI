@@ -1,4 +1,4 @@
-@import 'abstracts/variables';
+@use 'abstracts/variables' as *;
 
 /* Variables */
 $sidebar-width: var(--shell-sidebar-width);
@@ -291,7 +291,7 @@ $nav-item-hover-bg: color-mix(in srgb, var(--nav-text-strong) 9%, transparent);
 
   .team-label {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: color-mix(in srgb, var(--nav-text) 88%, transparent);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
@@ -306,7 +306,7 @@ $nav-item-hover-bg: color-mix(in srgb, var(--nav-text-strong) 9%, transparent);
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--nav-text-strong) 10%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;

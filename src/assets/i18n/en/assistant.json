@@ -6,14 +6,20 @@
     "intro": "Operational recommendations calculated inside the app from your time logs and incidents.",
     "queuePending": "You have recommendations pending review.",
     "metrics": {
-      "dailyBalance": "Today balance",
-      "weeklyBalance": "Week balance",
+      "dailyBalance": "Worked today",
+      "weeklyBalance": "Worked this week",
       "incidents": "Incidents"
     },
     "plan": {
       "suggestedStart": "Suggested start",
       "suggestedEnd": "Suggested end",
       "noAdjustment": "No adjustment"
+    },
+    "pendingActions": {
+      "title": "Pending actions",
+      "subtitle": "Approvals that require manager action",
+      "vacationApprovals": "Vacation requests",
+      "fichajeApprovals": "Check-in adjustment requests"
     },
     "recommendations": {
       "title": "Recommendations",
