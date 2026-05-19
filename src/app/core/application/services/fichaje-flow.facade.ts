@@ -28,10 +28,8 @@ export class FichajeFlowFacade {
   computeAllowedActions(entries: HistoryEntry[]): EntryType[] {
     if (!entries.length) return ['Entrada'];
     const last = entries[entries.length - 1];
-    // After clocking out, allow re-entry (multiple in/out per day)
-    if (last.type === 'Salida') return ['Entrada'];
-    // On pause: can resume or clock out directly
-    if (last.type === 'Pausa') return ['Reanudar', 'Salida'];
+    if (last.type === 'Salida') return [];
+    if (last.type === 'Pausa') return ['Reanudar'];
     // Entrada or Reanudar — currently working
     return ['Pausa', 'Salida'];
   }
