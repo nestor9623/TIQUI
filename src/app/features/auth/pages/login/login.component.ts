@@ -70,10 +70,27 @@ export class LoginComponent implements OnInit {
 
     this.applyPreloadedPreferences(queryParams);
     this.returnUrl.set(queryParams['returnUrl'] ?? null);
+    this.handleAuthLifecycleFeedback(queryParams);
 
     if (this.authService.isAuthenticated()) {
       const currentRole = this.authService.getCurrentUser()?.role ?? UserRole.EMPLOYEE;
       void this.router.navigate([this.getDefaultRoute(currentRole)]);
+    }
+  }
+
+  private handleAuthLifecycleFeedback(queryParams: Record<string, unknown>): void {
+    if (queryParams['registered'] === '1') {
+      this.appAlertService.info(
+        'Registro iniciado',
+        'Revisa tu email para confirmar la cuenta antes de iniciar sesion.',
+      );
+    }
+
+    if (queryParams['confirmed'] === '1') {
+      this.appAlertService.success(
+        'Cuenta confirmada',
+        'Tu email fue validado correctamente. Ya puedes acceder.',
+      );
     }
   }
 

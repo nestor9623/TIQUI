@@ -16,6 +16,15 @@ export class CatalogosPage {
   readonly store = inject(CatalogStore);
   private readonly fb = inject(FormBuilder);
 
+  readonly catalogTabs: Array<{ id: CatalogType; label: string; icon: string }> = [
+    { id: 'community', label: 'Comunidades', icon: '🏘️' },
+    { id: 'area', label: 'Areas', icon: '🏢' },
+    { id: 'user_type', label: 'Tipos de usuario', icon: '🧑' },
+    { id: 'profile', label: 'Perfiles', icon: '🪪' },
+    { id: 'vacation_type', label: 'Tipos de vacaciones', icon: '🏖️' },
+    { id: 'generic_combo', label: 'Combos genericos', icon: '🧩' },
+  ];
+
   readonly form = this.fb.group({
     code: ['', [Validators.required, Validators.maxLength(50)]],
     name: ['', [Validators.required, Validators.maxLength(100)]],

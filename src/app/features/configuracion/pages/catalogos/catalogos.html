@@ -6,18 +6,14 @@
 
   <!-- Tabs -->
   <nav class="catalogos-page__tabs">
-    <button
-      class="catalogos-page__tab"
-      [class.catalogos-page__tab--active]="store.activeTab() === 'community'"
-      (click)="setTab('community')">
-      🏘️ Comunidades
-    </button>
-    <button
-      class="catalogos-page__tab"
-      [class.catalogos-page__tab--active]="store.activeTab() === 'area'"
-      (click)="setTab('area')">
-      🏢 Áreas
-    </button>
+    @for (tab of catalogTabs; track tab.id) {
+      <button
+        class="catalogos-page__tab"
+        [class.catalogos-page__tab--active]="store.activeTab() === tab.id"
+        (click)="setTab(tab.id)">
+        {{ tab.icon }} {{ tab.label }}
+      </button>
+    }
   </nav>
 
   <div class="catalogos-page__body">

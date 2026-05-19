@@ -276,6 +276,25 @@ $nav-item-hover-bg: color-mix(in srgb, var(--nav-text-strong) 9%, transparent);
         display: none;
       }
     }
+
+    &.nav-link--disabled {
+      border: 1px dashed color-mix(in srgb, var(--surface-border) 84%, transparent);
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+
+      &:hover,
+      &:focus-visible {
+        background: transparent;
+        color: var(--nav-text);
+        outline: none;
+        box-shadow: none;
+      }
+
+      &::before {
+        background: transparent;
+      }
+    }
   }
 }
 

@@ -50,6 +50,19 @@ export class VacacionesPage {
 
   readonly currentUser = computed(() => this.authService.getCurrentUser());
   readonly currentRole = computed(() => this.currentUser()?.role ?? UserRole.EMPLOYEE);
+  readonly requiresProfileAssignment = computed(() => {
+    const user = this.currentUser();
+    if (!user) {
+      return true;
+    }
+
+    if (user.role === UserRole.GENERIC) {
+      return true;
+    }
+
+    return user.role === UserRole.EMPLOYEE && !user.managerId && !user.isTeamLeader;
+  });
+
   readonly isManagerView = computed(
     () => this.currentRole() === UserRole.MANAGER || this.currentRole() === UserRole.ADMIN,
   );
@@ -164,6 +177,14 @@ export class VacacionesPage {
   }
 
   submitRequest(): void {
+    if (this.requiresProfileAssignment()) {
+      this.alertService.warning(
+        'Funcionalidad temporalmente deshabilitada',
+        'Tu cuenta esta pendiente de asignacion de perfil o manager. Puedes seguir usando fichajes.',
+      );
+      return;
+    }
+
     if (this.vacationForm.invalid) {
       this.vacationForm.markAllAsTouched();
       return;

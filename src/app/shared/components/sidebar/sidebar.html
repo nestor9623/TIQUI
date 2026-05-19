@@ -44,20 +44,35 @@
         <ul class="nav-list">
           @for (item of getVisibleItems(section.items); track item.label) {
           <li class="nav-item">
-            <a
-              [routerLink]="item.route"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{exact: true}"
-              class="nav-link"
-              [class.nav-link--icon-only]="collapsed()"
-              [title]="collapsed() ? item.label : ''"
-              [attr.aria-label]="item.label"
-              (click)="closeMobile.emit()">
-              @if (item.icon) {
-              <span class="item-icon">{{ item.icon }}</span>
-              }
-              <span class="item-label">{{ item.label }}</span>
-            </a>
+            @if (item.disabled) {
+              <button
+                type="button"
+                class="nav-link nav-link--disabled"
+                [class.nav-link--icon-only]="collapsed()"
+                [title]="item.disabledReason || item.label"
+                [attr.aria-label]="item.label"
+                [disabled]="true">
+                @if (item.icon) {
+                <span class="item-icon">{{ item.icon }}</span>
+                }
+                <span class="item-label">{{ item.label }}</span>
+              </button>
+            } @else {
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}"
+                class="nav-link"
+                [class.nav-link--icon-only]="collapsed()"
+                [title]="collapsed() ? item.label : ''"
+                [attr.aria-label]="item.label"
+                (click)="closeMobile.emit()">
+                @if (item.icon) {
+                <span class="item-icon">{{ item.icon }}</span>
+                }
+                <span class="item-label">{{ item.label }}</span>
+              </a>
+            }
           </li>
           }
         </ul>

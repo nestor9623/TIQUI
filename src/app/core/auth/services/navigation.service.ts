@@ -18,6 +18,8 @@ export class NavigationService {
         return this.getManagerNavigation();
       case UserRole.EMPLOYEE:
         return this.getEmployeeNavigation(user);
+      case UserRole.GENERIC:
+        return this.getGenericNavigation();
       default:
         return [];
     }
@@ -175,6 +177,7 @@ export class NavigationService {
    * Navegación para Empleados
    */
   private getEmployeeNavigation(user?: User | null): SidebarSection[] {
+    const pendingAssignment = !user?.managerId && !user?.isTeamLeader;
     const items = [
       {
         label: 'Dashboard',
@@ -193,12 +196,16 @@ export class NavigationService {
         icon: '📅',
         route: '/calendar',
         visible: true,
+        disabled: pendingAssignment,
+        disabledReason: 'Pendiente de asignacion por manager',
       },
       {
         label: 'Vacaciones',
         icon: '🏖️',
         route: '/vacaciones',
         visible: true,
+        disabled: pendingAssignment,
+        disabledReason: 'Pendiente de asignacion por manager',
       },
     ];
 
@@ -216,6 +223,58 @@ export class NavigationService {
         title: 'Principal',
         expanded: true,
         items,
+      },
+    ];
+  }
+
+  /**
+   * Navegación para usuario recién registrado pendiente de asignación.
+   */
+  private getGenericNavigation(): SidebarSection[] {
+    return [
+      {
+        title: 'Inicio',
+        expanded: true,
+        items: [
+          {
+            label: 'Dashboard',
+            icon: '🏠',
+            route: '/home',
+            visible: true,
+            disabled: true,
+            disabledReason: 'Pendiente de asignacion por manager',
+          },
+          {
+            label: 'Fichajes',
+            icon: '⏱️',
+            route: '/fichajes',
+            visible: true,
+          },
+          {
+            label: 'Calendario',
+            icon: '📅',
+            route: '/calendar',
+            visible: true,
+            disabled: true,
+            disabledReason: 'Pendiente de asignacion por manager',
+          },
+          {
+            label: 'Vacaciones',
+            icon: '🏖️',
+            route: '/vacaciones',
+            visible: true,
+            disabled: true,
+            disabledReason: 'Pendiente de asignacion por manager',
+          },
+          {
+            label: 'Reportes',
+            icon: '📈',
+            route: '/reportes',
+            visible: true,
+            disabled: true,
+            disabledReason: 'Pendiente de asignacion por manager',
+          },
+        ],
       },
     ];
   }

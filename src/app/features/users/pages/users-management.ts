@@ -60,6 +60,7 @@ export class UsersManagement {
       { id: UserRole.ADMIN, label: texts.admin },
       { id: UserRole.MANAGER, label: texts.manager },
       { id: UserRole.EMPLOYEE, label: texts.employee },
+      { id: UserRole.GENERIC, label: 'Generico' },
     ];
   });
 
@@ -327,6 +328,8 @@ export class UsersManagement {
         return texts.admin;
       case UserRole.MANAGER:
         return texts.manager;
+      case UserRole.GENERIC:
+        return 'Generico';
       default:
         return texts.employee;
     }
@@ -361,6 +364,9 @@ export class UsersManagement {
     }
     if (value === UserRole.MANAGER) {
       return UserRole.MANAGER;
+    }
+    if (value === UserRole.GENERIC) {
+      return UserRole.GENERIC;
     }
     return UserRole.EMPLOYEE;
   }

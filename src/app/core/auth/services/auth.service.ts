@@ -1,7 +1,14 @@
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable, tap } from 'rxjs';
-import { AuthResponse, AuthState, LoginCredentials, User } from '../models/auth.model';
+import {
+  AuthResponse,
+  AuthState,
+  LoginCredentials,
+  RegisterCredentials,
+  RegisterResponse,
+  User,
+} from '../models/auth.model';
 import { TokenService } from './token.service';
 import { SupabaseAuthService } from './supabase-auth.service';
 
@@ -74,6 +81,16 @@ export class AuthService {
     return this.supabaseAuth.login(credentials).pipe(
       tap({
         next: (response: AuthResponse) => this.handleAuthResponse(response),
+        error: (error: { message?: string } | null) => this.handleAuthError(error),
+      }),
+    );
+  }
+
+  register(credentials: RegisterCredentials): Observable<RegisterResponse> {
+    this.updateAuthState({ loading: true, error: null });
+    return this.supabaseAuth.register(credentials).pipe(
+      tap({
+        next: () => this.updateAuthState({ loading: false, error: null }),
         error: (error: { message?: string } | null) => this.handleAuthError(error),
       }),
     );

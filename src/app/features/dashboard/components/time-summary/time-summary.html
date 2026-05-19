@@ -64,45 +64,22 @@
 
   <div class="card">
     <h3>Esta semana</h3>
-    <p class="hours">39h 45m</p>
+    <p class="hours">{{ weeklyHours() }}</p>
     <div class="progress-circle">
       <svg viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
-        <circle cx="50" cy="50" r="45" class="progress-bar" [style.stroke-dashoffset]="getProgressOffset(92)"></circle>
+        <circle cx="50" cy="50" r="45" class="progress-bar" [style.stroke-dashoffset]="getProgressOffset(todayProgress())"></circle>
       </svg>
-      <span class="progress-text">92%</span>
+      <span class="progress-text">{{ todayProgress() }}%</span>
     </div>
-    <p class="meta">Ritmo estable respecto a la semana anterior.</p>
+    <p class="meta">Acumulado semanal en base a fichajes reales.</p>
   </div>
 
   <div class="card">
     <h3>Este mes</h3>
-    <p class="hours">162h 30m</p>
-    <div class="mini-chart">
-      <div class="mini-chart-bar" style="height: 40%"></div>
-      <div class="mini-chart-bar" style="height: 60%"></div>
-      <div class="mini-chart-bar" style="height: 50%"></div>
-      <div class="mini-chart-bar" style="height: 70%"></div>
-      <div class="mini-chart-bar" style="height: 65%"></div>
-      <div class="mini-chart-bar" style="height: 80%"></div>
-      <div class="mini-chart-bar" style="height: 75%"></div>
-    </div>
-    <p class="meta">Carga de trabajo distribuida con picos en cierre de sprint.</p>
+    <p class="hours">{{ monthlyHours() }}</p>
+    <p class="meta">{{ monthlyWorkedDays() }} días con actividad registrada.</p>
   </div>
 
-  <div class="card card-calendar">
-    <h3>Calendario</h3>
-    <div class="calendar-mini">
-      <div class="calendar-header">
-        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-      </div>
-      <div class="calendar-days">
-        <span>7</span><span>8</span><span>9</span><span>10</span><span>4</span><span>10</span><span>11</span>
-        <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>17</span><span>18</span>
-        <span>19</span><span>20</span><span>21</span><span>22</span><span class="today">23</span><span>24</span><span>25</span>
-        <span>26</span><span>27</span><span>30</span><span>31</span><span></span><span></span><span></span>
-      </div>
-    </div>
-    <button type="button" class="calendar-arrow" aria-label="Abrir calendario completo">›</button>
-  </div>
+  <app-check-in [compact]="true"></app-check-in>
 </div>

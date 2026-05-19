@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
-import { WorklogDashboardFacade } from '../../../../core/application/services/worklog-dashboard.facade';
 import { AuthService } from '../../../../core/auth/services/auth.service';
-import { TimelineEntry } from '../../../../core/domain/entities/report.entity';
 import { SupabaseVacacionesService } from '../../../../core/infraestructure/repositories/supabase-vacaciones.service';
+import { FichajeFlowFacade } from '../../../../core/application/services/fichaje-flow.facade';
+import { EntryType, HistoryEntry } from '../../../../core/domain/models/timeline-entry.model';
+import { toIsoDate } from '../../../../core/utils/date.utils';
 
 @Component({
   selector: 'app-check-in',
@@ -16,20 +17,22 @@ import { SupabaseVacacionesService } from '../../../../core/infraestructure/repo
 })
 export class CheckInComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService);
-  private readonly facade = inject(WorklogDashboardFacade);
+  private readonly fichajeFlow = inject(FichajeFlowFacade);
   private readonly vacService = inject(SupabaseVacacionesService);
   private readonly destroyRef = inject(DestroyRef);
 
+  readonly compact = input(false);
+
   currentTime = signal<string>('00:00');
   isCheckedIn = signal<boolean>(false);
-  lastCheckTime = signal<string>('00:00');
-  lastCheckType = signal<'Entrada' | 'Salida'>('Entrada');
-  todayEntries = signal<TimelineEntry[]>([]);
+  todayEntries = signal<HistoryEntry[]>([]);
+  allowedActions = signal<EntryType[]>(['Entrada']);
   isOnVacation = signal<boolean>(false);
+  saving = signal<boolean>(false);
 
   ngOnInit(): void {
     const userId = this.authService.getCurrentUser()?.id ?? '3';
-    const todayIso = new Date().toISOString().slice(0, 10);
+    const todayIso = toIsoDate(new Date());
     this.updateTime();
 
     // Comprobar si el empleado está de vacaciones hoy
@@ -41,23 +44,17 @@ export class CheckInComponent implements OnInit, OnDestroy {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.updateTime());
 
-    this.facade.getTodayReport(userId)
+    this.fichajeFlow.loadDayEntries(userId, todayIso)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(report => {
-        const entries = report?.entries ?? [];
+      .subscribe(entries => {
         this.todayEntries.set(entries);
+        this.allowedActions.set(this.fichajeFlow.computeAllowedActions(entries));
 
         const lastEntry = entries.at(-1);
         if (lastEntry) {
-          this.lastCheckTime.set(lastEntry.time);
-          const mappedType: 'Entrada' | 'Salida' = lastEntry.type === 'out' ? 'Salida' : 'Entrada';
-          this.lastCheckType.set(mappedType);
-          this.isCheckedIn.set(lastEntry.type === 'in');
+          this.isCheckedIn.set(lastEntry.type === 'Entrada' || lastEntry.type === 'Reanudar');
           return;
         }
-
-        this.lastCheckTime.set('00:00');
-        this.lastCheckType.set('Entrada');
         this.isCheckedIn.set(false);
       });
   }
@@ -66,19 +63,29 @@ export class CheckInComponent implements OnInit, OnDestroy {
     // Managed by takeUntilDestroyed.
   }
 
-  handleCheckIn(): void {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const currentTime = `${hours}:${minutes}`;
+  onDirectAction(action: EntryType): void {
+    if (this.isOnVacation() || this.saving()) {
+      return;
+    }
 
-    this.lastCheckTime.set(currentTime);
-    this.lastCheckType.set(this.isCheckedIn() ? 'Salida' : 'Entrada');
-    this.isCheckedIn.update(value => !value);
-  }
+    const userId = this.authService.getCurrentUser()?.id ?? '3';
+    const dateIso = toIsoDate(new Date());
+    const time = this.getCurrentTime();
 
-  toggleCheckType(): void {
-    this.isCheckedIn.update(value => !value);
+    this.saving.set(true);
+    this.fichajeFlow
+      .addEvent(userId, dateIso, action, time, 'Dashboard rápido')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: entries => {
+          this.todayEntries.set(entries);
+          this.allowedActions.set(this.fichajeFlow.computeAllowedActions(entries));
+          const lastEntry = entries.at(-1);
+          this.isCheckedIn.set(lastEntry?.type === 'Entrada' || lastEntry?.type === 'Reanudar');
+          this.saving.set(false);
+        },
+        error: () => this.saving.set(false),
+      });
   }
 
   isParsableDate(value: string): boolean {
@@ -95,6 +102,32 @@ export class CheckInComponent implements OnInit, OnDestroy {
     return date.getFullYear() === now.getFullYear()
       && date.getMonth() === now.getMonth()
       && date.getDate() === now.getDate();
+  }
+
+  getCheckinStatusLabel(): string {
+    if (this.isOnVacation()) {
+      return 'Vacaciones';
+    }
+    if (this.saving()) {
+      return 'Guardando';
+    }
+    return this.isCheckedIn() ? 'En jornada' : 'Sin fichar';
+  }
+
+  getLastMovementLabel(): string {
+    const lastEntry = this.todayEntries().at(-1);
+    if (!lastEntry) {
+      return 'Sin movimientos hoy';
+    }
+
+    return `${lastEntry.type} · ${lastEntry.time}`;
+  }
+
+  getActionClass(action: EntryType): string {
+    if (action === 'Entrada') return 'btn-check-in--entry';
+    if (action === 'Salida') return 'btn-check-in--exit';
+    if (action === 'Pausa') return 'btn-check-in--pause';
+    return 'btn-check-in--resume';
   }
 
   private updateTime(): void {

@@ -1,12 +1,49 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AuthResponse, LoginCredentials, User, UserRole } from '../../auth/models/auth.model';
+import {
+  AuthResponse,
+  LoginCredentials,
+  RegisterCredentials,
+  RegisterResponse,
+  User,
+  UserRole,
+} from '../../auth/models/auth.model';
 import { SupabaseClientService } from '../../infraestructure/supabase/supabase-client.service';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseAuthService {
   private readonly supabase = inject(SupabaseClientService).client;
+
+  register(credentials: RegisterCredentials): Observable<RegisterResponse> {
+    const emailRedirectTo = `${window.location.origin}/auth/login?confirmed=1`;
+
+    return from(this.supabase.auth.signUp({
+      email: credentials.email,
+      password: credentials.password,
+      options: {
+        emailRedirectTo,
+        data: {
+          first_name: credentials.firstName,
+          last_name: credentials.lastName,
+        },
+      },
+    })).pipe(
+      map(({ error }) => {
+        if (error) {
+          throw {
+            code: error.code ?? 'REGISTER_ERROR',
+            message: error.message ?? 'No se pudo completar el registro',
+          };
+        }
+
+        return {
+          requiresEmailConfirmation: true,
+          email: credentials.email,
+        } satisfies RegisterResponse;
+      }),
+    );
+  }
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return from(

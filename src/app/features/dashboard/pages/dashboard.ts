@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TimeSummary } from '../components/time-summary/time-summary';
-import { CheckInComponent } from '../components/check-in/check-in';
 import { GenerateSummaryComponent } from '../components/generate-summary/generate-summary';
-import { ActivityChartComponent } from '../components/activity-chart/activity-chart';
 import { RecentActivityComponent } from '../components/recent-activity/recent-activity';
 import { AssistantOverviewComponent } from '../components/assistant-overview/assistant-overview';
 import { AuthService } from '../../../core/auth/services/auth.service';
+import { UserRole } from '../../../core/auth/models/auth.model';
 import { AzureDashboardFacade, AzureTaskPreview } from '../../../core/application/services/azure-dashboard.facade';
 
 @Component({
@@ -14,9 +13,7 @@ import { AzureDashboardFacade, AzureTaskPreview } from '../../../core/applicatio
   imports: [
     AssistantOverviewComponent,
     TimeSummary,
-    CheckInComponent,
     GenerateSummaryComponent,
-    ActivityChartComponent,
     RecentActivityComponent,
   ],
   standalone: true,
@@ -32,7 +29,13 @@ export class Dashboard {
   private readonly now = signal(new Date());
 
   readonly azurePreview = toSignal(this.azureFacade.getPreviewForUser(this.currentUser), { initialValue: null });
+  readonly currentRole = computed(() => this.currentUser?.role ?? UserRole.EMPLOYEE);
+  readonly isEmployeeView = computed(
+    () => this.currentRole() === UserRole.EMPLOYEE || this.currentRole() === UserRole.GENERIC,
+  );
   readonly isAzureConnected = computed(() => Boolean(this.currentUser?.azureConnected));
+  readonly showAzureSection = computed(() => this.isAzureConnected() || !this.isEmployeeView());
+  readonly showGenerateSummary = computed(() => !this.isEmployeeView());
   readonly sprintBadge = computed(() => this.azurePreview()?.sprint.name ?? 'Sin Azure');
 
   readonly sprintRange = computed(() => {

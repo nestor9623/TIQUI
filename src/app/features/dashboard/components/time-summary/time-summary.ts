@@ -4,10 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { WorklogDashboardFacade } from '../../../../core/application/services/worklog-dashboard.facade';
 import { AuthService } from '../../../../core/auth/services/auth.service';
 import { DayStatus, TimelineEntry } from '../../../../core/domain/entities/report.entity';
+import { CheckInComponent } from '../check-in/check-in';
 
 @Component({
   selector: 'app-time-summary',
-  imports: [CommonModule],
+  imports: [CommonModule, CheckInComponent],
   standalone: true,
   templateUrl: './time-summary.html',
   styleUrl: './time-summary.scss',
@@ -20,6 +21,9 @@ export class TimeSummary implements OnInit {
   todayTimeline = signal<TimelineEntry[]>([]);
   todayHours = signal('0h 0m');
   todayProgress = signal(0);
+  weeklyHours = signal('0h 0m');
+  monthlyHours = signal('0h 0m');
+  monthlyWorkedDays = signal(0);
   private currentStatus = signal<DayStatus>('not-clocked');
 
   ngOnInit(): void {
@@ -36,6 +40,9 @@ export class TimeSummary implements OnInit {
         this.todayTimeline.set(todayReport?.entries ?? []);
         this.currentStatus.set(this.getDayStatus());
         this.todayProgress.set(Math.min(100, Math.round(((todayReport?.totalMinutes ?? 0) / 480) * 100)));
+        this.weeklyHours.set(this.formatMinutes(summary.weeklyTotalMinutes));
+        this.monthlyHours.set(this.formatMinutes(summary.monthlyTotalMinutes));
+        this.monthlyWorkedDays.set(summary.monthlyWorkedDays);
       });
   }
 
@@ -118,5 +125,11 @@ export class TimeSummary implements OnInit {
 
   getDotClass(type: 'in' | 'out' | 'pause'): string {
     return `dot-${type}`;
+  }
+
+  private formatMinutes(totalMinutes: number): string {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}h ${minutes}m`;
   }
 }

@@ -1,13 +1,14 @@
 <section class="dashboard-shell">
   <header class="dashboard-shell__header">
     <div>
-      <p class="dashboard-shell__kicker">Panel operativo</p>
-      <h1>Dashboard de fichajes</h1>
-      <p class="dashboard-shell__subtitle">Vista consolidada de tiempos, actividad semanal y generación rápida de reportes.</p>
+      <p class="dashboard-shell__kicker">Panel personal</p>
+      <h1>Tu jornada en foco</h1>
+      <p class="dashboard-shell__subtitle">Resumen real de tu jornada, avances semanales y actividad reciente para decidir rápido.</p>
     </div>
     <span class="dashboard-shell__badge">{{ sprintBadge() }}</span>
   </header>
 
+  @if (showAzureSection()) {
   <section class="dashboard-shell__azure" [class.dashboard-shell__azure--inactive]="!isAzureConnected()">
     @if (isAzureConnected()) {
       <div class="dashboard-shell__azure-head">
@@ -43,18 +44,16 @@
       </div>
     }
   </section>
+  }
 
   <div class="dashboard-shell__grid">
     <app-assistant-overview />
 
     <app-time-summary />
 
-    <div class="dashboard-shell__row">
-      <app-check-in />
+    @if (showGenerateSummary()) {
       <app-generate-summary />
-    </div>
-
-    <app-activity-chart />
+    }
     <app-recent-activity />
   </div>
 </section>

@@ -5,6 +5,8 @@ export interface NavItem {
   action?: () => void;
   children?: NavItem[];
   visible?: boolean;
+  disabled?: boolean;
+  disabledReason?: string;
 }
 
 export interface SidebarSection {

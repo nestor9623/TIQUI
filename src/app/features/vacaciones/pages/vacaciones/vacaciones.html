@@ -7,6 +7,16 @@
     </div>
   </header>
 
+  @if (requiresProfileAssignment()) {
+    <article class="vac-card vac-card--history">
+      <h2>Asignación pendiente</h2>
+      <p class="vac-empty">
+        Tu manager todavía no te asignó a un perfil/equipo. Este módulo se mantiene deshabilitado por ahora.
+        Puedes seguir registrando fichajes normalmente.
+      </p>
+    </article>
+  }
+
   <!-- BOLSAS + FORMULARIO -->
   <div class="vac-shell__grid">
     <!-- Bolsas disponibles -->
@@ -35,11 +45,11 @@
         <div class="vac-form__row">
           <div class="vac-form__field">
             <label for="vac-start">Fecha inicio</label>
-            <input id="vac-start" type="date" formControlName="startDate" [min]="todayIso" />
+            <input id="vac-start" type="date" formControlName="startDate" [min]="todayIso" [disabled]="requiresProfileAssignment()" />
           </div>
           <div class="vac-form__field">
             <label for="vac-end">Fecha fin</label>
-            <input id="vac-end" type="date" formControlName="endDate" [min]="vacationForm.controls.startDate.value || todayIso" />
+            <input id="vac-end" type="date" formControlName="endDate" [min]="vacationForm.controls.startDate.value || todayIso" [disabled]="requiresProfileAssignment()" />
           </div>
         </div>
 
@@ -51,7 +61,7 @@
 
         <div class="vac-form__field">
           <label for="vac-type">Tipo de solicitud</label>
-          <select id="vac-type" formControlName="vacationType">
+          <select id="vac-type" formControlName="vacationType" [disabled]="requiresProfileAssignment()">
             <option value="" disabled>Selecciona un tipo</option>
             @for (option of vacationTypeOptions(); track option.value) {
               <option [value]="option.value" [disabled]="option.disabled">
@@ -68,10 +78,10 @@
 
         <div class="vac-form__field">
           <label for="vac-notes">Comentario</label>
-          <textarea id="vac-notes" rows="3" formControlName="notes" placeholder="Motivo o contexto adicional"></textarea>
+          <textarea id="vac-notes" rows="3" formControlName="notes" placeholder="Motivo o contexto adicional" [disabled]="requiresProfileAssignment()"></textarea>
         </div>
 
-        <button type="submit" class="vac-btn vac-btn--primary" [disabled]="vacationForm.invalid || submitting() || balancesLoading() || vacationTypeOptions().length === 0">
+        <button type="submit" class="vac-btn vac-btn--primary" [disabled]="requiresProfileAssignment() || vacationForm.invalid || submitting() || balancesLoading() || vacationTypeOptions().length === 0">
           {{ submitting() ? 'Enviando...' : 'Enviar solicitud' }}
         </button>
       </form>

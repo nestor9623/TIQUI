@@ -1,0 +1,184 @@
+<section class="login">
+  <div class="login__orb login__orb--one" aria-hidden="true"></div>
+  <div class="login__orb login__orb--two" aria-hidden="true"></div>
+
+  <div class="login__topbar">
+    <div class="login__topbar-copy">
+      <span class="login__eyebrow">
+        <span class="login__eyebrow-dot"></span>
+        Registro de cuenta
+      </span>
+      <p class="login__topbar-text">Crea tu acceso y valida el email para activar tu usuario.</p>
+    </div>
+  </div>
+
+  <div class="login__hero">
+    <div class="login__hero-backdrop" aria-hidden="true">
+      <span class="login__beam login__beam--one"></span>
+      <span class="login__beam login__beam--two"></span>
+    </div>
+
+    <div class="login__hero-content">
+      <div class="login__brand">
+        <p class="login__intro">Tiqui onboarding</p>
+        <h1 class="login__title">
+          Alta de usuario
+          <span class="login__title-dynamic" aria-hidden="true">
+            <span class="login__title-dynamic-track">
+              <span>rápida</span>
+              <span>segura</span>
+              <span>gestionable</span>
+            </span>
+          </span>
+        </h1>
+      </div>
+
+      <article class="login__story-card">
+        <p class="login__story-kicker">Flujo de activación</p>
+        <strong>1. Registro, 2. Confirmación email, 3. Acceso inicial</strong>
+        <p>
+          Al confirmar tu email se activa tu cuenta y entrarás con rol genérico hasta que el manager
+          asigne perfil, equipo y permisos completos.
+        </p>
+      </article>
+    </div>
+  </div>
+
+  <div class="login__panel">
+    <div class="login__card">
+      <header class="login__card-header">
+        <p class="login__panel-kicker">Nuevo usuario</p>
+        <h2 class="login__card-title">Crear cuenta</h2>
+        <p class="login__card-text">Usa un email corporativo y contraseña segura.</p>
+      </header>
+
+      @if (!confirmationSent()) {
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login__form">
+          <div class="login__field">
+            <label for="firstName" class="login__label">Nombre</label>
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              class="login__input"
+              [class.login__input--error]="isFirstNameInvalid()"
+              placeholder="Nombre"
+              autocomplete="given-name"
+              [disabled]="submit.disabled()"
+            />
+          </div>
+
+          <div class="login__field">
+            <label for="lastName" class="login__label">Apellidos</label>
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              class="login__input"
+              [class.login__input--error]="isLastNameInvalid()"
+              placeholder="Apellidos"
+              autocomplete="family-name"
+              [disabled]="submit.disabled()"
+            />
+          </div>
+
+          <div class="login__field">
+            <label for="email" class="login__label">Email</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              class="login__input"
+              [class.login__input--error]="isEmailInvalid()"
+              placeholder="nombre@empresa.com"
+              autocomplete="email"
+              [disabled]="submit.disabled()"
+            />
+          </div>
+
+          <div class="login__field">
+            <label for="password" class="login__label">Contraseña</label>
+            <div class="login__password-wrap">
+              <input
+                id="password"
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="password"
+                class="login__input"
+                [class.login__input--error]="isPasswordInvalid()"
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+                [disabled]="submit.disabled()"
+              />
+              <button
+                type="button"
+                class="login__password-toggle"
+                (click)="togglePasswordVisibility()"
+                [disabled]="submit.disabled()"
+                aria-label="Mostrar u ocultar contraseña">
+                @if (showPassword()) { ocultar } @else { ver }
+              </button>
+            </div>
+          </div>
+
+          <div class="login__field">
+            <label for="confirmPassword" class="login__label">Confirmar contraseña</label>
+            <div class="login__password-wrap">
+              <input
+                id="confirmPassword"
+                [type]="showConfirmPassword() ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                class="login__input"
+                [class.login__input--error]="passwordsDoNotMatch()"
+                placeholder="Repite la contraseña"
+                autocomplete="new-password"
+                [disabled]="submit.disabled()"
+              />
+              <button
+                type="button"
+                class="login__password-toggle"
+                (click)="toggleConfirmPasswordVisibility()"
+                [disabled]="submit.disabled()"
+                aria-label="Mostrar u ocultar confirmacion de contraseña">
+                @if (showConfirmPassword()) { ocultar } @else { ver }
+              </button>
+            </div>
+            @if (passwordsDoNotMatch()) {
+              <span class="login__error" role="alert" aria-live="polite">Las contraseñas no coinciden.</span>
+            }
+          </div>
+
+          <button
+            type="submit"
+            class="login__submit"
+            [attr.aria-busy]="submit.loading()"
+            [disabled]="submit.disabled() || registerForm.invalid || passwordsDoNotMatch()">
+            @if (submit.loading()) {
+              <span class="login__spinner"></span>
+              Creando cuenta...
+            } @else {
+              Crear cuenta y enviar confirmacion
+            }
+          </button>
+        </form>
+      } @else {
+        <div class="login__story-card">
+          <p class="login__story-kicker">Email enviado</p>
+          <strong>Revisa {{ registeredEmail() }}</strong>
+          <p>
+            Te enviamos el enlace de confirmación. Cuando valides el token, tu usuario quedará activo
+            y podrás iniciar sesión.
+          </p>
+
+          <button type="button" class="login__submit" (click)="goToLogin()">
+            Ir a iniciar sesión
+          </button>
+        </div>
+      }
+
+      <div class="login__auth-link-wrap">
+        ¿Ya tienes cuenta?
+        <a [routerLink]="['/auth/login']" class="login__auth-link">Accede aquí</a>
+      </div>
+    </div>
+  </div>
+</section>

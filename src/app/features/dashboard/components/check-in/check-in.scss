@@ -12,6 +12,50 @@
   gap: 1rem;
   flex: 1;
   min-width: 0;
+  position: relative;
+}
+
+.check-in-container--compact {
+  min-height: 220px;
+  padding: 1.05rem;
+  gap: 0.8rem;
+
+  .check-in-subtitle {
+    font-size: 0.76rem;
+  }
+
+  .check-in-meta {
+    margin-top: 0.2rem;
+  }
+
+  .btn-check-in {
+    margin-top: auto;
+    padding: 0.68rem 0.8rem;
+    font-size: 0.8rem;
+    width: calc(50% - 0.275rem);
+  }
+}
+
+.check-in-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--brand-primary) 10%, transparent),
+    transparent 45%
+  );
+  opacity: 0.5;
+}
+
+.check-in-container--active {
+  border-color: color-mix(in srgb, var(--brand-primary) 48%, transparent);
+}
+
+.check-in-container--vacation {
+  border-color: color-mix(in srgb, #0f6d9c 45%, transparent);
 }
 
 .check-in-header {
@@ -21,6 +65,8 @@
   gap: 0.7rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid color-mix(in srgb, var(--surface-border) 75%, transparent);
+  position: relative;
+  z-index: 1;
 }
 
 .check-in-header h3 {
@@ -44,8 +90,52 @@
   font-variant-numeric: tabular-nums;
 }
 
+.check-in-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  position: relative;
+  z-index: 1;
+}
+
+.check-in-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  position: relative;
+  z-index: 1;
+}
+
+.check-in-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--surface-border) 80%, transparent);
+  background: color-mix(in srgb, var(--surface-app) 58%, var(--surface-card));
+  color: var(--text-muted);
+  padding: 0.2rem 0.55rem;
+}
+
+.check-in-pill--state {
+  color: color-mix(in srgb, var(--brand-primary) 92%, black);
+  border-color: color-mix(in srgb, var(--brand-primary) 42%, transparent);
+  background: color-mix(in srgb, var(--brand-primary) 12%, transparent);
+}
+
 .today-timeline {
   padding: 0.4rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-empty {
+  padding: 0.9rem;
+  border-radius: 0.72rem;
+  border: 1px dashed color-mix(in srgb, var(--surface-border) 84%, transparent);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  text-align: center;
+  background: color-mix(in srgb, var(--surface-app) 45%, transparent);
 }
 
 .timeline-horizontal {
@@ -156,6 +246,24 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   box-shadow: var(--elevation-1);
+  position: relative;
+  z-index: 1;
+}
+
+.btn-check-in--entry {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.btn-check-in--pause {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.btn-check-in--resume {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.btn-check-in--exit {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
 .btn-check-in:hover {
@@ -170,6 +278,17 @@
 .btn-check-in:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--brand-accent) 75%, white);
   outline-offset: 2px;
+}
+
+.check-in-vacation-notice {
+  margin: 0;
+  width: 100%;
+  font-size: 0.82rem;
+  color: color-mix(in srgb, #0f6d9c 88%, black);
+  background: color-mix(in srgb, #0f6d9c 12%, transparent);
+  border: 1px solid color-mix(in srgb, #0f6d9c 35%, transparent);
+  border-radius: 0.65rem;
+  padding: 0.5rem 0.65rem;
 }
 
 @media (max-width: 1024px) {
@@ -196,8 +315,16 @@
     gap: 0.55rem;
   }
 
+  .check-in-meta {
+    gap: 0.35rem;
+  }
+
   .btn-check-in {
     font-size: 0.82rem;
+  }
+
+  .check-in-container--compact .btn-check-in {
+    width: 100%;
   }
 
   .timeline-horizontal {

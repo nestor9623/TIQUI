@@ -1,46 +1,105 @@
-<section class="check-in-container">
-  <div class="check-in-header">
-    <div>
-      <h3>Día de hoy</h3>
-      <p class="check-in-subtitle">Registro cronológico de entradas, pausas y salidas.</p>
-    </div>
-    <div class="today-date">{{ currentTime() }}</div>
-  </div>
-
-  <div class="today-timeline">
-    <div class="timeline-horizontal">
-      @for (entry of todayEntries(); track entry.time) {
-      <div
-        class="timeline-entry"
-        [class.entry-in]="entry.type === 'in'"
-        [class.entry-out]="entry.type === 'out'"
-        [class.entry-pause]="entry.type === 'pause'">
-        @if (isParsableDate(entry.time)) {
-        <span class="entry-time">
-          @if (!isTodayEntry(entry.time)) {
-          <span>{{ entry.time | date: 'dd/MM ' }}</span>
-          }
-          <span>{{ entry.time | date: 'HH:mm' }}</span>
-        </span>
-        } @else {
-        <span class="entry-time">{{ entry.time }}</span>
-        }
-        <span
-          class="entry-dot"
-          [class.dot-in]="entry.type === 'in'"
-          [class.dot-out]="entry.type === 'out'"
-          [class.dot-pause]="entry.type === 'pause'"></span>
-        <span class="entry-label">{{ entry.label }}</span>
+@if (compact()) {
+  <section class="check-in-container check-in-container--compact" [class.check-in-container--active]="isCheckedIn()" [class.check-in-container--vacation]="isOnVacation()">
+    <div class="check-in-header">
+      <div>
+        <h3>Fichaje</h3>
+        <p class="check-in-subtitle">Control rápido de jornada.</p>
       </div>
+      <div class="today-date">{{ currentTime() }}</div>
+    </div>
+
+    <div class="check-in-meta">
+      <span class="check-in-pill check-in-pill--state">{{ getCheckinStatusLabel() }}</span>
+      <span class="check-in-pill">{{ getLastMovementLabel() }}</span>
+    </div>
+
+    <div class="check-in-actions" role="group" aria-label="Acciones de fichaje">
+      @if (isOnVacation()) {
+        <p class="check-in-vacation-notice">Estás de vacaciones hoy. No es necesario fichar.</p>
+      } @else {
+        @for (action of allowedActions(); track action) {
+          <button
+            class="btn-check-in"
+            [class]="'btn-check-in ' + getActionClass(action)"
+            (click)="onDirectAction(action)"
+            [disabled]="saving()">
+            @if (saving()) {
+              Guardando...
+            } @else {
+              Fichar {{ action }}
+            }
+          </button>
+        }
       }
     </div>
-  </div>
+  </section>
+} @else {
+  <section class="check-in-container" [class.check-in-container--active]="isCheckedIn()" [class.check-in-container--vacation]="isOnVacation()">
+    <div class="check-in-header">
+      <div>
+        <h3>Día de hoy</h3>
+        <p class="check-in-subtitle">Registro cronológico de entradas, pausas y salidas.</p>
+      </div>
+      <div class="today-date">{{ currentTime() }}</div>
+    </div>
 
-  <button class="btn-check-in" (click)="handleCheckIn()" [disabled]="isOnVacation()">
-    Fichar {{ isCheckedIn() ? 'Salida' : 'Entrada' }}
-  </button>
+    <div class="check-in-meta">
+      <span class="check-in-pill check-in-pill--state">{{ getCheckinStatusLabel() }}</span>
+      <span class="check-in-pill">{{ getLastMovementLabel() }}</span>
+    </div>
 
-  @if (isOnVacation()) {
-    <p class="check-in-vacation-notice">Estás de vacaciones hoy. No es necesario fichar.</p>
-  }
-</section>
+    <div class="today-timeline">
+      @if (todayEntries().length === 0) {
+        <div class="timeline-empty">Aún no hay movimientos de fichaje hoy.</div>
+      } @else {
+        <div class="timeline-horizontal">
+          @for (entry of todayEntries(); track entry.time) {
+          <div
+            class="timeline-entry"
+            [class.entry-in]="entry.type === 'Entrada' || entry.type === 'Reanudar'"
+            [class.entry-out]="entry.type === 'Salida'"
+            [class.entry-pause]="entry.type === 'Pausa'">
+            @if (isParsableDate(entry.time)) {
+            <span class="entry-time">
+              @if (!isTodayEntry(entry.time)) {
+              <span>{{ entry.time | date: 'dd/MM ' }}</span>
+              }
+              <span>{{ entry.time | date: 'HH:mm' }}</span>
+            </span>
+            } @else {
+            <span class="entry-time">{{ entry.time }}</span>
+            }
+            <span
+              class="entry-dot"
+              [class.dot-in]="entry.type === 'Entrada' || entry.type === 'Reanudar'"
+              [class.dot-out]="entry.type === 'Salida'"
+              [class.dot-pause]="entry.type === 'Pausa'"></span>
+            <span class="entry-label">{{ entry.label }}</span>
+          </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="check-in-actions" role="group" aria-label="Acciones de fichaje">
+      @if (isOnVacation()) {
+        <p class="check-in-vacation-notice">Estás de vacaciones hoy. No es necesario fichar.</p>
+      } @else {
+        @for (action of allowedActions(); track action) {
+          <button
+            class="btn-check-in"
+            [class]="'btn-check-in ' + getActionClass(action)"
+            (click)="onDirectAction(action)"
+            [disabled]="saving()">
+            @if (saving()) {
+              Guardando...
+            } @else {
+              Fichar {{ action }}
+            }
+          </button>
+        }
+      }
+    </div>
+
+  </section>
+}

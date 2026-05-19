@@ -7,6 +7,18 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface RegisterCredentials {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface RegisterResponse {
+  requiresEmailConfirmation: boolean;
+  email: string;
+}
+
 export interface AuthResponse {
   token: string;
   refreshToken: string;
@@ -36,7 +48,8 @@ export interface User {
 export enum UserRole {
   ADMIN = 'admin',
   EMPLOYEE = 'employee',
-  MANAGER = 'manager'
+  MANAGER = 'manager',
+  GENERIC = 'generic',
 }
 
 export interface TokenPayload {

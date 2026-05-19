@@ -1,13 +1,20 @@
 <section class="recent-activity-container">
   <header class="recent-activity-header">
-    <h3>Actividad reciente</h3>
-    <p>Últimos eventos registrados por el equipo.</p>
+    <h3>Histórico reciente</h3>
+    <p>Fichajes, vacaciones e incidencias ordenadas por fecha más reciente.</p>
   </header>
   <div class="activities-list">
+    @if (activities().length === 0) {
+      <p class="activities-empty">Sin actividad registrada todavía.</p>
+    }
     @for (activity of activities(); track activity.id) {
     <div class="activity-item">
-      <span class="activity-number">{{ activity.id }}</span>
-      <span class="activity-title">{{ activity.title }}</span>
+      <span class="activity-kind activity-kind--{{ activity.kind }}">{{ badgeLabel(activity.kind) }}</span>
+      <div class="activity-copy">
+        <span class="activity-title">{{ activity.title }}</span>
+        <small class="activity-description">{{ activity.description }}</small>
+      </div>
+      <span class="activity-time">{{ activity.timestamp }}</span>
     </div>
     }
   </div>

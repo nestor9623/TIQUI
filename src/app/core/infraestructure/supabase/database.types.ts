@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'manager' | 'employee';
+export type UserRole = 'admin' | 'manager' | 'employee' | 'generic';
 export type Community = 'madrid' | 'galicia';
 export type VacationRequestStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
 /** Extendido dinámicamente por vacation_type_catalog; los valores iniciales se mantienen para compatibilidad */

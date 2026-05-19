@@ -176,26 +176,12 @@
   gap: 1.2rem;
 }
 
-.dashboard-shell__row {
-  display: flex;
-  gap: 1.2rem;
-}
-
-.dashboard-shell__row > * {
-  flex: 1;
-  min-width: 0;
-}
-
 @media (max-width: 1024px) {
   .dashboard-shell__subtitle {
     max-width: 100%;
   }
 
   .dashboard-shell__grid {
-    gap: 1rem;
-  }
-
-  .dashboard-shell__row {
     gap: 1rem;
   }
 
@@ -221,11 +207,6 @@
   }
 
   .dashboard-shell__grid {
-    gap: 1rem;
-  }
-
-  .dashboard-shell__row {
-    flex-direction: column;
     gap: 1rem;
   }
 }
