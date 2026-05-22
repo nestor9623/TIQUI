@@ -70,7 +70,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
 
     const userId = this.authService.getCurrentUser()?.id ?? '3';
     const dateIso = toIsoDate(new Date());
-    const time = this.getCurrentTime();
+    const time = this.currentTime();
 
     this.saving.set(true);
     this.fichajeFlow
