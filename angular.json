@@ -27,6 +27,11 @@
             "assets": [
               "src/assets",
               {
+                "glob": ".htaccess",
+                "input": "public",
+                "output": "/"
+              },
+              {
                 "glob": "**/*",
                 "input": "public"
               }
